@@ -40,6 +40,7 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        // Kode untuk JWT Token
         'api' => [
             'driver' => 'jwt',
             'provider' => 'users',
