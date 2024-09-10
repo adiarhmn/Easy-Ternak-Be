@@ -10,6 +10,27 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
+    
+    /**
+     * @OA\Get(
+     *     path="/api",
+     *     tags={"Users"},
+     *     summary="Get list of users",
+     *     description="Mengembalikan Data Users",
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of users"
+     *     )
+     * )
+     */
+    public function index()
+    {
+        return response()->json([
+            'success' => true,
+            'message' => 'Welcome to the API',
+            'users' => User::all()
+        ]);
+    }
 
     public function register(Request $request)
     {

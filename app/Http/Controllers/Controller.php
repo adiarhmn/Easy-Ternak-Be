@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
-abstract class Controller
-{
-    //
-}
+/**
+ * @OA\Info(
+ *     title="Easy Ternak API",
+ *     version="1.0.0",
+ *     description="Easy Ternak API Documentation",
+ * )
+ */
+abstract class Controller {}
