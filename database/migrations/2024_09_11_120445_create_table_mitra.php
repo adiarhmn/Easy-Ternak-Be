@@ -17,9 +17,10 @@ return new class extends Migration
             $table->string('name', 100);
             $table->string('address', 100);
             $table->string('telephone', 15);
-            $table->string('nik', 16);
-            $table->string('ktp_image', 255);
-            $table->float('rating', 2, 1)->default(0);
+            $table->string('nik', 16)->unique();
+            $table->string('ktp_image', 255)->nullable();
+            // Rating
+            $table->
             $table->timestamps();
             $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });

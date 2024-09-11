@@ -24,4 +24,5 @@ Route::middleware(['jwt.auth'])->group(function () {
 Route::middleware(['jwt.auth'])->group(function () {
     Route::get('mitra', [MitraController::class, 'index'])->name('mitra.index');
     Route::post('mitra', [MitraController::class, 'store'])->name('mitra.store');
+    Route::put('mitra', [MitraController::class, 'update'])->name('mitra.update');
 });
