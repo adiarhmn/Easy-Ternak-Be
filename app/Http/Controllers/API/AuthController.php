@@ -19,7 +19,7 @@ class AuthController extends Controller
             'email' => 'required|string|email|max:150|unique:users',
             'password' => 'required|string|min:8',
             'c_password' => 'required|same:password',
-            'level' => 'required|string|in:admin,mitra,investor',
+            'level' => 'required|string|in:mitra,investor',
         ]);
 
         // Return Validation Error
