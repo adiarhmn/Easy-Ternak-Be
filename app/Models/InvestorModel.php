@@ -5,20 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MitraModel extends Model
+class InvestorModel extends Model
 {
     use HasFactory;
-    protected $table = 'mitra';
-    protected $primaryKey = 'id_mitra';
+    protected $table = 'investor';
+    protected $primaryKey = 'id_investor';
     protected $fillable = [
         'id_user',
         'name',
         'address',
-        'telephone',
-        'nik',
-        'ktp_image',
-        'rating',
+        'telephone',       
     ];
+
     public $timestamps = true;
 
     public function user()

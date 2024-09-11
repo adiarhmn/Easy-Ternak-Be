@@ -23,7 +23,7 @@ class MitraController extends Controller
         }
 
         // Get the mitra data
-        $mitra = MitraModel::where('id_user', $user->id_user)->first();
+        $mitra = MitraModel::where('id_user', $user->id_user)->with('user')->first();
         if ($mitra == null) {
             return response()->json(['message' => 'Mitra not found'], 404);
         }
@@ -32,7 +32,7 @@ class MitraController extends Controller
     }
 
     // Function to store the mitra data
-    public function store(Request $request)
+    public function saveData(Request $request)
     {
         $user = JWTAuth::user();
         if ($user == null || $user->level != 'mitra') {
@@ -42,8 +42,8 @@ class MitraController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:100',
             'address' => 'required|string',
-            'telephone' => 'required|string|max:15',
-            'nik' => 'required|string|max:16',
+            'telephone' => 'required|numeric|max_digits:15',
+            'nik' => 'required|numeric|max_digits:18',
             'ktp_image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
         ]);
 

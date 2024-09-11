@@ -75,4 +75,15 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+
+    public function mitra()
+    {
+        return $this->hasOne(MitraModel::class, 'id_user', 'id_user');
+    }
+
+    public function investor()
+    {
+        return $this->hasOne(InvestorModel::class, 'id_user', 'id_user');
+    }
 }

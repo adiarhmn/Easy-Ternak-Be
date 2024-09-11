@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\InvestorController;
 use App\Http\Controllers\API\MitraController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,6 +24,11 @@ Route::middleware(['jwt.auth'])->group(function () {
 // Mitra Routes
 Route::middleware(['jwt.auth'])->group(function () {
     Route::get('mitra', [MitraController::class, 'index'])->name('mitra.index');
-    Route::post('mitra', [MitraController::class, 'store'])->name('mitra.store');
-    Route::put('mitra', [MitraController::class, 'update'])->name('mitra.update');
+    Route::post('mitra', [MitraController::class, 'saveData'])->name('mitra.save');
+});
+
+// Investor Routes
+Route::middleware(['jwt.auth'])->group(function () {
+    Route::get('investor', [InvestorController::class, 'index'])->name('investor.index');
+    Route::post('investor', [InvestorController::class, 'saveData'])->name('investor.save');
 });
