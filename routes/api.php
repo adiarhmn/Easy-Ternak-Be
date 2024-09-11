@@ -1,20 +1,18 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\AuthController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', [AuthController::class, 'index']);
+// Route::get('login', [AuthController::class, 'login'])->name('login');
 
-// Route::group(['prefix' => ''], function ($router) {
-//     Route::post('login', [AuthController::class, 'login']);
-//     Route::post('register', [AuthController::class, 'register']);
-// });
+Route::group(['prefix' => ''], function ($routes) {
+    Route::post('login', [AuthController::class, 'login'])->name('login');
+    Route::post('register', [AuthController::class, 'register'])->name('register');
+});
 
-
-// Route::middleware('auth:api')->group(function () {
-//     Route::post('me', [AuthController::class, 'me']);
-//     Route::post('logout', [AuthController::class, 'logout']);
-//     Route::post('refresh', [AuthController::class, 'refresh']);
-// });
+Route::middleware(['jwt.auth'])->group(function () {
+    Route::post('me', [AuthController::class, 'me'])->name('me');
+    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('refresh', [AuthController::class, 'refresh'])->name('refresh');
+});
