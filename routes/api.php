@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\MitraController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -19,4 +20,8 @@ Route::middleware(['jwt.auth'])->group(function () {
 });
 
 
-// 
+// Mitra Routes
+Route::middleware(['jwt.auth'])->group(function () {
+    Route::get('mitra', [MitraController::class, 'index'])->name('mitra.index');
+    Route::post('mitra', [MitraController::class, 'store'])->name('mitra.store');
+});

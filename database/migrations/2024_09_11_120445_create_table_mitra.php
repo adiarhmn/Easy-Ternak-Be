@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('mitra', function (Blueprint $table) {
             $table->id('id_mitra');
+            $table->unsignedBigInteger('id_user');
             $table->string('name', 100);
             $table->string('address', 100);
             $table->string('telephone', 15);
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->string('ktp_image', 255);
             $table->float('rating', 2, 1)->default(0);
             $table->timestamps();
+            $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('table_mitra');
+        Schema::dropIfExists('mitra');
     }
 };
