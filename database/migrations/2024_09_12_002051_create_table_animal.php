@@ -22,6 +22,7 @@ return new class extends Migration
             $table->date('purchase_date');
             $table->string('status');
             $table->string('investment_type');
+            $table->integer('total_slots');
             $table->foreign('id_sub_animal_type')->references('id_sub_animal_type')->on('sub_animal_type')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('id_mitra')->references('id_mitra')->on('mitra')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

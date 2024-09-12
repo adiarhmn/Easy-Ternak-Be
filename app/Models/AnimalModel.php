@@ -21,6 +21,7 @@ class AnimalModel extends Model
         'purchase_date',
         'status',
         'investment_type',
+        'total_slots',
     ];
 
     public $timestamps = true;
