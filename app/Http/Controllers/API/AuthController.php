@@ -61,6 +61,12 @@ class AuthController extends Controller
             ], 422);
         }
 
+        // Check Account Is Active or Not
+        $user = User::where('username', $request->username)->first();
+        if (!$user || $user->is_active == 0) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
         // Get The Credentials
         $credentials = request(['username', 'password']);
 
