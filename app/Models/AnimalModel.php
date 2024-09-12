@@ -30,5 +30,10 @@ class AnimalModel extends Model
     {
         return $this->belongsTo(SubAnimalTypeModel::class, 'id_sub_animal_type', 'id_sub_animal_type');
     }
+
+    public function investmentSlot()
+    {
+        return $this->hasMany(InvestmentSlotModel::class, 'id_animal', 'id_animal');
+    }
     
 }

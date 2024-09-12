@@ -23,4 +23,9 @@ class InvestorModel extends Model
     {
         return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
+
+    public function investmentSlot()
+    {
+        return $this->hasMany(InvestmentSlotModel::class, 'id_investor', 'id_investor');
+    }
 }

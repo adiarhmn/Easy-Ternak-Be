@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\AnimalController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\InvestorController;
 use App\Http\Controllers\API\MitraController;
@@ -31,4 +32,12 @@ Route::middleware(['jwt.auth'])->group(function () {
 Route::middleware(['jwt.auth'])->group(function () {
     Route::get('investor', [InvestorController::class, 'index'])->name('investor.index');
     Route::post('investor', [InvestorController::class, 'saveData'])->name('investor.save');
+});
+
+// Animal Routes
+Route::middleware(['jwt.auth'])->group(function () {
+    Route::get('animal', [AnimalController::class, 'index'])->name('animal.index');
+    Route::get('animal-mitra', [AnimalController::class, 'indexMitra'])->name('animal.index.mitra');
+    Route::get('animal/{id}', [AnimalController::class, 'details'])->name('animal.details');
+    Route::post('animal', [AnimalController::class, 'saveData'])->name('animal.save');
 });
