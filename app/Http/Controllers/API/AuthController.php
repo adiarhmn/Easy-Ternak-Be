@@ -61,11 +61,23 @@ class AuthController extends Controller
             ], 422);
         }
 
-        // Check Account Is Active or Not
         $user = User::where('username', $request->username)->first();
-        if (!$user || $user->is_active == 0) {
-            return response()->json(['message' => 'Unauthorized'], 401);
+
+        // Check Username
+        if (!$user) {
+            return response()->json(['message' => 'Username tidak terdaftar'], 401);
         }
+
+        // Check Password and Username
+        if (!password_verify($request->password, $user->password)) {
+            return response()->json(['message' => 'Username dan Password Tidak Sesuai'], 401);
+        }
+
+        // Check Account Is Active or Not
+        if ($user->is_active == 0) {
+            return response()->json(['message' => 'Mohon aktivasi melalui Email anda !'], 401);
+        }
+
 
         // Get The Credentials
         $credentials = request(['username', 'password']);
@@ -82,7 +94,7 @@ class AuthController extends Controller
     // Function to get the authenticated user
     public function me()
     {
-        $user = JWTAuth::user();
+        $user = JWTAuth::user()->with('mitra')->with('investor')->first();
         if (!$user) return response()->json(['message' => 'Unauthorized'], 401);
         return response()->json($user);
     }
@@ -103,9 +115,10 @@ class AuthController extends Controller
     protected function respondWithToken($token)
     {
         return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => JWTAuth::factory()->getTTL() * 6000
+            'access_token'  => $token,
+            'creds'         => JWTAuth::user(),
+            'token_type'    => 'bearer',
+            'expires_in'    => JWTAuth::factory()->getTTL() * 6000
         ]);
     }
 }

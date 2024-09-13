@@ -18,6 +18,7 @@ class InvestmentSlotController extends Controller
         // I
     }
 
+    // Function to checkout investment slot by investor
     public function checkout(Request $request)
     {
         // Get the authenticated user
@@ -50,7 +51,7 @@ class InvestmentSlotController extends Controller
 
         // Save the image proof
         $imageProof = $request->file('image_proof');
-        $fileName = "TF-" . $user?->id_user . time() . '.' . $imageProof->getClientOriginalExtension();
+        $fileName = "TF-" . $user?->id_user .date(now()).time() . '.' . $imageProof->getClientOriginalExtension();
         // Resize the image and Upload Image
         $ImageManager = new ImageManager(new Driver());
         $ImageManager->read($imageProof)->scaleDown(400)->save('uploads/' . $fileName, 90);

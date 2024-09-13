@@ -18,7 +18,12 @@ class AnimalController extends Controller
     // Function to get the animal data
     public function index()
     {
-        $animals = AnimalModel::with('subAnimalType.animalType')->get();
+        $user = JWTAuth::user();
+        if ($user == null) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        $animals = AnimalModel::with('subAnimalType.animalType')->with('investmentSlot')->get();
         return response()->json(['message' => 'Animal data', 'animals' => $animals]);
     }
 

@@ -72,7 +72,7 @@ class MitraController extends Controller
                 }
             }
 
-            $fileName = "ktp-" . $user?->id_user . time() . '.' . $fileImage->getClientOriginalExtension();
+            $fileName = "ktp-" . $user?->id_user . now()->format('Ymd-His') . '.' . $fileImage->getClientOriginalExtension();
             // Resize the image and Upload Image
             $ImageManager = new ImageManager(new Driver());
             $ImageManager->read($fileImage)->scaleDown(400)->save('uploads/' . $fileName, 90);
