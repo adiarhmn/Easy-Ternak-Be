@@ -41,3 +41,11 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('animal/{id}', [AnimalController::class, 'details'])->name('animal.details');
     Route::post('animal', [AnimalController::class, 'saveData'])->name('animal.save');
 });
+
+// Slot Routes
+Route::middleware(['jwt.auth'])->group(function () {
+    Route::get('slot', [SlotController::class, 'index'])->name('slot.index');
+    Route::get('slot-mitra', [SlotController::class, 'indexMitra'])->name('slot.index.mitra');
+    Route::get('slot/{id}', [SlotController::class, 'details'])->name('slot.details');
+    Route::post('slot', [SlotController::class, 'saveData'])->name('slot.save');
+});

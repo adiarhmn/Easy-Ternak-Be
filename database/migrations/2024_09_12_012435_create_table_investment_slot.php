@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('slot_code');
             $table->integer('slot_price');
             $table->integer('profit')->default(0);
-            $table->string('status')->default('pending');
+            $table->string('status')->default('ready');
             $table->datetime('expired_at')->nullable();
             $table->timestamps();
         });
