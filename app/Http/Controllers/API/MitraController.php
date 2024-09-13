@@ -75,7 +75,7 @@ class MitraController extends Controller
             $fileName = "ktp-" . $user?->id_user . time() . '.' . $fileImage->getClientOriginalExtension();
             // Resize the image and Upload Image
             $ImageManager = new ImageManager(new Driver());
-            $ImageManager->read($fileImage)->resize(200, 200)->save('uploads/' . $fileName);
+            $ImageManager->read($fileImage)->scaleDown(400)->save('uploads/' . $fileName, 90);
         }
 
         $mitra->name = $request->name;

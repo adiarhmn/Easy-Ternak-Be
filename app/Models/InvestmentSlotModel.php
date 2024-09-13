@@ -32,5 +32,10 @@ class InvestmentSlotModel extends Model
     {
         return $this->belongsTo(AnimalModel::class, 'id_animal', 'id_animal');
     }
+
+    public function transferProof()
+    {
+        return $this->hasMany(TransferProofsModel::class, 'id_investment_slot', 'id_investment_slot');
+    }
 }
 

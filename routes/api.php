@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\AnimalController;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\InvestmentSlotController;
 use App\Http\Controllers\API\InvestorController;
 use App\Http\Controllers\API\MitraController;
 use Illuminate\Support\Facades\Route;
@@ -44,8 +45,5 @@ Route::middleware(['jwt.auth'])->group(function () {
 
 // Slot Routes
 Route::middleware(['jwt.auth'])->group(function () {
-    Route::get('slot', [SlotController::class, 'index'])->name('slot.index');
-    Route::get('slot-mitra', [SlotController::class, 'indexMitra'])->name('slot.index.mitra');
-    Route::get('slot/{id}', [SlotController::class, 'details'])->name('slot.details');
-    Route::post('slot', [SlotController::class, 'saveData'])->name('slot.save');
+    Route::post('slot/checkout', [InvestmentSlotController::class, 'checkout'])->name('slot.checkout');
 });
