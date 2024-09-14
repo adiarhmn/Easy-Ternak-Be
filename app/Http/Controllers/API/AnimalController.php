@@ -34,17 +34,17 @@ class AnimalController extends Controller
         $user = JWTAuth::user();
         $mitra = MitraModel::where('id_user', $user?->id_user)->first();
         if ($mitra == null) {
-            return response()->json(['message' => 'Unauthorized'], 401);
+            return response()->json(['message' => 'Unauthorizedh'], 401);
         }
 
         // Get the animal data
-        $animals = AnimalModel::where('id_mitra', $mitra->id_mitra)->with('subAnimalType')->get();
+        $animals = AnimalModel::where('id_mitra', $mitra->id_mitra)->with('subAnimalType.animalType')->with('investmentSlot')->get();
         return response()->json(['message' => 'Animal data', 'animals' => $animals]);
     }
 
     // Function to get the animal data by id
     public function details(int $id){
-        $animal = AnimalModel::where('id_animal', $id)->with('subAnimalType.animalType')->with('InvestmentSlot')->first();
+        $animal = AnimalModel::where('id_animal', $id)->with('subAnimalType.animalType')->with('investmentSlot')->first();
         if ($animal == null) {
             return response()->json(['message' => 'Animal not found'], 404);
         }

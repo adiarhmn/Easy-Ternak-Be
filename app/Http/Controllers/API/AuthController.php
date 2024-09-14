@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Contracts\Providers\JWT;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
@@ -87,6 +88,7 @@ class AuthController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
+        $userCok = JWTAuth::user();
         // Return The Token
         return $this->respondWithToken($token);
     }
@@ -94,9 +96,11 @@ class AuthController extends Controller
     // Function to get the authenticated user
     public function me()
     {
-        $user = JWTAuth::user()->with('mitra')->with('investor')->first();
+        $user = JWTAuth::user();
         if (!$user) return response()->json(['message' => 'Unauthorized'], 401);
-        return response()->json($user);
+
+        $userData = User::where('id_user', $user->id_user)->with('mitra')->with('investor')->first();
+        return response()->json($userData);
     }
 
     // Function to logout the authenticated user
@@ -118,7 +122,7 @@ class AuthController extends Controller
             'access_token'  => $token,
             'creds'         => JWTAuth::user(),
             'token_type'    => 'bearer',
-            'expires_in'    => JWTAuth::factory()->getTTL() * 6000
+            'expires_in'    => JWTAuth::factory()->getTTL() * 60
         ]);
     }
 }
