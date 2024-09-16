@@ -23,7 +23,15 @@ class AnimalController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        $animals = AnimalModel::with('subAnimalType.animalType')->with('investmentSlot')->get();
+        // $animals = AnimalModel::with('subAnimalType.animalType')->with('investmentSlot')->with('mitra')->get();
+        $animals = AnimalModel::withCount([
+            'InvestmentSlot as total_sold' => function ($query) {
+                $query->where('status', 'sold')->orWhere('status', 'pending');
+            },
+            'InvestmentSlot as total_ready' => function ($query) {
+                $query->where('status', 'ready');
+            }
+        ])->with('subAnimalType.animalType')->with('investmentSlot')->with('mitra')->get();
         return response()->json(['message' => 'Animal data', 'animals' => $animals]);
     }
 
@@ -43,7 +51,8 @@ class AnimalController extends Controller
     }
 
     // Function to get the animal data by id
-    public function details(int $id){
+    public function details(int $id)
+    {
         $animal = AnimalModel::where('id_animal', $id)->with('subAnimalType.animalType')->with('investmentSlot')->first();
         if ($animal == null) {
             return response()->json(['message' => 'Animal not found'], 404);
