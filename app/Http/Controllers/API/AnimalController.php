@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Str;
+use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 
 class AnimalController extends Controller
 {
@@ -77,6 +79,8 @@ class AnimalController extends Controller
             'price' => 'required|numeric',
             'investment_type' => 'required|string',
             'total_slots' => 'required|numeric|min:1|max:10',
+            'animal_images' => 'required|array',
+            'animal_images.*' => 'mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
         // Return Validation Error
@@ -85,6 +89,21 @@ class AnimalController extends Controller
                 'message' => 'Validation failed',
                 'errors' => $validator->errors()
             ], 422);
+        }
+
+        // Menangkap file
+        if ($request->hasFile('animal_images')) {
+            $files = $request->file('animal_images');
+            foreach ($files as $index => $fileImage) {
+                $fileName = "anml-$index" . now()->format('Ymd-His') . '.' . $fileImage->getClientOriginalExtension();
+                // Resize the image and Upload Image
+                $ImageManager = new ImageManager(new Driver());
+                $ImageManager->read($fileImage)->scaleDown(400)->save('uploads/' . $fileName, 90);
+
+
+                // Save the image to the database
+                
+            }
         }
 
         // Create Code Animal
