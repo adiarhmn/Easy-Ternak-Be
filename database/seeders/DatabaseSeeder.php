@@ -16,6 +16,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AnimalTypeSeeder::class,
             SubAnimalTypeSeeder::class,
+            InvestmentTypeSeeder::class,
+            SettingsSeeder::class,
         ]);
     }
 }
