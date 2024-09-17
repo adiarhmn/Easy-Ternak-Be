@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('nik', 20)->unique();
             $table->string('ktp_image', 255)->nullable();
             $table->float('rating')->default(0);
+            $table->string('status_mitra', 50)->default('not_verified');
             $table->timestamps();
             $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });

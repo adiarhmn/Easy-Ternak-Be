@@ -21,7 +21,6 @@ return new class extends Migration
             $table->date('selling_date')->nullable();
             $table->date('purchase_date')->nullable();
             $table->string('status')->default('open');
-            $table->string('investment_type');
             $table->integer('total_slots')->default(4);
             $table->foreign('id_sub_animal_type')->references('id_sub_animal_type')->on('sub_animal_type')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('id_mitra')->references('id_mitra')->on('mitra')->onDelete('cascade')->onUpdate('cascade');
