@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             SubAnimalTypeSeeder::class,
             InvestmentTypeSeeder::class,
             SettingsSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }
