@@ -28,6 +28,7 @@ class User extends Authenticatable implements JWTSubject
         'token',
         'level',
         'is_active',
+        'profile_picture',
     ];
 
     // Timestamps
