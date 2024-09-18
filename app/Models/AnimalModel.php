@@ -13,6 +13,7 @@ class AnimalModel extends Model
     protected $fillable = [
         'id_sub_animal_type',
         'id_mitra',
+        'id_investment_type',
         'animal_code',
         'description',
         'id_sub_animal_type',
@@ -20,7 +21,6 @@ class AnimalModel extends Model
         'selling_date',
         'purchase_date',
         'status',
-        'investment_type',
         'total_slots',
     ];
 
@@ -34,6 +34,11 @@ class AnimalModel extends Model
     public function investmentSlot()
     {
         return $this->hasMany(InvestmentSlotModel::class, 'id_animal', 'id_animal');
+    }
+
+    public function investmentType()
+    {
+        return $this->belongsTo(InvestmentTypeModel::class, 'id_investment_type', 'id_investment_type');
     }
 
     public function mitra()
