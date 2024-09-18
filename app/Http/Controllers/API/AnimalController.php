@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\AnimalImageModel;
 use App\Models\AnimalModel;
 use App\Models\InvestmentSlotModel;
 use App\Models\MitraModel;
@@ -77,7 +78,7 @@ class AnimalController extends Controller
             'description' => 'required|string|max:255',
             'id_sub_animal_type' => 'required|numeric',
             'price' => 'required|numeric',
-            'investment_type' => 'required|string',
+            'id_investment_type' => 'required|numeric',
             'total_slots' => 'required|numeric|min:1|max:10',
             'animal_images' => 'required|array',
             'animal_images.*' => 'mimes:jpeg,png,jpg,gif,svg|max:2048'
@@ -91,6 +92,8 @@ class AnimalController extends Controller
             ], 422);
         }
 
+        $nameImages = [];
+
         // Menangkap file
         if ($request->hasFile('animal_images')) {
             $files = $request->file('animal_images');
@@ -100,9 +103,8 @@ class AnimalController extends Controller
                 $ImageManager = new ImageManager(new Driver());
                 $ImageManager->read($fileImage)->scaleDown(400)->save('uploads/' . $fileName, 90);
 
-
-                // Save the image to the database
-                
+                // Save the image name
+                $nameImages[$index] = $fileName;
             }
         }
 
@@ -120,7 +122,7 @@ class AnimalController extends Controller
                 'description' => $request->description,
                 'id_sub_animal_type' => $request->id_sub_animal_type,
                 'price' => $request->price,
-                'investment_type' => $request->investment_type,
+                'id_investment_type' => $request->id_investment_type,
                 'total_slots' => $request->total_slots,
             ]);
 
@@ -132,6 +134,14 @@ class AnimalController extends Controller
                 $slot->slot_code = $animal_code . "-" . $i . time();
                 $slot->slot_price = $slot_price;
                 $slot->save();
+            }
+
+            // Save The Animal Images
+            foreach ($nameImages as $nameImage) {
+                AnimalImageModel::create([
+                    'id_animal' => $animal->id_animal,
+                    'image' => $nameImage,
+                ]);
             }
 
             // Commit Transaction
