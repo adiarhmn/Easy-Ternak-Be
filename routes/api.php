@@ -4,6 +4,7 @@ use App\Http\Controllers\API\AnimalController;
 use App\Http\Controllers\API\AnimalTypeController;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\InvestmentSlotController;
+use App\Http\Controllers\API\InvestmentTypeController;
 use App\Http\Controllers\API\InvestorController;
 use App\Http\Controllers\API\MitraController;
 use App\Http\Controllers\API\SubAnimalTypeController;
@@ -68,4 +69,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('animal-type', [AnimalTypeController::class, 'saveData'])->name('animal-type.save');
 });
 
-
+// Investment Type Routes 
+Route::middleware(['jwt.auth'])->group(function () {
+    Route::get('investment-type', [InvestmentTypeController::class, 'index'])->name('investment-type.index');
+});
