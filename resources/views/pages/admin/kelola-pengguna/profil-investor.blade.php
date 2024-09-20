@@ -50,6 +50,7 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+                       
                         <div class="mb-3">
                             <label for="slot_aktif" class="form-label">Slot Aktif</label>
                             <input type="number" class="form-control" id="slot_aktif" readonly name="slot_aktif" value="1">

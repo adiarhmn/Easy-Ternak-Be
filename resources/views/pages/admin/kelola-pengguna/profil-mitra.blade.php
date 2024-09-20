@@ -54,13 +54,13 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="slot_aktif" class="form-label">Slot Aktif</label>
-                            <input type="number" class="form-control" id="slot_aktif" readonly name="slot_aktif" value="1">
+                            <label for="nik" class="form-label">NIK</label>
+                            <input type="text" class="form-control @error('nik') is-invalid @enderror" id="nik" name="nik" value="{{ old('nik', $mitra->nik) }}">
+                            @error('nik')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
-                        <div class="mb-3">
-                            <label for="slo" class="form-label">Slot Terjual</label>
-                            <input type="number" class="form-control" id="terjual" name="terjual" readonly value="0">
-                        </div>
+                        
                     </div>
 
                     {{-- Bagian Kanan Informasi Tambahan --}}
@@ -86,6 +86,14 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div> --}}
+                        <div class="mb-3">
+                            <label for="slot_aktif" class="form-label">Slot Aktif</label>
+                            <input type="number" class="form-control" id="slot_aktif" readonly name="slot_aktif" value="1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="slo" class="form-label">Slot Terjual</label>
+                            <input type="number" class="form-control" id="terjual" name="terjual" readonly value="0">
+                        </div>
                         <div class="mb-3">
                             <label for="ktp" class="form-label">KTP</label>
                             <input type="file" class="form-control @error('ktp') is-invalid @enderror" id="ktp" name="ktp">
