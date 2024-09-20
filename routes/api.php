@@ -51,9 +51,9 @@ Route::middleware(['jwt.auth'])->group(function () {
 
 // Slot Routes
 Route::middleware(['jwt.auth'])->group(function () {
+    Route::get('slot', [InvestmentSlotController::class, 'index'])->name('slot.index');
     Route::get('slot/{id}', [InvestmentSlotController::class, 'details'])->name('slot.details');
     Route::post('slot/checkout/manual', [InvestmentSlotController::class, 'manualCheckout'])->name('slot.checkout.manual');
-
 });
 
 

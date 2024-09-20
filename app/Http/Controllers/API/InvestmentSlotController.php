@@ -16,7 +16,20 @@ class InvestmentSlotController extends Controller
 {
     public function index()
     {
-        // I
+        // Get User
+        $user = JWTAuth::user();
+        if ($user == null || $user->level != 'investor') {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        // Get Investment Slot
+        $investmentSlots = InvestmentSlotModel::where('id_investor', $user->investor->id_investor)
+            ->with('animal.subAnimalType.animalType')
+            ->with('animal.mitra')
+            ->get();
+
+        // Return Investment Slot
+        return response()->json(['message' => 'Investment slot data', 'investmentSlots' => $investmentSlots]);
     }
 
     public function details($id)
