@@ -44,27 +44,36 @@
                         </div>
                     @enderror
                 </div>
-
+                
                 <div class="form-group">
                     <label for="address">Alamat</label>
                     <textarea class="form-control @error('address') is-invalid @enderror" id="address" name="address" required>{{ old('address') }}</textarea>
                     @error('address')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
                     @enderror
                 </div>
-
+                
                 <div class="form-group">
                     <label for="ktp">KTP</label>
                     <input type="file" class="form-control-file @error('ktp') is-invalid @enderror" id="ktp" name="ktp" accept="image/*">
                     @error('ktp')
+                    <div class="invalid-feedback">
+                        {{ $message }}
+                    </div>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="nik">NIK</label>
+                    <input type="text" class="form-control @error('nik') is-invalid @enderror" id="nik" name="nik" value="{{ old('nik') }}" required>
+                    @error('nik')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
                     @enderror
                 </div>
-
                 {{-- <div class="form-group">
                     <label for="payment_name">Nama Bank</label>
                     <input type="text" class="form-control @error('payment_name') is-invalid @enderror" id="payment_name" name="payment_name" value="{{ old('payment_name') }}" required>

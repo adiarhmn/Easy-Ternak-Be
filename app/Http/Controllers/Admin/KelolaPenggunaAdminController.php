@@ -86,6 +86,10 @@ class KelolaPenggunaAdminController extends Controller
             // 'bank' => 'nullable|string|max:255',
             // 'akun_bank' => 'nullable|string|max:255',
             // 'no_rek' => 'nullable|string|max:255',
+            'nik.required' => 'NIK wajib diisi.',
+            'nik.numeric' => 'NIK harus berupa angka.',
+            'nik.digits' => 'NIK harus terdiri dari 16 digit.',
+            'nik.unique' => 'NIK sudah digunakan.',
             'ktp' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ],[
             'nama.required' => 'Nama wajib diisi.',
@@ -171,6 +175,10 @@ class KelolaPenggunaAdminController extends Controller
             'ktp.image' => 'KTP harus berupa gambar.',
             'ktp.mimes' => 'KTP harus berformat jpeg, png, atau jpg.',
             'ktp.max' => 'Ukuran KTP maksimal 2MB.',
+            'nik.required' => 'NIK wajib diisi.',
+            'nik.numeric' => 'NIK harus berupa angka.',
+            'nik.digits' => 'NIK harus terdiri dari 16 digit.',
+            'nik.unique' => 'NIK sudah digunakan.',
             // 'payment_name.required' => 'Nama pembayaran wajib diisi.',
             // 'payment_name.string' => 'Nama pembayaran harus berupa teks.',
             // 'payment_name.max' => 'Nama pembayaran maksimal 255 karakter.',
@@ -219,6 +227,7 @@ class KelolaPenggunaAdminController extends Controller
         $data['name'] = $request->input('name');
         $data['telephone'] = $request->input('telephone');
         $data['address'] = $request->input('address');
+        $data['nik'] = $request->input('nik');
         // $data['payment_name'] = $request->input('payment_name');
         // $data['payment_account'] = $request->input('payment_account');
         // $data['payment_number'] = $request->input('payment_number');
