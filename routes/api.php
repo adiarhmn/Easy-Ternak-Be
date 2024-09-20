@@ -73,3 +73,9 @@ Route::middleware(['jwt.auth'])->group(function () {
 Route::middleware(['jwt.auth'])->group(function () {
     Route::get('investment-type', [InvestmentTypeController::class, 'index'])->name('investment-type.index');
 });
+
+// Investment Slot Routes
+Route::middleware(['jwt.auth'])->group(function () {
+    Route::get('investment-slot', [InvestmentSlotController::class, 'index'])->name('investment-slot.index');
+    Route::get('investment-slot/{id}', [InvestmentSlotController::class, 'details'])->name('investment-slot.details');
+});

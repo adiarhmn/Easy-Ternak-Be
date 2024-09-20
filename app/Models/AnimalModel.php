@@ -45,5 +45,14 @@ class AnimalModel extends Model
     {
         return $this->belongsTo(MitraModel::class, 'id_mitra', 'id_mitra');
     }
-    
+
+    public function animalExpenses()
+    {
+        return $this->hasMany(AnimalExpensesModel::class, 'id_animal', 'id_animal');
+    }
+
+    public function animalImage()
+    {
+        return $this->hasMany(AnimalImageModel::class, 'id_animal', 'id_animal');
+    }
 }

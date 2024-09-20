@@ -42,7 +42,7 @@ class MitraController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'username' => 'required|string|max:20',
+            'username' => 'required|string|max:20|alpha_num',
             'name' => 'required|string|max:100',
             'address' => 'required|string',
             'telephone' => 'required|numeric|max_digits:15',
@@ -96,18 +96,18 @@ class MitraController extends Controller
 
             // Save and Update Data User & Process Upload the Profile Image
             $user = User::find($user->id_user);
-            $fileImage = $request->file('profile_image');
-            if ($fileImage != null) {
+            $filePicture = $request->file('profile_picture');
+            if ($filePicture != null) {
                 // Check if exist image and delete the image
-                if ($user->profile_image != null) {
-                    if (file_exists('uploads/' . $user->profile_image)) {
-                        unlink('uploads/' . $user->profile_image);
+                if ($user->profile_picture != null) {
+                    if (file_exists('uploads/' . $user->profile_picture)) {
+                        unlink('uploads/' . $user->profile_picture);
                     }
                 }
-                $fileName = "profile-" . $user?->id_user . now()->format('Ymd-His') . '.' . $fileImage->getClientOriginalExtension();
+                $fileName = "profile-" . $user?->id_user . now()->format('Ymd-His') . '.' . $filePicture->getClientOriginalExtension();
                 // Resize the image and Upload Image
                 $ImageManager = new ImageManager(new Driver());
-                $ImageManager->read($fileImage)->scaleDown(400)->save('uploads/' . $fileName, 90);
+                $ImageManager->read($filePicture)->scaleDown(400)->save('uploads/' . $fileName, 90);
             }
 
             $user->username = $request->username;

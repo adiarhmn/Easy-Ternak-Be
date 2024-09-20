@@ -19,22 +19,30 @@ class AnimalController extends Controller
 {
 
     // Function to get the animal data
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->search ?? "ternak";
+
         $user = JWTAuth::user();
         if ($user == null) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        // $animals = AnimalModel::with('subAnimalType.animalType')->with('investmentSlot')->with('mitra')->get();
-        $animals = AnimalModel::withCount([
+        $animals = AnimalModel::whereHas('mitra', function ($query) use ($search) {
+            $query->where('name', 'like', "%$search%");
+        })->withCount([
             'InvestmentSlot as total_sold' => function ($query) {
                 $query->where('status', 'sold')->orWhere('status', 'pending');
             },
             'InvestmentSlot as total_ready' => function ($query) {
                 $query->where('status', 'ready');
             }
-        ])->with('subAnimalType.animalType')->with('investmentSlot')->with('mitra')->get();
+        ])->with('subAnimalType.animalType')
+            ->with('investmentType')
+            ->with('investmentSlot')
+            ->with('mitra.user')
+            ->get();
+
         return response()->json(['message' => 'Animal data', 'animals' => $animals]);
     }
 
@@ -56,7 +64,14 @@ class AnimalController extends Controller
     // Function to get the animal data by id
     public function details(int $id)
     {
-        $animal = AnimalModel::where('id_animal', $id)->with('subAnimalType.animalType')->with('investmentSlot')->first();
+        $animal = AnimalModel::where('id_animal', $id)
+            ->with('mitra.user')
+            ->with('subAnimalType.animalType')
+            ->with('animalImage')
+            ->with('investmentSlot')
+            ->first();
+
+
         if ($animal == null) {
             return response()->json(['message' => 'Animal not found'], 404);
         }
