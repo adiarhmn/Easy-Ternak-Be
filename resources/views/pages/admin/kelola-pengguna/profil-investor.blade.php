@@ -4,29 +4,54 @@
     <div class="card">
         <div class="card-body">
             <h3 class="card-title">Profil Investor EasyTernak</h3>
-            <form id="profileForm" action="{{ url('admin/investor/update/1') }}" method="POST" enctype="multipart/form-data">
+                 <!-- Menampilkan pesan sukses -->
+                 @if (session('success'))
+                 <div class="alert alert-success">
+                     {{ session('success') }}
+                 </div>
+             @endif
+ 
+             <!-- Menampilkan pesan sukses -->
+             @if (session('error'))
+                 <div class="alert alert-danger">
+                     {{ session('error') }}
+                 </div>
+             @endif
+            <form id="profileForm" action='{{ url("admin/pengguna/investor/update/$investor->id_investor") }}' method="POST" enctype="multipart/form-data">
                 @csrf
                 {{-- Bagian Kiri: Informasi Utama --}}
                 <div class="row mt-4">
                     <div class="col-md-6 col-sm-12">
                         <div class="mb-3">
                             <label for="nama" class="form-label">Nama</label>
-                            <input type="text" class="form-control" id="nama" name="nama" value="{{$investor->name}}">
+                            <input type="text" class="form-control @error('nama') is-invalid @enderror" id="nama" name="nama" value="{{ old('nama', $investor->name) }}">
+                            @error('nama')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="alamat" class="form-label">Alamat</label>
-                            <input type="text" class="form-control" id="alamat" name="alamat" value="{{$investor->address}}">
+                            <input type="text" class="form-control @error('alamat') is-invalid @enderror" id="alamat" name="alamat" value="{{ old('alamat', $investor->address) }}">
+                            @error('alamat')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
-                            <input type="text" class="form-control" id="email" name="email" value="{{$investor->email}}">
+                            <input type="text" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email', $investor->email) }}">
+                            @error('email')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="no_hp" class="form-label">No. Handphone</label>
-                            <input type="text" class="form-control" id="no_hp" name="no_hp" value="{{$investor->telephone}}">
+                            <input type="text" class="form-control @error('no_hp') is-invalid @enderror" id="no_hp" name="no_hp" value="{{ old('no_hp', $investor->telephone) }}">
+                            @error('no_hp')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="slot_aktif" class="form-label">Slot Aktif </label>
+                            <label for="slot_aktif" class="form-label">Slot Aktif</label>
                             <input type="number" class="form-control" id="slot_aktif" readonly name="slot_aktif" value="1">
                         </div>
                         <div class="mb-3">
@@ -39,22 +64,34 @@
                     <div class="col-md-6 col-sm-12">
                         <div class="mb-3">
                             <label for="bank" class="form-label">Bank</label>
-                            <input type="text" class="form-control" id="bank" name="bank" value="{{$investor->payment_name}}">
+                            <input type="text" class="form-control @error('bank') is-invalid @enderror" id="bank" name="bank" value="{{ old('bank', $investor->payment_name) }}">
+                            @error('bank')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="akun_bank" class="form-label">Akun Bank</label>
-                            <input type="text" class="form-control" id="akun_bank" name="akun_bank" value="{{$investor->payment_account}}">
+                            <input type="text" class="form-control @error('akun_bank') is-invalid @enderror" id="akun_bank" name="akun_bank" value="{{ old('akun_bank', $investor->payment_account) }}">
+                            @error('akun_bank')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="no_rek" class="form-label">No. Rekening</label>
-                            <input type="text" class="form-control" id="no_rek" name="no_rek" value="{{$investor->payment_number}}">
+                            <input type="text" class="form-control @error('no_rek') is-invalid @enderror" id="no_rek" name="no_rek" value="{{ old('no_rek', $investor->payment_number) }}">
+                            @error('no_rek')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
                             <label for="ktp" class="form-label">KTP</label>
-                            <input type="file" class="form-control" id="ktp" name="ktp">
-                            <a target="_blank" href="{{url($ktpImage)}}">
-                            <img src="{{url($ktpImage)}}" alt="KTP Image" style="width: 100%; max-width: 200px; height: auto; margin-top: 10px;">
-                        </a>
+                            <input type="file" class="form-control @error('ktp') is-invalid @enderror" id="ktp" name="ktp">
+                            @error('ktp')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                            <a target="_blank" href="{{ url($ktpImage) }}">
+                                <img src="{{ url($ktpImage) }}" alt="KTP Image" style="width: 100%; max-width: 200px; height: auto; margin-top: 10px;">
+                            </a>
                         </div>
                     </div>
                 </div>

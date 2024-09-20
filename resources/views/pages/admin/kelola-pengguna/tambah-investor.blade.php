@@ -18,9 +18,24 @@
                     <div class="col-md-6">
 
                         <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" name="username" id="username" class="form-control" value="{{ old('username') }}" required>
+                            @error('username')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                       
+                        <div class="form-group">
                             <label for="name">Nama</label>
                             <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" required>
                             @error('name')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="text" name="email" id="email" class="form-control" value="{{ old('email') }}" required>
+                            @error('email')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
@@ -44,6 +59,13 @@
                     </div>
 
                     <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="text" name="password" id="password" class="form-control" value="{{ old('password') }}" required>
+                            @error('password')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
                         <div class="form-group">
                             <label for="payment_name">Nama Bank</label>
                             <input type="text" name="payment_name" id="payment_name" class="form-control" value="{{ old('payment_name') }}" required>

@@ -20,7 +20,7 @@
                 </div>
             @endif
 
-            <form id="profileForm" action="{{ url('admin/pengguna/mitra/update/1') }}" method="POST" enctype="multipart/form-data">
+            <form id="profileForm" action='{{ url("admin/pengguna/mitra/update/$mitra->id_mitra") }}' method="POST" enctype="multipart/form-data">
                 @csrf
                 {{-- Bagian Kiri: Informasi Utama --}}
                 <div class="row mt-4">

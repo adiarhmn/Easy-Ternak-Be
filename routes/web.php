@@ -40,5 +40,8 @@ Route::prefix('admin')->group(function(){
 
     Route::get('/pengguna/investor',[KelolaPenggunaAdminController::class,'investor'])->name('admin.pegguna.investor');
     Route::get('/pengguna/investor/profil/{id}',[KelolaPenggunaAdminController::class,'profilInvestor'])->name('admin.pegguna.investor.profil');
+    Route::get('/pengguna/investor/tambah',[KelolaPenggunaAdminController::class,'tambahInvestor'])->name('admin.pegguna.tambah');
+    Route::post('/pengguna/investor/simpan',[KelolaPenggunaAdminController::class,'simpanInvestor'])->name('admin.pegguna.simpan');
+    Route::post('/pengguna/investor/update/{id}',[KelolaPenggunaAdminController::class,'updateInvestor'])->name('admin.pegguna.update');
 
 });
