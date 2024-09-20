@@ -53,8 +53,3 @@
 
 
 @endsection
-<script>
-    $(document).ready(function() {
-        $('#multi-filter-select').DataTable();
-    });
-</script>
