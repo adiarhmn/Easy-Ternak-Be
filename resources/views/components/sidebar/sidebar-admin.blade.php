@@ -1,7 +1,7 @@
-<div class="sidebar" data-background-color="dark">
+<div class="sidebar" data-background-color="white">
     <div class="sidebar-logo">
         <!-- Logo Header -->
-        <div class="logo-header" data-background-color="dark">
+        <div class="logo-header" data-background-color="purple">
             <a href="index.html" class="logo">
                 <img src="/images/logo.jpg" alt="navbar brand" class="navbar-brand" height="40" />
                 <span class="logo-text text-white ml-3">Easy Ternak</span>

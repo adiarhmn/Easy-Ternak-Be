@@ -33,6 +33,7 @@
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/assets/css/plugins.min.css" />
     <link rel="stylesheet" href="/assets/css/kaiadmin.min.css" />
+
     {{-- <style>
         .sidebar[data-background-color=dark] {
             background: #4d64b5 !important;
