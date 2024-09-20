@@ -22,7 +22,7 @@ class InvestmentSlotController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        // Get Investment Slot
+        // Get Investment Slot 
         $investmentSlots = InvestmentSlotModel::where('id_investor', $user->investor->id_investor)
             ->with('animal.subAnimalType.animalType')
             ->with('animal.mitra')
