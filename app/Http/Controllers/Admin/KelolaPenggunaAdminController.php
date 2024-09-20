@@ -44,8 +44,8 @@ class KelolaPenggunaAdminController extends Controller
         }
 
         // Cek apakah file KTP ada di direktori 'public/ktp_images'
-        $ktpPath = 'ktp_images/' . $mitra->ktp;
-        if (!$mitra->ktp || !file_exists(public_path($ktpPath))) {
+        $ktpPath = 'ktp_images/' . $mitra->ktp_image;
+        if (!$mitra->ktp_image || !file_exists(public_path($ktpPath))) {
             // Jika KTP tidak ada atau file KTP tidak ditemukan, gunakan gambar KTP default
             $ktpImage = 'ktp_images/default-ktp.jpg';
         } else {
@@ -127,7 +127,7 @@ class KelolaPenggunaAdminController extends Controller
             // 'payment_account' => $request->input('akun_bank'),
             // 'payment_number' => $request->input('no_rek'),
             // Update KTP jika ada file
-            'ktp_image' => $request->hasFile('ktp') ? $this->uploadKTP($request->file('ktp')) : $mitra->ktp,
+            'ktp_image' => $request->hasFile('ktp') ? $this->uploadKTP($request->file('ktp')) : $mitra->ktp_image,
         ]);
 
         // Update data user

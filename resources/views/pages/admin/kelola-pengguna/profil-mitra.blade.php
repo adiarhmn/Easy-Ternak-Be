@@ -65,7 +65,7 @@
 
                     {{-- Bagian Kanan Informasi Tambahan --}}
                     <div class="col-md-6 col-sm-12">
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label for="bank" class="form-label">Bank</label>
                             <input type="text" class="form-control @error('bank') is-invalid @enderror" id="bank" name="bank" value="{{ old('bank', $mitra->payment_name) }}">
                             @error('bank')
@@ -85,7 +85,7 @@
                             @error('no_rek')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                        </div>
+                        </div> --}}
                         <div class="mb-3">
                             <label for="ktp" class="form-label">KTP</label>
                             <input type="file" class="form-control @error('ktp') is-invalid @enderror" id="ktp" name="ktp">
