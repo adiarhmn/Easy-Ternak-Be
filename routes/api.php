@@ -51,7 +51,9 @@ Route::middleware(['jwt.auth'])->group(function () {
 
 // Slot Routes
 Route::middleware(['jwt.auth'])->group(function () {
-    Route::post('slot/checkout', [InvestmentSlotController::class, 'checkout'])->name('slot.checkout');
+    Route::get('slot/{id}', [InvestmentSlotController::class, 'details'])->name('slot.details');
+    Route::post('slot/checkout/manual', [InvestmentSlotController::class, 'manualCheckout'])->name('slot.checkout.manual');
+
 });
 
 
@@ -72,10 +74,4 @@ Route::middleware(['jwt.auth'])->group(function () {
 // Investment Type Routes 
 Route::middleware(['jwt.auth'])->group(function () {
     Route::get('investment-type', [InvestmentTypeController::class, 'index'])->name('investment-type.index');
-});
-
-// Investment Slot Routes
-Route::middleware(['jwt.auth'])->group(function () {
-    Route::get('investment-slot', [InvestmentSlotController::class, 'index'])->name('investment-slot.index');
-    Route::get('investment-slot/{id}', [InvestmentSlotController::class, 'details'])->name('investment-slot.details');
 });

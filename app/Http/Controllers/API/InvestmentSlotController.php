@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\InvestmentSlotModel;
+use App\Models\InvestorModel;
 use App\Models\TransferProofsModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -18,19 +19,30 @@ class InvestmentSlotController extends Controller
         // I
     }
 
-    // Function to checkout investment slot by investor
-    public function checkout(Request $request)
+    public function details($id)
+    {
+        // Get the investment slot
+        $investmentSlot = InvestmentSlotModel::where('id_investment_slot', $id)->with('animal.subAnimalType.animalType')->first();
+        if ($investmentSlot == null) {
+            return response()->json(['message' => 'Investment slot not found'], 404);
+        }
+
+        return response()->json(['message' => 'Investment slot data', 'investmentSlot' => $investmentSlot]);
+    }
+
+    // Function to Manual checkout investment slot by investor
+    public function manualCheckout(Request $request)
     {
         // Get the authenticated user
         $user = JWTAuth::user();
-        if ($user == null || $user->level != 'investor') {
+        $Investor = InvestorModel::where('id_user', $user->id_user)->first();
+        if ($user == null || $user->level != 'investor' || $Investor == null) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
         // Validate The Request
         $validator = Validator::make($request->all(), [
             'id_investment_slot' => 'required|numeric',
-            'image_proof' => 'required|image|mimes:jpg,png,jpeg|max:2048',
         ]);
 
         // Return Validation Error
@@ -45,26 +57,15 @@ class InvestmentSlotController extends Controller
         $investmentSlot = InvestmentSlotModel::where('id_investment_slot', $request->id_investment_slot)->first();
         if ($investmentSlot == null) {
             return response()->json(['message' => 'Investment slot not found'], 404);
-        }elseif($investmentSlot->status != 'ready'){
+        } elseif ($investmentSlot->status != 'ready') {
             return response()->json(['message' => 'Investment slot already checked out'], 422);
         }
 
-        // Save the image proof
-        $imageProof = $request->file('image_proof');
-        $fileName = "TF-" . $user?->id_user .date(now()).time() . '.' . $imageProof->getClientOriginalExtension();
-        // Resize the image and Upload Image
-        $ImageManager = new ImageManager(new Driver());
-        $ImageManager->read($imageProof)->scaleDown(400)->save('uploads/' . $fileName, 90);
-
         // Update the investment slot
+        $investmentSlot->id_investor = $Investor->id_investor;
         $investmentSlot->status = 'pending';
+        $investmentSlot->expired_at = date('Y-m-d H:i:s', strtotime('+1 day'));
         $investmentSlot->save();
-        
-        TransferProofsModel::create([
-            'id_investment_slot' => $investmentSlot->id_investment_slot,
-            'proof_image' => $fileName,
-        ]);
-
         return response()->json(['message' => 'Checkout success']);
     }
 }
