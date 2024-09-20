@@ -65,7 +65,7 @@
                     @enderror
                 </div>
 
-                <div class="form-group">
+                {{-- <div class="form-group">
                     <label for="payment_name">Nama Bank</label>
                     <input type="text" class="form-control @error('payment_name') is-invalid @enderror" id="payment_name" name="payment_name" value="{{ old('payment_name') }}" required>
                     @error('payment_name')
@@ -93,7 +93,7 @@
                             {{ $message }}
                         </div>
                     @enderror
-                </div>
+                </div> --}}
 
                 <div class="form-group">
                     <label for="email">Email</label>
