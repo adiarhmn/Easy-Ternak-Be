@@ -101,7 +101,7 @@
                 </div>
 
                 <div class="text-end">
-                    <button type="submit" class="btn btn-primary">Tambah</button>
+                    <button type="submit" class="btn btn-secondary">Tambah</button>
                 </div>
             </form>
         </div>

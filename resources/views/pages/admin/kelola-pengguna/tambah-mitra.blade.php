@@ -124,7 +124,7 @@
                     @enderror
                 </div>
 
-                <button type="submit" class="btn btn-primary">Tambah Mitra</button>
+                <button type="submit" class="btn btn-secondary">Tambah Mitra</button>
             </form>
 
         </div>

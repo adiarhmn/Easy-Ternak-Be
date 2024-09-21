@@ -239,7 +239,7 @@
                         <div class="ms-md-auto py-2 py-md-0">
                             @if (!empty($btnAdd))
                                 <a href="{{ url($urlAdd) }}"
-                                    class="btn btn-primary btn-rouna">{{ $btnAdd }}</a>
+                                    class="btn btn-secondary btn-rouna">{{ $btnAdd }}</a>
                             @endif
                             
                         </div>

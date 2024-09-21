@@ -101,7 +101,7 @@
                 <div class="row mt-4">
                     <div class="col-12">
                         <!-- Button untuk Memicu Modal Simpan -->
-                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#saveModal">Simpan</button>
+                        <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#saveModal">Simpan</button>
 
                         <!-- Button untuk Memicu Modal Hapus -->
                         {{-- <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal">Hapus</button> --}}
