@@ -109,13 +109,13 @@
 
                 {{-- Tombol Aksi --}}
                 <div class="row mt-4">
-                    <div class="col-12">
+                    <div class="col-12 d-flex justify-content-between">
+                        <a href="{{ url('admin/pengguna/mitra') }}" class="btn btn-sm text-white" style="background-color: #6c757d">Kembali</a>
                         <!-- Button untuk Memicu Modal Simpan -->
-                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#saveModal">Simpan</button>
+                        <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#saveModal">Simpan</button>
 
                         <!-- Button untuk Memicu Modal Hapus -->
                         {{-- <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal">Hapus</button> --}}
-                        <a href="{{ url('admin/pengguna/mitra') }}" class="btn btn-sm btn-secondary">Kembali</a>
                     </div>
                 </div>
             </form>
