@@ -14,9 +14,9 @@
                                 {{ Str::limit('Usia 15 bulan Tinggi 82cm Berat 16 Kg Kambing Hitam', 50) }}
                             </p>
                             <h5 class="card-text"><small>Tekad Jaya Farm</small></h5>
-                            <div class="d-flex">
-                                <div class="ml-auto">
-                                    <a href="{{url('admin/penjualan/detail/1')}}" class="btn btn-primary btn-sm">Detail</a>
+                            <div class="d-flex justify-content-end">
+                                <div>
+                                    <a href="{{url('admin/penjualan/detail/1')}}" class="btn btn-secondary btn-sm">Detail</a>
                                 </div>
                             </div>
                         </div>
