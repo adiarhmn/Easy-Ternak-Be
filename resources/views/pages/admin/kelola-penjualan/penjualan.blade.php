@@ -1,14 +1,14 @@
 @extends('fragments.container-admin')
 
 @section('content')
-    <div class="row">
-        @for ($i = 1; $i < 5; $i++)
-        <div class="col-md-3 col-sm-6 mb-4">
-            <div class="card">
+    <div class="row ">
+        @for ($i = 1; $i < 8; $i++)
+        <div class="col-md-3 mt-0 col-sm-6 mb-4">
+            <div class="card m-0">
                 <div class="card-content">
                     <div class="card-body p-3">
                         <div class="position-relative">
-                            <img class="card-img-bottom img-fluid rounded-2" src="/images/kambing2.jpg"
+                            <img class="card-img-bottom img-fluid rounded-3" src="/images/kambing2.jpg"
                                 alt="Card image cap" style="height: 10rem; object-fit: cover;">
                             <span class="badge bg-secondary position-absolute" style="bottom: 10px; right: 10px;">Kambing Boer</span>
                         </div>
