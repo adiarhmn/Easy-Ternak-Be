@@ -57,7 +57,24 @@ class AnimalController extends Controller
         }
 
         // Get the animal data
-        $animals = AnimalModel::where('id_mitra', $mitra->id_mitra)->with('subAnimalType.animalType')->with('investmentSlot')->get();
+        $animals = AnimalModel::where('id_mitra', $mitra->id_mitra)
+            ->with(['subAnimalType.animalType', 'animalImage'])
+            ->withCount(['investmentSlot as total_sold' => function ($query) {
+                $query->where('status', '!=', 'ready');
+            }])
+            ->get();
+
+        // Check the investment slot expired_at
+        foreach ($animals as $animal) {
+            foreach ($animal->investmentSlot as $slot) {
+                if ($slot->status == 'pending' && $slot->expired_at < now()) {
+                    $slot->status = 'ready';
+                    $slot->id_investor = null;
+                    $slot->save();
+                }
+            }
+        }
+
         return response()->json(['message' => 'Animal data', 'animals' => $animals]);
     }
 
@@ -168,5 +185,32 @@ class AnimalController extends Controller
         }
 
         return response()->json(['message' => 'Animal data saved']);
+    }
+
+    public function buyAnimal(Request $request)
+    {
+        // Validation ID Animal
+        $validator = Validator::make($request->all(), [
+            'id_animal' => 'required|integer'
+        ]);
+
+        // Return back validation errors
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
+        // Change Status Animal 
+        $animal = AnimalModel::find($request->id_animal);
+        if (!$animal) {
+            return response()->json(['message' => 'Animal not found'], 404);
+        }
+        $animal->status = 'proses';
+        $animal->purchase_date = now();
+        $animal->save();
+
+        return response()->json(['message' => 'Animal was purchased', 'animal' => $animal]);
     }
 }

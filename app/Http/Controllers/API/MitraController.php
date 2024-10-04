@@ -79,10 +79,10 @@ class MitraController extends Controller
                     }
                 }
 
-                $fileName = "ktp-" . $user?->id_user . now()->format('Ymd-His') . '.' . $fileImage->getClientOriginalExtension();
+                $fileKTPName = "ktp-" . $user?->id_user . now()->format('Ymd-His') . '.' . $fileImage->getClientOriginalExtension();
                 // Resize the image and Upload Image
                 $ImageManager = new ImageManager(new Driver());
-                $ImageManager->read($fileImage)->scaleDown(400)->save('uploads/' . $fileName, 90);
+                $ImageManager->read($fileImage)->scaleDown(400)->save('uploads/' . $fileKTPName, 90);
             }
 
             // Save the mitra data
@@ -90,7 +90,7 @@ class MitraController extends Controller
             $mitra->address = $request->address;
             $mitra->telephone = $request->telephone;
             $mitra->nik = $request->nik;
-            $mitra->ktp_image = $fileName ?? $mitra->ktp_image;
+            $mitra->ktp_image = $fileKTPName ?? $mitra->ktp_image;
             $mitra->save();
 
 
