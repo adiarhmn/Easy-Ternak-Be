@@ -81,6 +81,12 @@ class AnimalController extends Controller
     // Function to get the animal data by id
     public function details(int $id)
     {
+        // Check if the user is authenticated
+        $user = JWTAuth::user();
+        if ($user == null) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
         $animal = AnimalModel::where('id_animal', $id)
             ->with('mitra.user')
             ->with('subAnimalType.animalType')
@@ -126,7 +132,7 @@ class AnimalController extends Controller
 
         $nameImages = [];
 
-        // Menangkap file
+        // Save file images
         if ($request->hasFile('animal_images')) {
             $files = $request->file('animal_images');
             foreach ($files as $index => $fileImage) {
@@ -185,6 +191,26 @@ class AnimalController extends Controller
         }
 
         return response()->json(['message' => 'Animal data saved']);
+    }
+
+
+    public function getMyPet()
+    {
+        $user = JWTAuth::user();
+        $mitra = MitraModel::where('id_user', $user->id_user)->first();
+        if ($mitra == null) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        $animals = AnimalModel::where('id_mitra', $mitra->id_mitra)
+            ->with(['subAnimalType.animalType', 'animalImage'])
+            ->withCount(['investmentSlot as total_sold' => function ($query) {
+                $query->where('status', '!=', 'ready');
+            }])
+            ->where('status', "!=", 'open')
+            ->get();
+
+        return response()->json(['message' => 'Animal data', 'animals' => $animals]);
     }
 
     public function buyAnimal(Request $request)
