@@ -88,10 +88,7 @@ class AnimalController extends Controller
         }
 
         $animal = AnimalModel::where('id_animal', $id)
-            ->with('mitra.user')
-            ->with('subAnimalType.animalType')
-            ->with('animalImage')
-            ->with('investmentSlot')
+            ->with(['mitra.user', 'subAnimalType.animalType', 'animalImage', 'investmentSlot', 'animalProgress.ProgressImage', 'animalExpenses'])
             ->first();
 
 

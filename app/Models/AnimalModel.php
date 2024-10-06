@@ -51,6 +51,11 @@ class AnimalModel extends Model
         return $this->hasMany(AnimalExpensesModel::class, 'id_animal', 'id_animal');
     }
 
+    public function animalProgress()
+    {
+        return $this->hasMany(AnimalProgressModel::class, 'id_animal', 'id_animal');
+    }
+
     public function animalImage()
     {
         return $this->hasMany(AnimalImageModel::class, 'id_animal', 'id_animal');

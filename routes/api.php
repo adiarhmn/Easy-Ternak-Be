@@ -59,7 +59,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('animal', [AnimalController::class, 'index'])->name('animal.index');
     Route::get('animal/mitra', [AnimalController::class, 'indexMitra'])->name('animal.index.mitra');
     Route::get('animal/mypet', [AnimalController::class, 'getMyPet'])->name('animal.mypet');
-    Route::get('animal/{id}', [AnimalController::class, 'details'])->name('animal.details');
+    Route::get('animal/details/{id}', [AnimalController::class, 'details'])->name('animal.details');
     Route::post('animal', [AnimalController::class, 'saveData'])->name('animal.save');
     Route::post('animal/buy', [AnimalController::class, 'buyAnimal'])->name('animal.buy');
 });

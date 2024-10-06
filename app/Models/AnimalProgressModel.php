@@ -24,4 +24,9 @@ class AnimalProgressModel extends Model
     {
         return $this->belongsTo(AnimalModel::class, 'id_animal', 'id_animal');
     }
+
+    public function progressImage()
+    {
+        return $this->hasMany(ProgressImageModel::class, 'id_animal_progress', 'id_animal_progress');
+    }
 }
