@@ -9,7 +9,7 @@ use App\Http\Controllers\API\InvestorController;
 use App\Http\Controllers\API\MitraController;
 use App\Http\Controllers\API\ProgressController;
 use App\Http\Controllers\API\SubAnimalTypeController;
-use App\Http\Controllers\ExpansesController;
+use App\Http\Controllers\API\ExpensesController;
 use App\Http\Middleware\Cors;
 use Illuminate\Support\Facades\Route;
 
@@ -72,8 +72,6 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('slot/checkout/proof', [InvestmentSlotController::class, 'proofCheckout'])->name('slot.checkout.proof');
 });
 
-
-
 // Investment Type Routes 
 Route::middleware(['jwt.auth'])->group(function () {
     Route::get('investment-type', [InvestmentTypeController::class, 'index'])->name('investment-type.index');
@@ -85,9 +83,8 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('progress', [ProgressController::class, 'saveData'])->name('progress.save');
 });
 
-
 // Expanses Routes 
 Route::middleware(['jwt.auth'])->group(function () {
-    Route::get('expanses', [ExpansesController::class, 'index'])->name('expanses.index');
-    Route::post('expanses', [ExpansesController::class, 'saveData'])->name('expanses.save');
+    Route::get('expenses', [ExpensesController::class, 'index'])->name('expanses.index');
+    Route::post('expenses', [ExpensesController::class, 'saveData'])->name('expanses.save');
 });

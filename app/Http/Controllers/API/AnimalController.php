@@ -89,6 +89,7 @@ class AnimalController extends Controller
 
         $animal = AnimalModel::where('id_animal', $id)
             ->with(['mitra.user', 'subAnimalType.animalType', 'animalImage', 'investmentSlot', 'animalProgress.ProgressImage', 'animalExpenses'])
+            ->withSum('animalExpenses as total_expenses', 'price')
             ->first();
 
 
