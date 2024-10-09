@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\AnimalModel;
 use App\Models\InvestorModel;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -99,5 +100,25 @@ class InvestorController extends Controller
         }
 
         return response()->json(['message' => 'Investor data saved', 'investor' => $investor]);
+    }
+
+    public function getByAnimal($id)
+    {
+        // Get Authenticated User
+        $user = JWTAuth::user();
+        if ($user == null) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        // Get Investors By Animal ID
+        $investors = InvestorModel::whereHas('investmentSlot', function ($query) use ($id) {
+            $query->whereHas('animal', function ($query) use ($id) {
+                $query->where('id_animal', $id);
+            });
+        })->with(['investmentSlot' => function ($query) use ($id) {
+            $query->where('id_animal', $id);
+        }])->get();
+
+        return response()->json(['message' => 'Investor data', 'investors' => $investors]);
     }
 }

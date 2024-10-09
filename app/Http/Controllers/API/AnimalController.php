@@ -58,7 +58,7 @@ class AnimalController extends Controller
 
         // Get the animal data
         $animals = AnimalModel::where('id_mitra', $mitra->id_mitra)
-            ->with(['subAnimalType.animalType', 'animalImage'])
+            ->with(['subAnimalType.animalType', 'animalImage', 'investmentType'])
             ->withCount(['investmentSlot as total_sold' => function ($query) {
                 $query->where('status', '!=', 'ready');
             }])
@@ -88,7 +88,7 @@ class AnimalController extends Controller
         }
 
         $animal = AnimalModel::where('id_animal', $id)
-            ->with(['mitra.user', 'subAnimalType.animalType', 'animalImage', 'investmentSlot', 'animalProgress.ProgressImage', 'animalExpenses'])
+            ->with(['mitra.user', 'subAnimalType.animalType', 'animalImage', 'investmentSlot.investor.investmentSlot', 'investmentSlot.transferProof', 'animalProgress.ProgressImage', 'animalExpenses'])
             ->withSum('animalExpenses as total_expenses', 'price')
             ->first();
 
@@ -96,7 +96,7 @@ class AnimalController extends Controller
         if ($animal == null) {
             return response()->json(['message' => 'Animal not found'], 404);
         }
-        return response()->json(['message' => 'Animal data', 'animal' => $animal]);
+        return response()->json(['message' => 'Animal data Detail', 'animal' => $animal]);
     }
 
     // Function to Save Data Animal
@@ -113,7 +113,7 @@ class AnimalController extends Controller
         $validator = Validator::make($request->all(), [
             'description' => 'required|string|max:255',
             'id_sub_animal_type' => 'required|numeric',
-            'price' => 'required|numeric',
+            'purchase_price' => 'required|numeric|regex:/^[1-9][0-9]*$/|not_in:0',
             'id_investment_type' => 'required|numeric',
             'total_slots' => 'required|numeric|min:1|max:10',
             'animal_images' => 'required|array',
@@ -157,13 +157,13 @@ class AnimalController extends Controller
                 'animal_code' => $animal_code,
                 'description' => $request->description,
                 'id_sub_animal_type' => $request->id_sub_animal_type,
-                'price' => $request->price,
+                'purchase_price' => $request->purchase_price,
                 'id_investment_type' => $request->id_investment_type,
                 'total_slots' => $request->total_slots,
             ]);
 
             // Create Investment Slot
-            $slot_price = $request->price / $request->total_slots;
+            $slot_price = $request->purchase_price / $request->total_slots;
             for ($i = 1; $i <= $request->total_slots; $i++) {
                 $slot = new InvestmentSlotModel();
                 $slot->id_animal = $animal->id_animal;
@@ -236,5 +236,44 @@ class AnimalController extends Controller
         $animal->save();
 
         return response()->json(['message' => 'Animal was purchased', 'animal' => $animal]);
+    }
+
+    public function sellAnimal(Request $request)
+    {
+        // Get the authenticated user
+        $user = JWTAuth::user();
+        if ($user == null) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        // Validation ID Animal
+        $validator = Validator::make($request->all(), [
+            'id_animal' => 'required|integer',
+            'selling_price' => 'required|numeric',
+            'selling_date' => 'required'
+        ]);
+
+        // Return back validation errors
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
+        // Find Animal and Update
+        $animal = AnimalModel::find($request->id_animal);
+        if (!$animal) {
+            return response()->json(['message' => 'Animal not found'], 404);
+        }
+        $animal->selling_price = $request->selling_price;
+        $animal->selling_date = $request->selling_date;
+        $animal->save();
+
+        // Distribution of profits to investors
+
+        // Return response
+        if (!$animal) return response()->json(['message' => 'Animal failed to sell']);
+        return response()->json(['message' => 'Animal was sold', 'animal' => $animal]);
     }
 }

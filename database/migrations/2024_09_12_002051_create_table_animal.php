@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('animal_code');
             $table->text('description')->nullable();
             $table->unsignedBigInteger('id_sub_animal_type');
-            $table->integer('purchase_price');
-            $table->integer('selling_price');
+            $table->integer('purchase_price')->nullable();
+            $table->integer('selling_price')->nullable();
             $table->date('selling_date')->nullable();
             $table->date('purchase_date')->nullable();
             $table->string('status')->default('open');

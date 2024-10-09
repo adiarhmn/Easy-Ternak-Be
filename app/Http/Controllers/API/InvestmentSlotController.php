@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\AnimalModel;
 use App\Models\InvestmentSlotModel;
 use App\Models\InvestorModel;
 use App\Models\TransferProofsModel;
@@ -23,33 +24,69 @@ class InvestmentSlotController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
+        // Check Investment Slot If Pending and Expired
+        InvestmentSlotModel::where('id_investor', $user->investor->id_investor)
+            ->where('status', 'pending')
+            ->where('expired_at', '<', now())
+            ->update([
+                'status' => 'ready',
+                'id_investor' => null,
+            ]);
+
         // Get Investment Slot 
         $investmentSlots = InvestmentSlotModel::where('id_investor', $user->investor->id_investor)
             ->with('animal.subAnimalType.animalType')
             ->with('animal.mitra')
-            ->get();
+            ->with('animal.investmentType')
+            ->with('animal.animalImage')
+            ->orderBy('id_investment_slot', 'desc')
+            ->get()
+            ->groupBy('animal.id_animal');
 
-        foreach ($investmentSlots as $slot) {
-            if ($slot->status == 'pending' && $slot->expired_at < now()) {
-                $slot->status = 'ready';
-                $slot->id_investor = null;
-                $slot->save();
-            }
-        }
+        // Mengubah hasil menjadi array yang lebih mudah dibaca
+        $groupedInvestmentSlots = $investmentSlots->map(function ($slots, $animalId) {
+            return [
+                'animal_id' => $animalId,
+                'animal' => $slots->first()->animal,
+                'investment_slots' => $slots,
+            ];
+        })->values()->toArray(); // Mengonversi koleksi menjadi array
 
         // Return Investment Slot
-        return response()->json(['message' => 'Investment slot data', 'investmentSlots' => $investmentSlots]);
+        return response()->json(['message' => 'Investment slot data', 'investmentSlots' => $groupedInvestmentSlots]);
     }
 
-    public function details($id)
+    public function details(Request $request, $id)
     {
+        // Get the authenticated user
+        $user = JWTAuth::user();
+        // Get query parameter
+        if ($request->id_investor && $request->id_animal) {
+
+            // Get the investment slot
+            $investmentSlot = InvestmentSlotModel::where('id_investor', $request->id_investor)
+                ->where('id_animal', $request->id_animal)
+                ->with('animal.subAnimalType.animalType')
+                ->first();
+
+            if ($investmentSlot == null) {
+                return response()->json(['message' => 'Investment slot not found'], 404);
+            }
+
+            return response()->json(['message' => 'Investment slot data', 'investmentSlot' => $investmentSlot->toArray()]);
+        }
+
+
         // Get the investment slot
-        $investmentSlot = InvestmentSlotModel::where('id_investment_slot', $id)->with('animal.subAnimalType.animalType')->first();
+        $investmentSlot = InvestmentSlotModel::where('id_investment_slot', $id)
+            ->with('animal.subAnimalType.animalType')
+            ->first();
+
         if ($investmentSlot == null) {
             return response()->json(['message' => 'Investment slot not found'], 404);
         }
 
-        return response()->json(['message' => 'Investment slot data', 'investmentSlot' => $investmentSlot]);
+        return response()->json(['message' => 'Investment slot data', 'investmentSlot' => $investmentSlot->toArray()]);
     }
 
     // Function to Manual checkout investment slot by investor
@@ -142,7 +179,7 @@ class InvestmentSlotController extends Controller
             $transferProof->save();
 
             // Update the investment slot
-            $investmentSlot->status = 'success'; // DIRUBAH NANTI JADI PENDING ======= KARENA HARUS DI CEK DULU OLLEH ADMIN
+            $investmentSlot->status = 'waiting';
             $investmentSlot->save();
 
             // Commit the transaction
@@ -155,4 +192,142 @@ class InvestmentSlotController extends Controller
             return response()->json(['message' => 'Checkout failed'], 500);
         }
     }
+
+    public function confirmCheckout(Request $request)
+    {
+        // Get the authenticated user
+        $user = JWTAuth::user();
+        if ($user == null || $user->level != 'mitra') {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        // Validate The Request
+        $validator = Validator::make($request->all(), [
+            'id_investment_slot' => 'required|numeric',
+            'status' => 'required|in:success,failed',
+        ]);
+
+        // Return Validation Error
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        // Get the investment slot
+        $investmentSlot = InvestmentSlotModel::where('id_investment_slot', $request->id_investment_slot)->first();
+        if ($investmentSlot == null) {
+            return response()->json(['message' => 'Investment slot not found'], 404);
+        } elseif ($investmentSlot->status != 'waiting') {
+            return response()->json(['message' => 'Investment slot already checked out'], 422);
+        }
+
+        // Update the investment slot
+        $investmentSlot->status = $request->status;
+        $investmentSlot->save();
+
+        return response()->json(['message' => 'Checkout success']);
+    }
+
+    // Bagi Hasil
+    public function makeProfitDistribution(Request $request)
+    {
+        // Get the authenticated user
+        $user = JWTAuth::user();
+        if ($user == null || $user->level != 'mitra') {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        // Validate The Request
+        $validator = Validator::make($request->all(), [
+            'id_investor' => 'required|numeric',
+            'id_animal' => 'required|numeric',
+            'proof_images' => 'required|array',
+            'proof_images.*' => 'image|mimes:jpg,png,jpeg|max:2048',
+        ]);
+
+        // Return Validation Error
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        // Start the transaction
+        DB::beginTransaction();
+
+        try {
+
+            // Count Profit
+            $Animal = AnimalModel::where('id_animal', $request->id_animal)
+                ->withSum('animalExpenses as total_expenses', 'price')
+                ->first();
+
+            // Count Gross Profit
+            $grossProfit = $Animal->selling_price - $Animal->purchase_price;
+
+            // Tax 5%
+            $tax = $grossProfit * 0.05;
+            if ($tax < 0) {
+                $tax = 0;
+            }
+
+            $profit = $grossProfit - $tax - $Animal->total_expenses;
+
+            // Investor 50%
+            $investorProfits = $profit * 0.5;
+
+            // Share the profit to investors
+            $investorProfit = $investorProfits / $Animal->total_slots;
+
+            // Get the investment slot
+            $investmentSlot = InvestmentSlotModel::where('id_investor', $request->id_investor)
+                ->where('id_animal', $request->id_animal)
+                ->where('status', 'success')
+                ->get();
+
+            // Check if the total slot is enough
+            if ($investmentSlot == null) {
+                return response()->json(['message' => 'Investment slot not found'], 404);
+            }
+
+            // Process Upload the image File
+            $proofImages = [];
+            foreach ($request->proof_images as $fileImage) {
+                $fileName = "profit-" . $user?->id_user . now()->format('Ymd-His') . '.' . $fileImage->getClientOriginalExtension();
+                // Resize the image and Upload Image
+                $ImageManager = new ImageManager(new Driver());
+                $ImageManager->read($fileImage)->scaleDown(400)->save('uploads/' . $fileName, 90);
+                $proofImages[] = $fileName;
+            }
+
+            // Save the transfer proof
+            foreach ($proofImages as $proofImage) {
+                $transferProof = new TransferProofsModel();
+                $transferProof->id_investment_slot = $investmentSlot[0]->id_investment_slot;
+                $transferProof->proof_image = $proofImage;
+                $transferProof->save();
+            }
+
+            // Update the investment slot
+            foreach ($investmentSlot as $slot) {
+                $slot->profit = $investorProfit;
+                $slot->distribution_status = 'waiting';
+                $slot->save();
+            }
+
+            // Commit the transaction
+            DB::commit();
+            return response()->json(['message' => 'Profit distribution success']);
+        } catch (\Exception $e) {
+
+            // Rollback the transaction
+            DB::rollBack();
+            return response()->json(['message' => 'Profit distribution failed'], 500);
+        }
+    }
+
+    public function confirmProfitDistribution(Request $request) {}
 }

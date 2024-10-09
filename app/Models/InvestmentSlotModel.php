@@ -18,6 +18,7 @@ class InvestmentSlotModel extends Model
         'slot_price',
         'profit',
         'status',
+        'distribution_status',
         'expired_at',
     ];
 

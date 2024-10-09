@@ -10,6 +10,7 @@ use App\Http\Controllers\API\MitraController;
 use App\Http\Controllers\API\ProgressController;
 use App\Http\Controllers\API\SubAnimalTypeController;
 use App\Http\Controllers\API\ExpensesController;
+use App\Http\Controllers\API\TransferProofsController;
 use App\Http\Middleware\Cors;
 use Illuminate\Support\Facades\Route;
 
@@ -51,6 +52,7 @@ Route::middleware(['jwt.auth'])->group(function () {
 // Investor Routes
 Route::middleware(['jwt.auth'])->group(function () {
     Route::get('investor', [InvestorController::class, 'index'])->name('investor.index');
+    Route::get('investor/byanimal/{id}', [InvestorController::class, 'getByAnimal'])->name('investor.byanimal');
     Route::post('investor', [InvestorController::class, 'saveData'])->name('investor.save');
 });
 
@@ -62,19 +64,28 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::get('animal/details/{id}', [AnimalController::class, 'details'])->name('animal.details');
     Route::post('animal', [AnimalController::class, 'saveData'])->name('animal.save');
     Route::post('animal/buy', [AnimalController::class, 'buyAnimal'])->name('animal.buy');
+    Route::post('animal/sell', [AnimalController::class, 'sellAnimal'])->name('animal.sell');   
 });
 
 // Slot Routes
 Route::middleware(['jwt.auth'])->group(function () {
     Route::get('slot', [InvestmentSlotController::class, 'index'])->name('slot.index');
-    Route::get('slot/{id}', [InvestmentSlotController::class, 'details'])->name('slot.details');
+    Route::get('slot/details', [InvestmentSlotController::class, 'details'])->name('slot.details');
+    Route::get('slot/details/{id}', [InvestmentSlotController::class, 'details'])->name('slot.details');
     Route::post('slot/checkout/manual', [InvestmentSlotController::class, 'manualCheckout'])->name('slot.checkout.manual');
     Route::post('slot/checkout/proof', [InvestmentSlotController::class, 'proofCheckout'])->name('slot.checkout.proof');
+    Route::post('slot/checkout/confirm', [InvestmentSlotController::class, 'confirmCheckout'])->name('slot.checkout.confirm');
+    Route::post('slot/profit-distribution/make', [InvestmentSlotController::class, 'makeProfitDistribution'])->name('slot.profit-distribution.make');
 });
 
 // Investment Type Routes 
 Route::middleware(['jwt.auth'])->group(function () {
     Route::get('investment-type', [InvestmentTypeController::class, 'index'])->name('investment-type.index');
+});
+
+// Transfer Proof Routes
+Route::middleware(['jwt.auth'])->group(function () {
+    Route::get('transfer-proof', [TransferProofsController::class, 'index'])->name('transfer-proof.index');
 });
 
 // Progress Routes
