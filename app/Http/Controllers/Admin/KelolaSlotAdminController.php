@@ -37,5 +37,14 @@ class KelolaSlotAdminController extends Controller
         return view('pages.admin.kelola-slot.tambah', $data);
     }
 
+    public function investor(){
+        $data = [
+            'title' => 'EasyTernak | Slot',
+            'page' => 'Slot',
+            'topbar' => 'Investor',
+        ];
+
+        return view('pages.admin.kelola-slot.detail.investor', $data);
+    }
 
 }

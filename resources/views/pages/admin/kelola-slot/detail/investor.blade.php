@@ -4,7 +4,7 @@
     <div class="card">
         <div class="card-body">
             {{-- Topbar --}}
-            @include('components.topbar.topbar-penjualan')
+            @include('components.topbar.topbar-slot')
             {{-- End Topbar --}}
             <div class="tab-content mt-3 mb-3" id="line-tabContent">
                 <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="line-home-tab">
