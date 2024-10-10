@@ -11,7 +11,7 @@
                 <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="line-home-tab">
                     <div class="card-body">
                         <!-- Konten halaman dapat ditambahkan di sini -->
-                        <h5>Daftar Investor</h5>
+                        {{-- <h5>Daftar Investor</h5> --}}
                         <div class="table-responsive">
                             <table class="table table-bordered">
                                 <thead>
