@@ -1,55 +1,48 @@
 @extends('fragments.container-admin')
+@section('css')
+<style>
+.card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
 
+.card:hover {
+    cursor: pointer;
+    transform: scale(1.02);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    background-color: #f8f9fa; /* Ganti dengan warna yang diinginkan */
+}
+</style>
+@endsection
 @section('content')
-    <div class="card">
-        <div class="card-body">
-            <div class="table-responsive">
-                <table id="multi-filter-select" class="display table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Jenis Investasi</th>
-                            <th>Jenis Kambing</th>
-                            <th>Keterangan</th>
-                            <th>Harga</th>
-                            <th>Foto</th>
-                            <th>Mitra</th>
-                            <th>Investor</th>
-                            <th>Transfer</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @for ($i = 1; $i < 10; $i++)
-                        <tr>
-                            <td>{{$i}}</td>
-                            <td>System Architect</td>
-                            <td>Kambing Hitam</td>
-                            <td>61</td>
-                            <td>2011/04/25</td>
-                            <td>2011/04/25</td>
-                            <td>2011/04/25</td>
-                            <td>2011/04/25</td>
-                            <td>2011/04/25</td>
-                            <td class="col-4">
-                                <button type="button" class="btn btn-sm btn-icon btn-round btn-info d-inline-block">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-icon btn-round btn-danger d-inline-block">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-icon btn-round btn-success d-inline-block">
-                                    <i class="fas fa-shopping-cart"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        @endfor
-                    </tbody>
-                </table>
+    <div class="row mt-0">
+        @for ($i = 1; $i < 8; $i++)
+            <div class="col-md-3 col-sm-6 mb-4">
+                <div class="card m-0">
+                    <div class="card-content">
+                        <div class="card-body p-3">
+                            <div class="position-relative">
+                                <img class="card-img-bottom img-fluid rounded-3" src="/images/kambing2.jpg"
+                                    alt="Card image cap" style="height: 10rem; object-fit: cover;">
+                                <span class="badge bg-secondary position-absolute" style="bottom: 10px; left: 10px;">Kambing Boer</span>
+                                <small>
+                                    <span class="badge bg-danger position-absolute fw-bold" style="top: 10px; right: 10px;">1/4 terisi</span>
+                                </small>
+                            </div>
+                            <div>
+                                <div class="d-flex justify-content-end">
+                                    <h5 class="card-text mt-0 pt-0 fw-bold"><small>Tekad Jaya Farm</small></h5>
+                                </div>
+                                <small id='deskripsi' class="card-text mt-0 pt-0">
+                                    {{ Str::limit('Usia 15 bulan Tinggi 82cm Berat 16 Kg Kambing Hitam', 50) }}
+                                </small>
+                                <div class="d-flex justify-content-end mt-2">
+                                    <h5 class="card-text"><small style="font-size: 0.6em">Dibuat: 2023-07-09 15:34:00</small></h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        @endfor
     </div>
-
-
 @endsection

@@ -12,7 +12,7 @@ class KelolaSlotAdminController extends Controller
         $data = [
             'title' => 'EasyTernak | Slot',
             'page' => 'Slot Investasi',
-            'btnAdd' => 'Buka Slot',
+            // 'btnAdd' => 'Buka Slot',
             'urlAdd' => 'admin/slot/tambah',
         ];
         return view('pages.admin.kelola-slot.slot', $data);
