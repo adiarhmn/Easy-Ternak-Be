@@ -17,6 +17,17 @@ class KelolaSlotAdminController extends Controller
         ];
         return view('pages.admin.kelola-slot.slot', $data);
     }
+    public function detail(){
+
+        $data = [
+            'title' => 'EasyTernak | Slot',
+            'page' => 'Slot',
+            'topbar' => 'Detail',
+        ];
+
+        return view('pages.admin.kelola-slot.detail.detail', $data);
+    }
+
     public function tambah()
     {
         $data = [
