@@ -59,7 +59,7 @@
     </div>
     <div class="tab-pane fade" id="line-profile" role="tabpanel" aria-labelledby="line-profile-tab">
         <div class="row mt-0">
-            @if(true)
+            @if(false)
             <p class="text-center mt-1">Tidak ada data slot penuh!</p>
             @else
             @for ($i = 1; $i < 8; $i++)
