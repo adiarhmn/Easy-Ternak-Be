@@ -21,7 +21,7 @@
                             </small>
                             <div class="d-flex justify-content-end mt-2">
                                 <div>
-                                    <a href="{{url('admin/penjualan/detail/1')}}" class="btn btn-outline btn-secondary btn-sm">Detail</a>
+                                    <a href="{{url('admin/penjualan/detail/1')}}" class="btn btn-outline btn-secondary btn-sm">Bagi Hasil</a>
                                 </div>
                             </div>
                         </div>

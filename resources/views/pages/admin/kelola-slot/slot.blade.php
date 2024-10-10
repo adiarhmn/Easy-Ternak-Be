@@ -6,10 +6,12 @@
 }
 
 .card:hover {
-    cursor: pointer;
     transform: scale(1.02);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     background-color: #f8f9fa; /* Ganti dengan warna yang diinginkan */
+}
+.cursor:hover {
+    cursor: pointer;
 }
 </style>
 @endsection
@@ -28,7 +30,7 @@
         <div class="row mt-0">
             @for ($i = 1; $i < 8; $i++)
                 <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="card m-0">
+                    <div class="card cursor m-0">
                         <div class="card-content">
                             <div class="card-body p-3">
                                 <div class="position-relative">
@@ -72,7 +74,7 @@
                                         alt="Card image cap" style="height: 10rem; object-fit: cover;">
                                     <span class="badge bg-secondary position-absolute" style="bottom: 10px; left: 10px;">Kambing Boer</span>
                                     <small>
-                                        <span class="badge bg-danger position-absolute fw-bold" style="top: 10px; right: 10px;">1/4 terisi</span>
+                                        <span class="badge bg-success position-absolute fw-bold" style="top: 10px; right: 10px;">4/4 terisi</span>
                                     </small>
                                 </div>
                                 <div>
@@ -84,6 +86,14 @@
                                     </small>
                                     <div class="d-flex justify-content-end mt-2">
                                         <h5 class="card-text"><small style="font-size: 0.6em">Dibuat: 2023-07-09 15:34:00</small></h5>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end mt-2">
+                                    <div style="margin-right: 5px" class="ml-auto">
+                                        <a href="{{url('admin/pemeliharaan/detail/1')}}" class="btn btn-secondary btn-sm">Detail</a>
+                                    </div>
+                                    <div class="ml-auto">
+                                        <a href="{{url('admin/pemeliharaan/jual/1')}}" class="btn btn-danger btn-sm">Confirm Slot</a>
                                     </div>
                                 </div>
                             </div>
