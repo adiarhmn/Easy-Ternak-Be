@@ -92,10 +92,10 @@
                                 </div>
                                 <div class="d-flex justify-content-end mt-2">
                                     <div style="margin-right: 5px" class="ml-auto">
-                                        <a href="{{url('admin/pemeliharaan/detail/1')}}" class="btn btn-secondary btn-sm">Detail</a>
+                                        <a href="{{url('admin/slot/detail/1')}}" class="btn btn-secondary btn-sm">Detail</a>
                                     </div>
                                     <div class="ml-auto">
-                                        <a href="{{url('admin/pemeliharaan/jual/1')}}" class="btn btn-danger btn-sm">Confirm Slot</a>
+                                        <a href="{{url('admin/slot/jual/1')}}" class="btn btn-danger btn-sm">Confirm Slot</a>
                                     </div>
                                 </div>
                             </div>
