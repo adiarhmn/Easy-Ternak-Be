@@ -242,9 +242,15 @@
 							<li class="separator">
 								<i class="icon-arrow-right"></i>
 							</li>
+                            @if($page=="Slot Investasi")
 							<li class="nav-item text-secondary">
 								<a href="#">Slot</a>
 							</li>
+                            @else
+							<li class="nav-item text-secondary">
+								<a href="#">{{$page}}</a>
+							</li>
+                            @endif
 						</ul>
                         @endif
                         <div>
