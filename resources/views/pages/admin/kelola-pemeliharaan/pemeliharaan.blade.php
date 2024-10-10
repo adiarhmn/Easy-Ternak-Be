@@ -24,7 +24,7 @@
                                     </div>
                                     <div class="d-flex justify-content-end mt-2">
                                         <div style="margin-right: 5px" class="ml-auto">
-                                            <a href="{{url('admin/pemeliharaan/detail/1')}}" class="btn btn-secondary btn-sm">Lihat Progress</a>
+                                            <a href="{{url('admin/pemeliharaan/progress/1')}}" class="btn btn-secondary btn-sm">Lihat Progress</a>
                                         </div>
                                         <div class="ml-auto">
                                             <a href="{{url('admin/pemeliharaan/jual/1')}}" class="btn btn-danger btn-sm">Jual</a>

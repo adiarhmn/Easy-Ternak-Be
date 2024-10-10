@@ -45,10 +45,10 @@
 
                     <div class="form-actions d-flex justify-content-end grid gap-1">
                         <!-- Tombol untuk memicu modal tambah progress -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#tambahProgressModal">
                             Tambah Progress
-                        </button>
+                        </button> --}}
                         {{-- <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#jualModal">
                             Jual
                         </button> --}}
