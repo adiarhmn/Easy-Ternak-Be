@@ -61,4 +61,9 @@ class AnimalModel extends Model
     {
         return $this->hasMany(AnimalImageModel::class, 'id_animal', 'id_animal');
     }
+
+    public function marketplaceAnimal()
+    {
+        return $this->hasOne(MarketplaceAnimalModel::class, 'id_animal', 'id_animal');
+    }
 }

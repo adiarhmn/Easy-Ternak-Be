@@ -25,4 +25,16 @@ class MitraModel extends Model
     {
         return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
+
+    public function animal()
+    {
+        return $this->hasMany(AnimalModel::class, 'id_mitra', 'id_mitra');
+    }
+
+    public function investmentSlot()
+    {
+        return $this->hasMany(InvestmentSlotModel::class, 'id_mitra', 'id_mitra');
+    }
+
+
 }

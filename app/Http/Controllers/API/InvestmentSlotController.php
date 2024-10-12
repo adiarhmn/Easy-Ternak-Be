@@ -60,9 +60,12 @@ class InvestmentSlotController extends Controller
     {
         // Get the authenticated user
         $user = JWTAuth::user();
+        if ($user == null) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
         // Get query parameter
         if ($request->id_investor && $request->id_animal) {
-
             // Get the investment slot
             $investmentSlot = InvestmentSlotModel::where('id_investor', $request->id_investor)
                 ->where('id_animal', $request->id_animal)
@@ -140,6 +143,7 @@ class InvestmentSlotController extends Controller
         // Validate The Request
         $validator = Validator::make($request->all(), [
             'id_investment_slot' => 'required|numeric',
+            'id_payment_method' => 'required|numeric',
             'proof_image' => 'required|image|mimes:jpg,png,jpeg|max:2048',
         ]);
 
@@ -180,6 +184,7 @@ class InvestmentSlotController extends Controller
 
             // Update the investment slot
             $investmentSlot->status = 'waiting';
+            $investmentSlot->id_payment_method = $request->id_payment_method;
             $investmentSlot->save();
 
             // Commit the transaction
