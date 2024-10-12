@@ -12,11 +12,22 @@ class KelolaSlotAdminController extends Controller
         $data = [
             'title' => 'EasyTernak | Slot',
             'page' => 'Slot Investasi',
-            'btnAdd' => 'Buka Slot',
+            // 'btnAdd' => 'Buka Slot',
             'urlAdd' => 'admin/slot/tambah',
         ];
         return view('pages.admin.kelola-slot.slot', $data);
     }
+    public function detail(){
+
+        $data = [
+            'title' => 'EasyTernak | Slot',
+            'page' => 'Slot',
+            'topbar' => 'Detail',
+        ];
+
+        return view('pages.admin.kelola-slot.detail.detail', $data);
+    }
+
     public function tambah()
     {
         $data = [
@@ -26,5 +37,14 @@ class KelolaSlotAdminController extends Controller
         return view('pages.admin.kelola-slot.tambah', $data);
     }
 
+    public function investor(){
+        $data = [
+            'title' => 'EasyTernak | Slot',
+            'page' => 'Slot',
+            'topbar' => 'Investor',
+        ];
+
+        return view('pages.admin.kelola-slot.detail.investor', $data);
+    }
 
 }

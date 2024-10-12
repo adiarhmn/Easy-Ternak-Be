@@ -54,18 +54,18 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="slot_aktif" class="form-label">Slot Aktif</label>
-                            <input type="number" class="form-control" id="slot_aktif" readonly name="slot_aktif" value="1">
+                            <label for="nik" class="form-label">NIK</label>
+                            <input type="text" class="form-control @error('nik') is-invalid @enderror" id="nik" name="nik" value="{{ old('nik', $mitra->nik) }}">
+                            @error('nik')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
-                        <div class="mb-3">
-                            <label for="slo" class="form-label">Slot Terjual</label>
-                            <input type="number" class="form-control" id="terjual" name="terjual" readonly value="0">
-                        </div>
+                        
                     </div>
 
                     {{-- Bagian Kanan Informasi Tambahan --}}
                     <div class="col-md-6 col-sm-12">
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label for="bank" class="form-label">Bank</label>
                             <input type="text" class="form-control @error('bank') is-invalid @enderror" id="bank" name="bank" value="{{ old('bank', $mitra->payment_name) }}">
                             @error('bank')
@@ -85,6 +85,14 @@
                             @error('no_rek')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
+                        </div> --}}
+                        <div class="mb-3">
+                            <label for="slot_aktif" class="form-label">Slot Aktif</label>
+                            <input type="number" class="form-control" id="slot_aktif" readonly name="slot_aktif" value="1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="slo" class="form-label">Slot Terjual</label>
+                            <input type="number" class="form-control" id="terjual" name="terjual" readonly value="0">
                         </div>
                         <div class="mb-3">
                             <label for="ktp" class="form-label">KTP</label>
@@ -101,13 +109,13 @@
 
                 {{-- Tombol Aksi --}}
                 <div class="row mt-4">
-                    <div class="col-12">
+                    <div class="col-12 d-flex justify-content-between">
+                        <a href="{{ url('admin/pengguna/mitra') }}" class="btn btn-sm text-white" style="background-color: #6c757d">Kembali</a>
                         <!-- Button untuk Memicu Modal Simpan -->
-                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#saveModal">Simpan</button>
+                        <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal" data-target="#saveModal">Simpan</button>
 
                         <!-- Button untuk Memicu Modal Hapus -->
                         {{-- <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal">Hapus</button> --}}
-                        <a href="{{ url('admin/pengguna/mitra') }}" class="btn btn-sm btn-secondary">Kembali</a>
                     </div>
                 </div>
             </form>

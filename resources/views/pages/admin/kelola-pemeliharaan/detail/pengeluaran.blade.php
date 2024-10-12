@@ -10,7 +10,7 @@
             <div class="tab-content mt-3 mb-3" id="line-tabContent">
                 <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="line-home-tab">
                     <div class="card-body">
-                        <h5>Data Pengeluaran</h5>
+                        {{-- <h5>Data Pengeluaran</h5> --}}
                         <div class="table-responsive">
                             <table class="table table-bordered">
                                 <thead>
@@ -18,7 +18,7 @@
                                         <th>Tanggal</th>
                                         <th>Keterangan</th>
                                         <th>Jumlah Pengeluaran</th>
-                                        <th>Aksi</th>
+                                        {{-- <th>Aksi</th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -27,21 +27,21 @@
                                         <td>1 Agustus 2024</td>
                                         <td>Pembelian Pakan</td>
                                         <td>Rp 500.000</td>
-                                        <td>
+                                        {{-- <td>
                                             <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editPengeluaranModal">
                                                 Edit
                                             </button>
-                                        </td>
+                                        </td> --}}
                                     </tr>
                                     <tr>
                                         <td>15 Agustus 2024</td>
                                         <td>Perawatan Kandang</td>
                                         <td>Rp 250.000</td>
-                                        <td>
+                                        {{-- <td>
                                             <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editPengeluaranModal">
                                                 Edit
                                             </button>
-                                        </td>
+                                        </td> --}}
                                     </tr>
                                     <!-- Tambahkan lebih banyak baris data di sini jika diperlukan -->
                                 </tbody>
@@ -50,9 +50,9 @@
 
                         <div class="form-actions d-flex justify-content-end grid gap-1 mt-3">
                             <!-- Tombol untuk memicu modal tambah pengeluaran -->
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahPengeluaranModal">
+                            {{-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambahPengeluaranModal">
                                 Tambah Pengeluaran
-                            </button>
+                            </button> --}}
                             <a href="{{ url('admin/pemeliharaan') }}" class="btn btn-secondary">Kembali</a>
                         </div>
                     </div>

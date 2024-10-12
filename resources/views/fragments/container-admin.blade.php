@@ -7,6 +7,7 @@
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
     <link rel="icon" href="/images/logo.jpg" type="image/x-icon" />
 
+    @yield('css')
     <!-- Fonts and icons -->
     <script src="/assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
@@ -33,6 +34,7 @@
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/assets/css/plugins.min.css" />
     <link rel="stylesheet" href="/assets/css/kaiadmin.min.css" />
+
     {{-- <style>
         .sidebar[data-background-color=dark] {
             background: #4d64b5 !important;
@@ -99,20 +101,20 @@
                         <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
                             <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none">
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
-                                    role="button" aria-expanded="false" aria-haspopup="true">
-                                    <i class="fa fa-search"></i>
-                                </a>
-                                <ul class="dropdown-menu dropdown-search animated fadeIn">
-                                    <form class="navbar-left navbar-form nav-search">
-                                        <div class="input-group">
-                                            <input type="text" placeholder="Search ..." class="form-control" />
-                                        </div>
-                                    </form>
+                                role="button" aria-expanded="false" aria-haspopup="true">
+                                <i class="fa fa-search"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-search animated fadeIn">
+                                <form class="navbar-left navbar-form nav-search">
+                                    <div class="input-group">
+                                        <input type="text" placeholder="Search ..." class="form-control" />
+                                    </div>
+                                </form>
                                 </ul>
                             </li>
 
 
-                            <li class="nav-item topbar-icon dropdown hidden-caret">
+                            {{-- <li class="nav-item topbar-icon dropdown hidden-caret">
                                 <a class="nav-link" data-bs-toggle="dropdown" href="#" aria-expanded="false">
                                     <i class="fas fa-layer-group"></i>
                                 </a>
@@ -176,7 +178,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </li>
+                            </li> --}}
 
                             <li class="nav-item topbar-user dropdown hidden-caret">
                                 <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
@@ -196,13 +198,13 @@
                                             <div class="user-box">
                                                 <div class="avatar-lg">
                                                     <img src="/assets/img/profile.jpg" alt="image profile"
-                                                        class="avatar-img rounded" />
+                                                    class="avatar-img rounded" />
                                                 </div>
                                                 <div class="u-text">
                                                     <h4>Hizrian</h4>
                                                     <p class="text-muted">hello@example.com</p>
                                                     <a href="profile.html"
-                                                        class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                                                    class="btn btn-xs btn-secondary btn-sm">View Profile</a>
                                                 </div>
                                             </div>
                                         </li>
@@ -228,9 +230,30 @@
             {{-- Start Main --}}
             <div class="container">
                 <div class="page-inner">
-                    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-4">
+                    <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-0">
+                        <h4 class="fw-bold mb-3">{{ $page }}</h4>
+                        @if($page!="Beranda")
+                        <ul class="breadcrumbs mb-3">
+							<li class="nav-home">
+								<a href="/admin/beranda">
+									<i class="icon-home"></i>
+								</a>
+							</li>
+							<li class="separator">
+								<i class="icon-arrow-right"></i>
+							</li>
+                            @if($page=="Slot Investasi")
+							<li class="nav-item text-secondary">
+								<a href="#">Slot</a>
+							</li>
+                            @else
+							<li class="nav-item text-secondary">
+								<a href="#">{{$page}}</a>
+							</li>
+                            @endif
+						</ul>
+                        @endif
                         <div>
-                            <h3 class="fw-bold mb-3">{{ $page }}</h3>
                             @if (!empty($deskripsi))
                                 <h6 class="op-7 mb-2">{{ $deskripsi }}</h6>
                             @endif
@@ -238,7 +261,7 @@
                         <div class="ms-md-auto py-2 py-md-0">
                             @if (!empty($btnAdd))
                                 <a href="{{ url($urlAdd) }}"
-                                    class="btn btn-primary btn-rouna">{{ $btnAdd }}</a>
+                                    class="btn btn-secondary btn-rouna">{{ $btnAdd }}</a>
                             @endif
                             
                         </div>

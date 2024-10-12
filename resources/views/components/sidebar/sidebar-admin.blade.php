@@ -1,7 +1,7 @@
-<div class="sidebar" data-background-color="dark">
+<div class="sidebar" data-background-color="white">
     <div class="sidebar-logo">
         <!-- Logo Header -->
-        <div class="logo-header" data-background-color="dark">
+        <div class="logo-header" data-background-color="purple">
             <a href="index.html" class="logo">
                 <img src="/images/logo.jpg" alt="navbar brand" class="navbar-brand" height="40" />
                 <span class="logo-text text-white ml-3">Easy Ternak</span>
@@ -30,31 +30,32 @@
                         <p>Beranda</p>
                     </a>
                 </li>
+                
                 <li class="nav-item {{ $page == 'Slot Investasi' ? 'active' : '' }}">
                     <a href="{{ url('admin/slot') }}">
                         <i class="fas fa-list"></i>
-                        <p>Slot</p>
+                        
+                        <p>Slot <div class="badge" style="background-color: #b1a1e6">Tahap 1</div></p>
                     </a>
                 </li>
                 <li class="nav-item {{ $page == 'Pemeliharaan' ? 'active' : '' }}">
                     <a href="{{ url('admin/pemeliharaan') }}">
                         <i class="fas fa-spinner"></i>
-                        <p>Pemeliharaan</p>
+                        <p>Pemeliharaan <div class="badge " style="background-color: #b1a1e6">Tahap 2</div></p>
 
                     </a>
                 </li>
                 <li class="nav-item {{ $page == 'Penjualan' ? 'active' : '' }}">
                     <a href="{{ url('admin/penjualan') }}">
                         <i class="fas fa-shopping-cart"></i>
-                        <p>Penjualan</p>
+                        <p>Penjualan <div class="badge " style="background-color: #b1a1e6">Tahap 3</div></p>
 
                     </a>
                 </li>
                 <li class="nav-item {{ $page == 'Pengguna' ? 'active' : '' }}">
                     <a href="{{ url('admin/pengguna') }}">
                         <i class="fas fa-user"></i>
-                        <p>Pengguna</p>
-
+                        <p>Manajemen Akun</p>
                     </a>
                 </li>
                 <li class="nav-item">

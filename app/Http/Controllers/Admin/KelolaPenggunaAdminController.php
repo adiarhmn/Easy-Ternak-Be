@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\MitraModel;
 use App\Models\User;
-use App\Models\UserModel;
 use Illuminate\Support\Facades\Storage;
 
 class KelolaPenggunaAdminController extends Controller
@@ -35,7 +34,7 @@ class KelolaPenggunaAdminController extends Controller
     {
         // Mengambil data mitra dan menghubungkannya dengan tabel 'user'
         $mitra = DB::table('mitra')
-            ->join('user', 'mitra.id_user', '=', 'user.id_user')
+            ->join('users', 'mitra.id_user', '=', 'users.id_user')
             ->where('mitra.id_mitra', $id)
             ->first();
 
@@ -45,8 +44,8 @@ class KelolaPenggunaAdminController extends Controller
         }
 
         // Cek apakah file KTP ada di direktori 'public/ktp_images'
-        $ktpPath = 'ktp_images/' . $mitra->ktp;
-        if (!$mitra->ktp || !file_exists(public_path($ktpPath))) {
+        $ktpPath = 'ktp_images/' . $mitra->ktp_image;
+        if (!$mitra->ktp_image || !file_exists(public_path($ktpPath))) {
             // Jika KTP tidak ada atau file KTP tidak ditemukan, gunakan gambar KTP default
             $ktpImage = 'ktp_images/default-ktp.jpg';
         } else {
@@ -74,7 +73,7 @@ class KelolaPenggunaAdminController extends Controller
         }
 
         // Temukan user terkait
-        $user = UserModel::where('id_user', $mitra->id_user)->first();
+        $user = User::where('id_user', $mitra->id_user)->first();
         if (!$user) {
             return redirect()->back()->withErrors(['msg' => 'User tidak ditemukan']);
         }
@@ -84,9 +83,10 @@ class KelolaPenggunaAdminController extends Controller
             'alamat' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'no_hp' => 'required|string|max:20',
-            'bank' => 'nullable|string|max:255',
-            'akun_bank' => 'nullable|string|max:255',
-            'no_rek' => 'nullable|string|max:255',
+            // 'bank' => 'nullable|string|max:255',
+            // 'akun_bank' => 'nullable|string|max:255',
+            // 'no_rek' => 'nullable|string|max:255',
+            'nik' => 'required|numeric|digits:16', 
             'ktp' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ],[
             'nama.required' => 'Nama wajib diisi.',
@@ -102,12 +102,16 @@ class KelolaPenggunaAdminController extends Controller
             'no_hp.required' => 'Nomor HP wajib diisi.',
             'no_hp.string' => 'Nomor HP harus berupa teks.',
             'no_hp.max' => 'Nomor HP maksimal 20 karakter.',
-            'bank.string' => 'Bank harus berupa teks.',
-            'bank.max' => 'Bank maksimal 255 karakter.',
-            'akun_bank.string' => 'Akun bank harus berupa teks.',
-            'akun_bank.max' => 'Akun bank maksimal 255 karakter.',
-            'no_rek.string' => 'Nomor rekening harus berupa teks.',
-            'no_rek.max' => 'Nomor rekening maksimal 255 karakter.',
+            'nik.required' => 'NIK wajib diisi.',
+            'nik.numeric' => 'NIK harus berupa angka.',
+            'nik.digits' => 'NIK harus terdiri dari 16 digit.',
+            'nik.unique' => 'NIK sudah digunakan.',
+            // 'bank.string' => 'Bank harus berupa teks.',
+            // 'bank.max' => 'Bank maksimal 255 karakter.',
+            // 'akun_bank.string' => 'Akun bank harus berupa teks.',
+            // 'akun_bank.max' => 'Akun bank maksimal 255 karakter.',
+            // 'no_rek.string' => 'Nomor rekening harus berupa teks.',
+            // 'no_rek.max' => 'Nomor rekening maksimal 255 karakter.',
             'ktp.image' => 'KTP harus berupa gambar.',
             'ktp.mimes' => 'KTP harus berformat jpeg, png, atau jpg.',
             'ktp.max' => 'Ukuran KTP maksimal 2MB.',
@@ -115,16 +119,17 @@ class KelolaPenggunaAdminController extends Controller
 
 
         // Temukan mitra
-        // Update data mitra
+        // Update data mitra    
         $mitra->update([
             'name' => $request->input('nama'),
             'address' => $request->input('alamat'),
             'telephone' => $request->input('no_hp'),
-            'payment_name' => $request->input('bank'),
-            'payment_account' => $request->input('akun_bank'),
-            'payment_number' => $request->input('no_rek'),
+            'nik' => $request->input('nik'),
+            // 'payment_name' => $request->input('bank'),
+            // 'payment_account' => $request->input('akun_bank'),
+            // 'payment_number' => $request->input('no_rek'),
             // Update KTP jika ada file
-            'ktp' => $request->hasFile('ktp') ? $this->uploadKTP($request->file('ktp')) : $mitra->ktp,
+            'ktp_image' => $request->hasFile('ktp') ? $this->uploadKTP($request->file('ktp')) : $mitra->ktp_image,
         ]);
 
         // Update data user
@@ -147,14 +152,15 @@ class KelolaPenggunaAdminController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:user,username',
+            'username' => 'required|string|max:255|unique:users,username',
             'telephone' => 'required|string|max:15',
             'address' => 'required|string',
+            'nik' => 'required|numeric|digits:16|unique:mitra,nik', 
             'ktp' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'payment_name' => 'required|string|max:255',
-            'payment_account' => 'required|string|max:255',
-            'payment_number' => 'required|string|max:255',
-            'email' => 'required|email|unique:user,email',
+            // 'payment_name' => 'required|string|max:255',
+            // 'payment_account' => 'required|string|max:255',
+            // 'payment_number' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
         ],[
             'name.required' => 'Nama wajib diisi.',
@@ -172,15 +178,19 @@ class KelolaPenggunaAdminController extends Controller
             'ktp.image' => 'KTP harus berupa gambar.',
             'ktp.mimes' => 'KTP harus berformat jpeg, png, atau jpg.',
             'ktp.max' => 'Ukuran KTP maksimal 2MB.',
-            'payment_name.required' => 'Nama pembayaran wajib diisi.',
-            'payment_name.string' => 'Nama pembayaran harus berupa teks.',
-            'payment_name.max' => 'Nama pembayaran maksimal 255 karakter.',
-            'payment_account.required' => 'Akun pembayaran wajib diisi.',
-            'payment_account.string' => 'Akun pembayaran harus berupa teks.',
-            'payment_account.max' => 'Akun pembayaran maksimal 255 karakter.',
-            'payment_number.required' => 'Nomor pembayaran wajib diisi.',
-            'payment_number.string' => 'Nomor pembayaran harus berupa teks.',
-            'payment_number.max' => 'Nomor pembayaran maksimal 255 karakter.',
+            'nik.required' => 'NIK wajib diisi.',
+            'nik.numeric' => 'NIK harus berupa angka.',
+            'nik.digits' => 'NIK harus terdiri dari 16 digit.',
+            'nik.unique' => 'NIK sudah digunakan.',
+            // 'payment_name.required' => 'Nama pembayaran wajib diisi.',
+            // 'payment_name.string' => 'Nama pembayaran harus berupa teks.',
+            // 'payment_name.max' => 'Nama pembayaran maksimal 255 karakter.',
+            // 'payment_account.required' => 'Akun pembayaran wajib diisi.',
+            // 'payment_account.string' => 'Akun pembayaran harus berupa teks.',
+            // 'payment_account.max' => 'Akun pembayaran maksimal 255 karakter.',
+            // 'payment_number.required' => 'Nomor pembayaran wajib diisi.',
+            // 'payment_number.string' => 'Nomor pembayaran harus berupa teks.',
+            // 'payment_number.max' => 'Nomor pembayaran maksimal 255 karakter.',
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Email harus berupa alamat email yang valid.',
             'email.unique' => 'Email sudah digunakan.',
@@ -200,12 +210,12 @@ class KelolaPenggunaAdminController extends Controller
             if ($file->isValid()) {
                 $randomName = rand() . '.' . $file->getClientOriginalExtension(); // Nama file random dengan ekstensi asli
                 $file->move(public_path('ktp_images'), $randomName); // Pindahkan file ke folder public/ktp_images
-                $data['ktp'] = $randomName; // Hanya simpan nama file ke database
+                $data['ktp_image'] = $randomName; // Hanya simpan nama file ke database
             }
         }
 
         // Buat akun pengguna di tabel user
-        $userId = DB::table('user')->insertGetId([
+        $userId = DB::table('users')->insertGetId([
             'username' => $request->input('username'),
             'password' => Hash::make($request->input('password')),
             'email' => $request->input('email'),
@@ -220,9 +230,10 @@ class KelolaPenggunaAdminController extends Controller
         $data['name'] = $request->input('name');
         $data['telephone'] = $request->input('telephone');
         $data['address'] = $request->input('address');
-        $data['payment_name'] = $request->input('payment_name');
-        $data['payment_account'] = $request->input('payment_account');
-        $data['payment_number'] = $request->input('payment_number');
+        $data['nik'] = $request->input('nik');
+        // $data['payment_name'] = $request->input('payment_name');
+        // $data['payment_account'] = $request->input('payment_account');
+        // $data['payment_number'] = $request->input('payment_number');
         $data['created_at'] = now();
         $data['updated_at'] = now();
 
@@ -267,7 +278,7 @@ class KelolaPenggunaAdminController extends Controller
     public function profilInvestor($id)
     {
         // Mengambil data investor dan menghubungkannya dengan tabel 'user' menggunakan id_user
-        $investor = InvestorModel::join('user', 'investor.id_user', '=', 'user.id_user')
+        $investor = InvestorModel::join('users', 'investor.id_user', '=', 'users.id_user')
             ->where('investor.id_investor', $id)
             ->first();
 
@@ -316,14 +327,14 @@ class KelolaPenggunaAdminController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:user,username',
+            'username' => 'required|string|max:255|unique:users,username',
             'telephone' => 'required|string|max:15',
             'address' => 'required|string',
             'ktp' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'payment_name' => 'required|string|max:255',
-            'payment_account' => 'required|string|max:255',
-            'payment_number' => 'required|string|max:255',
-            'email' => 'required|email|unique:user,email',
+            // 'payment_name' => 'required|string|max:255',
+            // 'payment_account' => 'required|string|max:255',
+            // 'payment_number' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
         ],[
             'name.required' => 'Nama wajib diisi.',
@@ -341,15 +352,15 @@ class KelolaPenggunaAdminController extends Controller
             'ktp.image' => 'KTP harus berupa gambar.',
             'ktp.mimes' => 'KTP harus berformat jpeg, png, atau jpg.',
             'ktp.max' => 'Ukuran KTP maksimal 2MB.',
-            'payment_name.required' => 'Nama pembayaran wajib diisi.',
-            'payment_name.string' => 'Nama pembayaran harus berupa teks.',
-            'payment_name.max' => 'Nama pembayaran maksimal 255 karakter.',
-            'payment_account.required' => 'Akun pembayaran wajib diisi.',
-            'payment_account.string' => 'Akun pembayaran harus berupa teks.',
-            'payment_account.max' => 'Akun pembayaran maksimal 255 karakter.',
-            'payment_number.required' => 'Nomor pembayaran wajib diisi.',
-            'payment_number.string' => 'Nomor pembayaran harus berupa teks.',
-            'payment_number.max' => 'Nomor pembayaran maksimal 255 karakter.',
+            // 'payment_name.required' => 'Nama pembayaran wajib diisi.',
+            // 'payment_name.string' => 'Nama pembayaran harus berupa teks.',
+            // 'payment_name.max' => 'Nama pembayaran maksimal 255 karakter.',
+            // 'payment_account.required' => 'Akun pembayaran wajib diisi.',
+            // 'payment_account.string' => 'Akun pembayaran harus berupa teks.',
+            // 'payment_account.max' => 'Akun pembayaran maksimal 255 karakter.',
+            // 'payment_number.required' => 'Nomor pembayaran wajib diisi.',
+            // 'payment_number.string' => 'Nomor pembayaran harus berupa teks.',
+            // 'payment_number.max' => 'Nomor pembayaran maksimal 255 karakter.',
             'email.required' => 'Email wajib diisi.',
             'email.email' => 'Email harus berupa alamat email yang valid.',
             'email.unique' => 'Email sudah digunakan.',
@@ -369,12 +380,12 @@ class KelolaPenggunaAdminController extends Controller
             if ($file->isValid()) {
                 $randomName = rand() . '.' . $file->getClientOriginalExtension(); // Nama file random dengan ekstensi asli
                 $file->move(public_path('ktp_images'), $randomName); // Pindahkan file ke folder public/ktp_images
-                $data['ktp'] = $randomName; // Hanya simpan nama file ke database
+                $data['ktp_iamge'] = $randomName; // Hanya simpan nama file ke database
             }
         }
 
         // Buat akun pengguna di tabel user
-        $userId = DB::table('user')->insertGetId([
+        $userId = DB::table('users')->insertGetId([
             'username' => $request->input('username'),
             'password' => Hash::make($request->input('password')),
             'email' => $request->input('email'),
@@ -389,9 +400,9 @@ class KelolaPenggunaAdminController extends Controller
         $data['name'] = $request->input('name');
         $data['telephone'] = $request->input('telephone');
         $data['address'] = $request->input('address');
-        $data['payment_name'] = $request->input('payment_name');
-        $data['payment_account'] = $request->input('payment_account');
-        $data['payment_number'] = $request->input('payment_number');
+        // $data['payment_name'] = $request->input('payment_name');
+        // $data['payment_account'] = $request->input('payment_account');
+        // $data['payment_number'] = $request->input('payment_number');
         $data['created_at'] = now();
         $data['updated_at'] = now();
 
@@ -410,7 +421,7 @@ class KelolaPenggunaAdminController extends Controller
         }
         
         // Temukan user terkait
-        $user = UserModel::where('id_user', $investor->id_user)->first();
+        $user = User::where('id_user', $investor->id_user)->first();
         if (!$user) {
             return redirect()->back()->withErrors(['msg' => 'User tidak ditemukan']);
         }
@@ -420,9 +431,9 @@ class KelolaPenggunaAdminController extends Controller
             'alamat' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'no_hp' => 'required|string|max:20',
-            'bank' => 'nullable|string|max:255',
-            'akun_bank' => 'nullable|string|max:255',
-            'no_rek' => 'nullable|string|max:255',
+            // 'bank' => 'nullable|string|max:255',
+            // 'akun_bank' => 'nullable|string|max:255',
+            // 'no_rek' => 'nullable|string|max:255',
             'ktp' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ],[
             'nama.required' => 'Nama wajib diisi.',
@@ -437,12 +448,12 @@ class KelolaPenggunaAdminController extends Controller
             'no_hp.required' => 'Nomor HP wajib diisi.',
             'no_hp.string' => 'Nomor HP harus berupa teks.',
             'no_hp.max' => 'Nomor HP maksimal 20 karakter.',
-            'bank.string' => 'Bank harus berupa teks.',
-            'bank.max' => 'Bank maksimal 255 karakter.',
-            'akun_bank.string' => 'Akun bank harus berupa teks.',
-            'akun_bank.max' => 'Akun bank maksimal 255 karakter.',
-            'no_rek.string' => 'Nomor rekening harus berupa teks.',
-            'no_rek.max' => 'Nomor rekening maksimal 255 karakter.',
+            // 'bank.string' => 'Bank harus berupa teks.',
+            // 'bank.max' => 'Bank maksimal 255 karakter.',
+            // 'akun_bank.string' => 'Akun bank harus berupa teks.',
+            // 'akun_bank.max' => 'Akun bank maksimal 255 karakter.',
+            // 'no_rek.string' => 'Nomor rekening harus berupa teks.',
+            // 'no_rek.max' => 'Nomor rekening maksimal 255 karakter.',
             'ktp.image' => 'KTP harus berupa gambar.',
             'ktp.mimes' => 'KTP harus berformat jpeg, png, atau jpg.',
             'ktp.max' => 'Ukuran KTP maksimal 2MB.',
@@ -455,11 +466,11 @@ class KelolaPenggunaAdminController extends Controller
             'name' => $request->input('nama'),
             'address' => $request->input('alamat'),
             'telephone' => $request->input('no_hp'),
-            'payment_name' => $request->input('bank'),
-            'payment_account' => $request->input('akun_bank'),
-            'payment_number' => $request->input('no_rek'),
+            // 'payment_name' => $request->input('bank'),
+            // 'payment_account' => $request->input('akun_bank'),
+            // 'payment_number' => $request->input('no_rek'),
             // Update KTP jika ada file
-            'ktp' => $request->hasFile('ktp') ? $this->uploadKTP($request->file('ktp')) : $investor->ktp,
+            'ktp_image' => $request->hasFile('ktp') ? $this->uploadKTP($request->file('ktp')) : $investor->ktp,
         ]);
 
         // Update data user
