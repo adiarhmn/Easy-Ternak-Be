@@ -38,8 +38,7 @@
                                 <tr>
                                     <td>{{ $investment->investor ? $investment->investor->name : 'Investor tidak ditemukan' }}</td>
                                     <td>Rp {{ number_format($investment->slot_price, 0, ',', '.') }}</td>
-                                    <td>{{ $investment->expired_at ? $investment->expired_at : "-"  }}</td>
-
+                                    <td>{{ $investment->expired_at ? $investment->expired_at : "-" }}</td>
                                     <td>
                                         <span class="badge bg-{{ $investment->status === 'success' ? 'success' : ($investment->status === 'pending' ? 'warning' : 'danger') }}">
                                             {{ ucfirst($investment->status === 'pending' ? 'Menunggu' : 'Terdaftar') }}

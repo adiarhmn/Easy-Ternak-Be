@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\AnimalModel;
 use App\Models\InvestmentSlotModel;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class KelolaSlotAdminController extends Controller
@@ -69,16 +70,25 @@ class KelolaSlotAdminController extends Controller
             ->whereNotNull('id_investor')
             ->get();
     
+        // Menambahkan 1 hari pada kolom expired_at
+        foreach ($investmentSlots as $investment) {
+            if (!empty($investment->expired_at)) {
+                // Konversi expired_at ke Carbon instance sebelum menambah hari
+                $investment->expired_at = Carbon::parse($investment->expired_at)->addDay();
+            }
+        }
+    
         $data = [
             'title' => 'EasyTernak | Slot',
             'page' => 'Slot',
             'topbar' => 'Investor',
             'investmentSlots' => $investmentSlots,
-            'animal' => AnimalModel::find($idAnimal),   
+            'animal' => AnimalModel::find($idAnimal),
         ];
     
         return view('pages.admin.kelola-slot.detail.investor', $data);
     }
+    
     
     public function approve($id)
     {
