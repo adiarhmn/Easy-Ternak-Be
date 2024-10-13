@@ -32,6 +32,12 @@
             <p class="text-center mt-1">Tidak ada data slot tersedia!</p>
         @else
             @foreach($availableSlots as $slot)
+            
+            @if($slot->hasPendingInvestor)
+                <a href="/admin/slot/detail/investor/{{$slot->id_animal}}">
+                @else
+                <a href="/admin/slot/detail/{{$slot->id_animal}}">
+            @endif
                 <div class="col-md-3 col-sm-6 mb-4">
                     <div class="card m-0 cursor">
                         <div class="card-content">
@@ -66,6 +72,7 @@
                         </div>
                     </div>
                 </div>
+            </a>
             @endforeach
         @endif
     </div>
