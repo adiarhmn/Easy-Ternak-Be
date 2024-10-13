@@ -3,20 +3,43 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AnimalModel;
 use Illuminate\Http\Request;
 
 class KelolaSlotAdminController extends Controller
 {
     public function index()
     {
-        $data = [
-            'title' => 'EasyTernak | Slot',
-            'page' => 'Slot Investasi',
-            // 'btnAdd' => 'Buka Slot',
-            'urlAdd' => 'admin/slot/tambah',
-        ];
-        return view('pages.admin.kelola-slot.slot', $data);
-    }
+        $slots = AnimalModel::with(['subAnimalType', 'mitra', 'investmentSlot', 'animalImage'])
+            ->get();
+    
+        // Initialize the slots as collections
+        $fullSlots = collect();
+        $availableSlots = collect();
+    
+        foreach($slots as $slot){
+            if($slot->investmentSlot->where('status', 'success')->count() == $slot->total_slots){
+                $fullSlots->push($slot);
+            } else {
+                $availableSlots->push($slot);
+            }
+        }
+
+
+
+    $data = [
+        'title' => 'EasyTernak | Slot',
+        'page' => 'Slot Investasi',
+        'availableSlots' => $availableSlots,
+        'fullSlots' => $fullSlots,
+        'urlAdd' => 'admin/slot/tambah',
+    ];
+
+    return view('pages.admin.kelola-slot.slot', $data);
+}
+
+    
+
     public function detail(){
 
         $data = [
