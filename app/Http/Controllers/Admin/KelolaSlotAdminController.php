@@ -83,7 +83,7 @@ class KelolaSlotAdminController extends Controller
             'page' => 'Slot',
             'topbar' => 'Investor',
             'investmentSlots' => $investmentSlots,
-            'animal' => AnimalModel::find($idAnimal),
+            'idAnimal' => $idAnimal,
         ];
     
         return view('pages.admin.kelola-slot.detail.investor', $data);
@@ -96,6 +96,7 @@ class KelolaSlotAdminController extends Controller
         
         if ($investment) {
             $investment->status = 'success'; // Ubah status dari 'pending' menjadi 'success'
+            $investment->expired_at = NULL; // Ubah status dari 'pending' menjadi 'success'
             $investment->save();
             return redirect()->back()->with('success', 'Investasi disetujui.');
         }
