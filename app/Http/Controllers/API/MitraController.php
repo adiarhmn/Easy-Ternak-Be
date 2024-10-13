@@ -43,7 +43,7 @@ class MitraController extends Controller
 
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|max:20|alpha_num',
-            'name' => 'required|string|max:100',
+            'name' => 'required|string|max:20',
             'address' => 'required|string',
             'telephone' => 'required|numeric|max_digits:15',
             'nik' => 'required|numeric|max_digits:18',
