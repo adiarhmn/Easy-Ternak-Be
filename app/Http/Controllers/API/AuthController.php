@@ -122,7 +122,8 @@ class AuthController extends Controller
             'access_token'  => $token,
             'creds'         => JWTAuth::user(),
             'token_type'    => 'bearer',
-            'expires_in'    => JWTAuth::factory()->getTTL() * 60
+            'expires_in'      => JWTAuth::factory()->getTTL() * 60 * 24,
+            'expires_in_days' => 7
         ]);
     }
 }

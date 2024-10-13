@@ -17,7 +17,8 @@ class AnimalModel extends Model
         'animal_code',
         'description',
         'id_sub_animal_type',
-        'price',
+        'purchase_price',
+        'selling_price',
         'selling_date',
         'purchase_date',
         'status',
@@ -51,8 +52,18 @@ class AnimalModel extends Model
         return $this->hasMany(AnimalExpensesModel::class, 'id_animal', 'id_animal');
     }
 
+    public function animalProgress()
+    {
+        return $this->hasMany(AnimalProgressModel::class, 'id_animal', 'id_animal');
+    }
+
     public function animalImage()
     {
         return $this->hasMany(AnimalImageModel::class, 'id_animal', 'id_animal');
+    }
+
+    public function marketplaceAnimal()
+    {
+        return $this->hasOne(MarketplaceAnimalModel::class, 'id_animal', 'id_animal');
     }
 }

@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             InvestmentTypeSeeder::class,
             SettingsSeeder::class,
             UserSeeder::class,
+            PaymentMethodSeeder::class,
         ]);
     }
 }

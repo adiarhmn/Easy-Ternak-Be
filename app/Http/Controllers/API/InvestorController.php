@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\AnimalModel;
 use App\Models\InvestorModel;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -38,7 +39,7 @@ class InvestorController extends Controller
 
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|max:20|alpha_num',
-            'name' => 'required|string|max:100',
+            'name' => 'required|string|max:20',
             'address' => 'required|string',
             'telephone' => 'required|numeric|max_digits:15',
             'profile_picture' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
@@ -99,5 +100,25 @@ class InvestorController extends Controller
         }
 
         return response()->json(['message' => 'Investor data saved', 'investor' => $investor]);
+    }
+
+    public function getByAnimal($id)
+    {
+        // Get Authenticated User
+        $user = JWTAuth::user();
+        if ($user == null) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        // Get Investors By Animal ID
+        $investors = InvestorModel::whereHas('investmentSlot', function ($query) use ($id) {
+            $query->whereHas('animal', function ($query) use ($id) {
+                $query->where('id_animal', $id);
+            });
+        })->with(['investmentSlot' => function ($query) use ($id) {
+            $query->where('id_animal', $id);
+        }])->get();
+
+        return response()->json(['message' => 'Investor data', 'investors' => $investors]);
     }
 }

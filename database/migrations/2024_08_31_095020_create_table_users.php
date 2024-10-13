@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('email');
             $table->string('profile_picture')->nullable();
-            $table->enum('level', ['admin', 'mitra', 'investor']);
+            $table->enum('level', ['admin', 'mitra', 'investor','user']);
             $table->boolean('is_active');
             $table->timestamps();
         });
