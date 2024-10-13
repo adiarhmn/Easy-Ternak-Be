@@ -42,18 +42,27 @@ class KelolaSlotAdminController extends Controller
         return view('pages.admin.kelola-slot.slot', $data);
     }
     
-    public function detail($idAnimal){
-        
+    public function detail($idAnimal)
+    {
+        // Mengambil data animal beserta relasinya menggunakan eager loading
+        $animal = AnimalModel::with(['subAnimalType', 'investmentType', 'mitra', 'animalImage'])
+            ->find($idAnimal);
+    
+        if (!$animal) {
+            return redirect('admin/penjualan')->with('error', 'Data tidak ditemukan.');
+        }
+    
         $data = [
             'title' => 'EasyTernak | Slot',
             'page' => 'Slot',
             'topbar' => 'Detail',
+            'animal' => $animal, // Mengirim data animal ke view
             'idAnimal' => $idAnimal, // Menambahkan animal jika perlu
         ];
-
+    
         return view('pages.admin.kelola-slot.detail.detail', $data);
     }
-
+    
     public function tambah()
     {
         $data = [
