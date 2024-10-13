@@ -17,26 +17,29 @@ class KelolaSlotAdminController extends Controller
         $fullSlots = collect();
         $availableSlots = collect();
     
-        foreach($slots as $slot){
-            if($slot->investmentSlot->where('status', 'success')->count() == $slot->total_slots){
+        foreach($slots as $slot) {
+            // Check if the slot is full
+            if($slot->investmentSlot->where('status', 'success')->count() == $slot->total_slots) {
                 $fullSlots->push($slot);
             } else {
+                // For available slots, check for pending investors
+                $hasPendingInvestor = $slot->investmentSlot->where('status', 'pending')->whereNotNull('id_investor')->isNotEmpty();
+                $slot->hasPendingInvestor = $hasPendingInvestor; // Add a flag to the slot object
                 $availableSlots->push($slot);
             }
         }
-
-
-
-    $data = [
-        'title' => 'EasyTernak | Slot',
-        'page' => 'Slot Investasi',
-        'availableSlots' => $availableSlots,
-        'fullSlots' => $fullSlots,
-        'urlAdd' => 'admin/slot/tambah',
-    ];
-
-    return view('pages.admin.kelola-slot.slot', $data);
-}
+    
+        $data = [
+            'title' => 'EasyTernak | Slot',
+            'page' => 'Slot Investasi',
+            'availableSlots' => $availableSlots,
+            'fullSlots' => $fullSlots,
+            'urlAdd' => 'admin/slot/tambah',
+        ];
+    
+        return view('pages.admin.kelola-slot.slot', $data);
+    }
+    
 
     
 
