@@ -57,24 +57,37 @@
                                 </tr>
 
                                 {{-- Modal untuk melihat bukti pembayaran --}}
-                                <div class="modal fade" id="paymentProofModal-{{ $investment->id_investment_slot }}" tabindex="-1" aria-labelledby="paymentProofModalLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-lg">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="paymentProofModalLabel">Bukti Pembayaran</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Menampilkan bukti pembayaran untuk investasi ID: {{ $investment->id_investment_slot }}</p>
-                                                <img src="path_to_payment_proof_image" alt="Bukti Pembayaran" class="img-fluid">
-                                                {{-- Ganti path_to_payment_proof_image dengan URL gambar bukti pembayaran yang sebenarnya --}}
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                               <!-- Modal -->
+<!-- Modal -->
+<div class="modal fade" id="paymentProofModal-{{ $investment->id_investment_slot }}" tabindex="-1" aria-labelledby="buktiPembayaranLabel_{{ $investment->id_investment_slot }}" aria-hidden="true">
+    <div class="modal-dialog "> <!-- Ukuran modal lebih kecil -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="buktiPembayaranLabel_{{ $investment->id_investment_slot }}">Bukti Pembayaran</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @if($investment->transferProof->isNotEmpty())
+                    @foreach($investment->transferProof as $index => $proof)
+                        <div class="card mb-2 border border-secondary"> <!-- Card untuk setiap bukti pembayaran -->
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Bukti Pembayaran {{ $index + 1 }}</h5> <!-- Penanda untuk setiap gambar -->
+                                <img src="{{ url('uploads/' . $proof->proof_image) }}" alt="Bukti Pembayaran {{ $index + 1 }}" class="img-fluid rounded">
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <p class="text-center">Tidak ada bukti pembayaran yang diunggah.</p>
+                @endif
+            </div>
+            <div class="modal-footer justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
                                 {{-- Modal untuk menyetujui investasi --}}
                                 <div class="modal fade" id="approveModal-{{ $investment->id_investment_slot }}" tabindex="-1" aria-labelledby="approveModalLabel" aria-hidden="true">

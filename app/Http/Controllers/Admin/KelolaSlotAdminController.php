@@ -64,16 +64,15 @@ class KelolaSlotAdminController extends Controller
 
     public function investor($idAnimal)
     {
-        // Mengambil data investasi berdasarkan id_animal
-        $investmentSlots = InvestmentSlotModel::with('investor')
+        // Mengambil data investasi berdasarkan id_animal beserta bukti pembayaran
+        $investmentSlots = InvestmentSlotModel::with(['investor', 'transferProof']) // Mengambil bukti pembayaran dari relasi transfer proofs
             ->where('id_animal', $idAnimal)
             ->whereNotNull('id_investor')
             ->get();
     
-        // Menambahkan 1 hari pada kolom expired_at
+        // Menambahkan expired_at dengan tambahan satu hari
         foreach ($investmentSlots as $investment) {
             if (!empty($investment->expired_at)) {
-                // Konversi expired_at ke Carbon instance sebelum menambah hari
                 $investment->expired_at = Carbon::parse($investment->expired_at)->addDay();
             }
         }
@@ -83,11 +82,12 @@ class KelolaSlotAdminController extends Controller
             'page' => 'Slot',
             'topbar' => 'Investor',
             'investmentSlots' => $investmentSlots,
-            'idAnimal' => $idAnimal,
+            'animal' => AnimalModel::find($idAnimal), // Menambahkan animal jika perlu
         ];
     
         return view('pages.admin.kelola-slot.detail.investor', $data);
     }
+    
     
     
     public function approve($id)
