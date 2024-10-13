@@ -9,7 +9,7 @@
             <div class="tab-content mt-3 mb-3" id="line-tabContent">
                 <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="line-home-tab">
                     <div class="card-body">
-                        <h5>Progress Pemeliharaan Kambing</h5>
+                        {{-- <h5>Progress Pemeliharaan Kambing</h5> --}}
                         <div class="table-responsive">
                             <table class="table table-bordered">
                                 <thead>

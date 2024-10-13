@@ -11,7 +11,7 @@
     </li>
     <li class="nav-item">
         <a class="nav-link {{ $topbar == 'Progres' ? 'active' : '' }}" href="{{ url('admin/penjualan/detail/progres/1') }}" role="tab"
-            aria-controls="pills-profile" aria-selected="false">Progres</a>
+            aria-controls="pills-profile" aria-selected="false">Histori Progres</a>
     </li>
     <li class="nav-item">
         <a class="nav-link {{ $topbar == 'Investor' ? 'active' : '' }}" href="{{ url('admin/penjualan/detail/investor/1') }}" role="tab"
