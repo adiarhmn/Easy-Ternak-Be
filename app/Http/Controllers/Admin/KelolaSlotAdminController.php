@@ -30,7 +30,7 @@ class KelolaSlotAdminController extends Controller
                 $availableSlots->push($slot);
             }
         }
-    
+        
         $data = [
             'title' => 'EasyTernak | Slot',
             'page' => 'Slot Investasi',
@@ -38,16 +38,17 @@ class KelolaSlotAdminController extends Controller
             'fullSlots' => $fullSlots,
             'urlAdd' => 'admin/slot/tambah',
         ];
-    
+        
         return view('pages.admin.kelola-slot.slot', $data);
     }
     
-    public function detail(){
-
+    public function detail($idAnimal){
+        
         $data = [
             'title' => 'EasyTernak | Slot',
             'page' => 'Slot',
             'topbar' => 'Detail',
+            'idAnimal' => $idAnimal, // Menambahkan animal jika perlu
         ];
 
         return view('pages.admin.kelola-slot.detail.detail', $data);
@@ -61,12 +62,12 @@ class KelolaSlotAdminController extends Controller
         ];
         return view('pages.admin.kelola-slot.tambah', $data);
     }
-
+    
     public function investor($idAnimal)
     {
         // Mengambil data investasi berdasarkan id_animal beserta bukti pembayaran
         $investmentSlots = InvestmentSlotModel::with(['investor', 'transferProof']) // Mengambil bukti pembayaran dari relasi transfer proofs
-            ->where('id_animal', $idAnimal)
+        ->where('id_animal', $idAnimal)
             ->whereNotNull('id_investor')
             ->get();
     
@@ -83,6 +84,7 @@ class KelolaSlotAdminController extends Controller
             'topbar' => 'Investor',
             'investmentSlots' => $investmentSlots,
             'animal' => AnimalModel::find($idAnimal), // Menambahkan animal jika perlu
+            'idAnimal' => $idAnimal, // Menambahkan animal jika perlu
         ];
     
         return view('pages.admin.kelola-slot.detail.investor', $data);
