@@ -41,7 +41,7 @@
                                     <td>{{ $investment->expired_at ? $investment->expired_at : "-" }}</td>
                                     <td>
                                         <span class="badge bg-{{ $investment->status === 'success' ? 'success' : ($investment->status === 'pending' ? 'warning' : 'danger') }}">
-                                            {{ ucfirst($investment->status === 'pending' ? 'Menunggu' : 'Terdaftar') }}
+                                            {{ ucfirst( $investment->status === 'success' ? 'Terdaftar' : ($investment->status === 'pending' ? 'Menunggu' : 'Ditolak')) }}
                                         </span>
                                     </td>
                                     <td>
