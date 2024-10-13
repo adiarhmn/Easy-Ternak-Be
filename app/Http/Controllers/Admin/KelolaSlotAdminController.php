@@ -41,9 +41,6 @@ class KelolaSlotAdminController extends Controller
         return view('pages.admin.kelola-slot.slot', $data);
     }
     
-
-    
-
     public function detail(){
 
         $data = [
@@ -81,6 +78,33 @@ class KelolaSlotAdminController extends Controller
         ];
     
         return view('pages.admin.kelola-slot.detail.investor', $data);
+    }
+    
+    public function approve($id)
+    {
+        $investment = InvestmentSlotModel::find($id);
+        
+        if ($investment) {
+            $investment->status = 'success'; // Ubah status dari 'pending' menjadi 'success'
+            $investment->save();
+            return redirect()->back()->with('success', 'Investasi disetujui.');
+        }
+
+        return redirect()->back()->with('error', 'Investasi tidak ditemukan.');
+    }
+
+    // Metode untuk menolak investasi
+    public function reject($id)
+    {
+        $investment = InvestmentSlotModel::find($id);
+        
+        if ($investment) {
+            $investment->status = 'rejected'; // Ubah status sesuai logika Anda
+            $investment->save();
+            return redirect()->back()->with('success', 'Investasi ditolak.');
+        }
+
+        return redirect()->back()->with('error', 'Investasi tidak ditemukan.');
     }
     
 

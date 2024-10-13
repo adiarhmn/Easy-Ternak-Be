@@ -17,6 +17,8 @@ Route::prefix('admin')->group(function(){
 
     Route::get('/slot',[KelolaSlotAdminController::class,'index'])->name('admin.slot');
     Route::get('/slot/tambah',[KelolaSlotAdminController::class,'tambah'])->name('admin.tambah');
+    Route::get('/slot/setujui/{id}', [KelolaSlotAdminController::class, 'approve'])->name('admin.slot.approve');
+    Route::get('/slot/tolak/{id}', [KelolaSlotAdminController::class, 'reject'])->name('admin.slot.reject');
     Route::get('/slot/detail/{id}',[KelolaSlotAdminController::class,'detail'])->name('admin.slot.detail');
     Route::get('/slot/detail/investor/{id}',[KelolaSlotAdminController::class,'investor'])->name('admin.slot.investor');
 
