@@ -47,7 +47,7 @@ class AnimalController extends Controller
     }
 
     // Function to get the animal data by mitra
-    public function indexMitra()
+    public function indexMitra(Request $request)
     {
         // Check if the user is a mitra
         $user = JWTAuth::user();
@@ -57,7 +57,12 @@ class AnimalController extends Controller
         }
 
         // Get the animal data
+        $src_status = $request->status ?? 'open';
+
+
+        // Get the animal data
         $animals = AnimalModel::where('id_mitra', $mitra->id_mitra)
+            ->where('status', $src_status)
             ->with(['subAnimalType.animalType', 'animalImage', 'investmentType'])
             ->withCount(['investmentSlot as total_sold' => function ($query) {
                 $query->where('status', '!=', 'ready');

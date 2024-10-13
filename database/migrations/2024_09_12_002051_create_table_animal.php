@@ -24,6 +24,8 @@ return new class extends Migration
             $table->enum('status', ['open', 'process', 'distribution', 'close'])->default('open');
             $table->string('remaining_days')->nullable();
             $table->integer('total_slots')->default(4);
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->foreign('id_sub_animal_type')->references('id_sub_animal_type')->on('sub_animal_type')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('id_mitra')->references('id_mitra')->on('mitra')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

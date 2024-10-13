@@ -183,7 +183,8 @@ class InvestmentSlotController extends Controller
             $transferProof->save();
 
             // Update the investment slot
-            $investmentSlot->status = 'waiting';
+            $investmentSlot->status = 'pending';
+            $investmentSlot->expired_at = null;
             $investmentSlot->id_payment_method = $request->id_payment_method;
             $investmentSlot->save();
 
