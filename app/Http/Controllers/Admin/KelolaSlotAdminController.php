@@ -107,10 +107,11 @@ class KelolaSlotAdminController extends Controller
     // Metode untuk menolak investasi
     public function reject($id)
     {
-        $investment = InvestmentSlotModel::find($id);
+        $investment = InvestmentSlotModel::find(id: $id);
         
         if ($investment) {
-            $investment->status = 'rejected'; // Ubah status sesuai logika Anda
+            $investment->status = 'failed'; // Ubah status sesuai logika Anda
+            $investment->expired_at = NULL; // Ubah status dari 'pending' menjadi 'success'
             $investment->save();
             return redirect()->back()->with('success', 'Investasi ditolak.');
         }
