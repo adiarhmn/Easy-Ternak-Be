@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AnimalModel;
+use App\Models\InvestmentSlotModel;
 use Illuminate\Http\Request;
 
 class KelolaSlotAdminController extends Controller
@@ -63,14 +64,24 @@ class KelolaSlotAdminController extends Controller
         return view('pages.admin.kelola-slot.tambah', $data);
     }
 
-    public function investor(){
+    public function investor($idAnimal)
+    {
+        // Mengambil data investasi berdasarkan id_animal
+        $investmentSlots = InvestmentSlotModel::with('investor')
+            ->where('id_animal', $idAnimal)
+            ->whereNotNull('id_investor')
+            ->get();
+    
         $data = [
             'title' => 'EasyTernak | Slot',
             'page' => 'Slot',
             'topbar' => 'Investor',
+            'investmentSlots' => $investmentSlots,
+            'animal' => AnimalModel::find($idAnimal),   
         ];
-
+    
         return view('pages.admin.kelola-slot.detail.investor', $data);
     }
+    
 
 }
