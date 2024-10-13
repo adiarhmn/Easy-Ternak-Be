@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_payment_method')->nullable();
             $table->unsignedBigInteger('id_user');
             $table->string('proof_image')->nullable();
-            $table->string('status')->default('pending');
+            $table->enum('status', ['pending', 'success', 'failed'])->default('pending');
             $table->datetime('expired_at')->nullable();
             $table->foreign('id_marketplace_animal')->references('id_marketplace_animal')->on('marketplace_animal')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('id_payment_method')->references('id_payment_method')->on('payment_method')->onDelete('cascade')->onUpdate('cascade');

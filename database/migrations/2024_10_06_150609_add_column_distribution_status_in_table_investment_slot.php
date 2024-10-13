@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('investment_slot', function (Blueprint $table) {
-            $table->string('distribution_status')->nullable()->after('status');
+            $table->enum('distribution_status', ['pending', 'success', 'failed'])->nullable()->after('status');
         });
     }
 

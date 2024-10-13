@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedBigInteger('id_investment_slot');
             $table->string('proof_image', 200);
             $table->timestamps();
-
             $table->foreign('id_investment_slot')->references('id_investment_slot')->on('investment_slot')->onDelete('cascade')->onUpdate('cascade');
         });
     }

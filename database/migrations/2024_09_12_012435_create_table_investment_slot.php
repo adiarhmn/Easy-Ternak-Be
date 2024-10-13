@@ -18,7 +18,9 @@ return new class extends Migration
             $table->string('slot_code');
             $table->integer('slot_price');
             $table->integer('profit')->default(0);
-            $table->string('status')->default('ready');
+            $table->enum('status', ['ready', 'pending', 'failed', 'success'])->default('ready');
+            $table->foreign('id_animal')->references('id_animal')->on('animal')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('id_investor')->references('id_user')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->datetime('expired_at')->nullable();
             $table->timestamps();
         });

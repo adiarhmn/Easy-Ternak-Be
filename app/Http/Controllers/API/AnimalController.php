@@ -29,14 +29,15 @@ class AnimalController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        $animals = AnimalModel::withCount([
-            'InvestmentSlot as total_sold' => function ($query) {
-                $query->where('status', 'sold')->orWhere('status', 'pending');
-            },
-            'InvestmentSlot as total_ready' => function ($query) {
-                $query->where('status', 'ready');
-            }
-        ])->with('subAnimalType.animalType')
+        $animals = AnimalModel::where('status', 'open')
+            ->withCount([
+                'InvestmentSlot as total_sold' => function ($query) {
+                    $query->where('status', 'sold')->orWhere('status', 'pending');
+                },
+                'InvestmentSlot as total_ready' => function ($query) {
+                    $query->where('status', 'ready');
+                }
+            ])->with('subAnimalType.animalType')
             ->with('investmentType')
             ->with('investmentSlot')
             ->with('mitra.user')
@@ -247,7 +248,7 @@ class AnimalController extends Controller
         if (!$animal) {
             return response()->json(['message' => 'Animal not found'], 404);
         }
-        $animal->status = 'proses';
+        $animal->status = 'process';
         $animal->purchase_date = now();
         $animal->save();
 
