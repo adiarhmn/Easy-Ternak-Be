@@ -45,6 +45,24 @@ class UserSeeder extends Seeder
                 'is_active'     => 1,
                 'created_at'    => now(),
                 'updated_at'    => now()
+            ],
+            [
+                'username'      => 'admin01',
+                'email'         => 'admin01@gmail.com',
+                'password'      => password_hash('pelaihari', PASSWORD_DEFAULT),
+                'level'         => 'admin',
+                'is_active'     => 1,
+                'created_at'    => now(),
+                'updated_at'    => now()
+            ],
+            [
+                'username'      => 'admin02',
+                'email'         => 'admin02@gmail.com',
+                'password'      => password_hash('pelaihari', PASSWORD_DEFAULT),
+                'level'         => 'admin',
+                'is_active'     => 1,
+                'created_at'    => now(),
+                'updated_at'    => now()
             ]
         ];
 

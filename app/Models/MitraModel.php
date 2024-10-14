@@ -18,6 +18,8 @@ class MitraModel extends Model
         'nik',
         'ktp_image',
         'rating',
+        'payment_number',
+        'provider',
     ];
     public $timestamps = true;
 
@@ -34,6 +36,11 @@ class MitraModel extends Model
     public function investmentSlot()
     {
         return $this->hasMany(InvestmentSlotModel::class, 'id_mitra', 'id_mitra');
+    }
+
+    public function mitraProfit()
+    {
+        return $this->hasMany(MitraProfitModel::class, 'id_mitra', 'id_mitra');
     }
 
 

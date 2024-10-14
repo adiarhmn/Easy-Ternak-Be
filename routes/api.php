@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\AdminController;
+use App\Http\Controllers\API\AdminFeatureController;
 use App\Http\Controllers\API\AnimalController;
 use App\Http\Controllers\API\AnimalTypeController;
 use App\Http\Controllers\API\AuthController;
@@ -34,7 +36,7 @@ Route::middleware(['jwt.auth'])->group(function () {
 
 // User Routes
 Route::middleware(['jwt.auth'])->group(function () {
-   Route::get('my-order', [UserController::class, 'myOrder'])->name('my-order');
+    Route::get('my-order', [UserController::class, 'myOrder'])->name('my-order');
 });
 
 // Sub Animal Type
@@ -122,4 +124,28 @@ Route::middleware(['jwt.auth'])->group(function () {
 // Payment Method Routes
 Route::middleware(['jwt.auth'])->group(function () {
     Route::get('payment-method', [PaymentMethodController::class, 'index'])->name('payment-method.index');
+});
+
+
+// Admin Routes
+Route::middleware(['jwt.auth'])->group(function () {
+    Route::get('animal-distribution', [AdminController::class, 'animalDistribution'])->name('animal-distribution');
+    Route::post('share-mitra-profit', [AdminController::class, 'shareProshareProfitMitra'])->name('share-profit');
+    Route::post('share-investor-profit', [AdminController::class, 'shareProfitInvestor'])->name('share-investor-profit');
+});
+
+
+// Route Untuk Mengkonfirmasi Sementara
+Route::prefix('admin')->group(function () {
+    // Mengkonfirmasi Pembayaran Investment Slot
+    Route::post('confirm-investment-slot', [AdminFeatureController::class, 'confirmInvestmentSlot'])->name('confirm-investment-slot');
+
+    // Mengkonfirmasi Pembelian Animal Ketika Slot Sudah Penuh
+    Route::post('confirm-animal', [AdminFeatureController::class, 'confirmAnimal'])->name('confirm-animal');
+
+    // Mengkonfirmasi Pembayaran Animal di Marketplace
+    Route::post('confirm-marketplace', [AdminFeatureController::class, 'confirmMarketplace'])->name('confirm-marketplace');
+
+
+    // 
 });

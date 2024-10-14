@@ -31,7 +31,11 @@ class ProgressController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'message' => 'Validation failed',
-                'errors' => $validator->errors()
+                'errors' => [
+                    'date' => $validator->errors()->first('date'),
+                    'description' => $validator->errors()->first('description'),
+                    'progress_images' => $validator->errors()->first('progress_images.*')
+                ]
             ], 422);
         }
 

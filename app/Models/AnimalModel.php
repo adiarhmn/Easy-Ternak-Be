@@ -21,6 +21,8 @@ class AnimalModel extends Model
         'selling_price',
         'selling_date',
         'purchase_date',
+        'start_date',
+        'end_date',
         'status',
         'total_slots',
     ];
@@ -65,5 +67,10 @@ class AnimalModel extends Model
     public function marketplaceAnimal()
     {
         return $this->hasOne(MarketplaceAnimalModel::class, 'id_animal', 'id_animal');
+    }
+
+    public function mitraProfit()
+    {
+        return $this->hasOne(MitraProfitModel::class, 'id_animal', 'id_animal');
     }
 }

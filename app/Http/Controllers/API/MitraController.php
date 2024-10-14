@@ -49,6 +49,8 @@ class MitraController extends Controller
             'nik' => 'required|numeric|max_digits:18',
             'ktp_image' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
             'profile_picture' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'payment_number' => 'nullable|numeric|max_digits:25',
+            'provider' => 'nullable|string|max:20',
         ]);
 
         // Return Validation Error
@@ -91,6 +93,8 @@ class MitraController extends Controller
             $mitra->telephone = $request->telephone;
             $mitra->nik = $request->nik;
             $mitra->ktp_image = $fileKTPName ?? $mitra->ktp_image;
+            $mitra->payment_number = $request->payment_number;
+            $mitra->provider = $request->provider;
             $mitra->save();
 
 

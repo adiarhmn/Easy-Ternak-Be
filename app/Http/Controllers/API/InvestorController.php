@@ -43,6 +43,8 @@ class InvestorController extends Controller
             'address' => 'required|string',
             'telephone' => 'required|numeric|max_digits:15',
             'profile_picture' => 'nullable|image|mimes:jpg,png,jpeg|max:2048',
+            'payment_number' => 'nullable|numeric|max_digits:25',
+            'provider' => 'nullable|string|max:50',
         ]);
 
         if ($validator->fails()) {
@@ -68,6 +70,8 @@ class InvestorController extends Controller
                 $investor->name = $request->name;
                 $investor->address = $request->address;
                 $investor->telephone = $request->telephone;
+                $investor->payment_number = $request->payment_number;
+                $investor->provider = $request->provider;
                 $investor->save();
             }
 

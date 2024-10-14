@@ -14,7 +14,9 @@ class InvestorModel extends Model
         'id_user',
         'name',
         'address',
-        'telephone',       
+        'telephone',
+        'payment_number',
+        'provider',
     ];
 
     public $timestamps = true;
@@ -27,5 +29,10 @@ class InvestorModel extends Model
     public function investmentSlot()
     {
         return $this->hasMany(InvestmentSlotModel::class, 'id_investor', 'id_investor');
+    }
+
+    public function investorProfit()
+    {
+        return $this->hasMany(InvestorProfitModel::class, 'id_investor', 'id_investor');
     }
 }

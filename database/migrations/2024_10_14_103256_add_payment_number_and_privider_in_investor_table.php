@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('investment_slot', function (Blueprint $table) {
-            $table->enum('distribution_status', ['pending', 'success', 'failed'])->nullable()->after('status');
+        Schema::table('investor', function (Blueprint $table) {
+            $table->string('payment_number')->nullable();
+            $table->string('provider')->nullable();
         });
     }
 
@@ -21,8 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('investment_slot', function (Blueprint $table) {
-            $table->dropColumn('distribution_status');
+        Schema::table('investor', function (Blueprint $table) {
+            $table->dropColumn('payment_number');
+            $table->dropColumn('provider');
         });
     }
 };

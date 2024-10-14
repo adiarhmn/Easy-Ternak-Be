@@ -22,7 +22,6 @@ return new class extends Migration
             $table->date('selling_date')->nullable();
             $table->date('purchase_date')->nullable();
             $table->enum('status', ['open', 'process', 'distribution', 'close'])->default('open');
-            $table->string('remaining_days')->nullable();
             $table->integer('total_slots')->default(4);
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
