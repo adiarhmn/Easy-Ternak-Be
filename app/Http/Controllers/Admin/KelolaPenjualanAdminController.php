@@ -3,18 +3,21 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AnimalModel;
 use Illuminate\Http\Request;
 
 class KelolaPenjualanAdminController extends Controller
 {
     public function index()
     {
+        $animals = AnimalModel::where('status', 'distribution')->get();
         $data = [
             'title' => 'EasyTernak | Penjualan',
             'page' => 'Penjualan',
+            'animals' => $animals,
         ];
         return view('pages.admin.kelola-penjualan.penjualan', $data);
-    }
+    } 
     
 
     public function detail(){
