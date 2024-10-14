@@ -3,19 +3,49 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AnimalModel;
 use Illuminate\Http\Request;
 
 class KelolaPemeliharaanAdminController extends Controller
 {
     public function index()
-    {
-        $data = [
-            'title' => 'EasyTernak | Pemeliharaan',
-            'page' => 'Pemeliharaan',
-            'topbar' => 'Pemeliharaan',
-        ];
-        return view('pages.admin.kelola-pemeliharaan.pemeliharaan', $data);
-    }
+{
+    // Ambil data hewan dari database
+    $animals = AnimalModel::where("status", "process")->get();
+
+    // Menyiapkan data untuk view
+    $animalData = $animals->map(function ($animal) {
+        // Cek apakah selling_date valid
+        if ($animal->selling_date) {
+            // Set zona waktu Asia/Makassar
+            $now = \Carbon\Carbon::now('Asia/Makassar')->startOfDay(); // Mulai dari awal hari
+            $sellingDate = \Carbon\Carbon::parse($animal->selling_date)->setTimezone('Asia/Makassar')->startOfDay(); // Juga mulai dari awal hari
+
+            // Hitung sisa hari hingga selling_date
+            $remainingDays = $now->diffInDays($sellingDate, false); // false untuk tidak mengambil nilai absolut
+
+            // Jika selling_date sudah lewat, atur menjadi 0
+            $remainingDays = max(0, $remainingDays);
+        } else {
+            $remainingDays = null; // Atau bisa diatur ke nilai lain jika selling_date tidak ada
+        }
+
+        // Tambahkan data baru untuk sisa hari
+        $animal->remainingDays = (int)$remainingDays; // Pastikan menjadi integer
+
+        return $animal;
+    });
+
+    $data = [
+        'title' => 'EasyTernak | Pemeliharaan',
+        'page' => 'Pemeliharaan',
+        'topbar' => 'Pemeliharaan',
+        'animals' => $animalData, // Pass data hewan ke view
+    ];
+    return view('pages.admin.kelola-pemeliharaan.pemeliharaan', $data);
+}
+
+
 
     public function detail(){
 
