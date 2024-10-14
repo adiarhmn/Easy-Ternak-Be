@@ -2,6 +2,12 @@
 
 @section('content')
     <div class="row mt-0">
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
         @if($animals->isEmpty())
             <div class="col-12">
                 <div class="alert alert-warning" role="alert">

@@ -129,6 +129,19 @@ class KelolaSlotAdminController extends Controller
 
         return redirect()->back()->with('error', 'Investasi tidak ditemukan.');
     }
+
+    public function confirmSlot(Request $request)
+{
+    $request->validate([
+        'slot_id' => 'required|exists:animal,id_animal', // Sesuaikan dengan nama tabel dan kolom
+    ]);
+
+    $slot = AnimalModel::findOrFail($request->slot_id);
+    $slot->status = 'process'; // Ganti status menjadi 'process'
+    $slot->save();
+
+    return redirect()->to("/admin/pemeliharaan")->with('success', 'Berhasil mengubah slot ke tahap "Pemeliharaan".');
+}
     
 
 }
