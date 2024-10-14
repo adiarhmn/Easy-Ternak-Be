@@ -19,7 +19,7 @@ class KelolaSlotAdminController extends Controller
         $fullSlots = collect();
         $availableSlots = collect();
     
-        foreach($slots as $slot) {
+        foreach($slots as $slot) {  
             // Check if the slot is full
             if($slot->investmentSlot->where('status', 'success')->count() == $slot->total_slots) {
                 $fullSlots->push($slot);
@@ -45,7 +45,7 @@ class KelolaSlotAdminController extends Controller
     public function detail($idAnimal)
     {
         // Mengambil data animal beserta relasinya menggunakan eager loading
-        $animal = AnimalModel::with(['subAnimalType', 'investmentType', 'mitra', 'animalImage'])
+        $animal = AnimalModel::with(['subAnimalType', 'investmentType', 'mitra', 'animalImage', 'investmentSlot'])
             ->find($idAnimal);
     
         if (!$animal) {

@@ -2,30 +2,54 @@
 
 @section('css')
 <style>
+    /* Border ungu pada card */
+    .card {
+        border: 2px solid #800080; /* Ungu */
+        border-radius: 10px;
+        padding: 10px;
+    }
+
+    /* Badge untuk slot terisi */
+    .badge-slot {
+        background-color: #800080; /* Warna ungu untuk badge */
+        color: white;
+        padding: 5px 10px;
+        border-radius: 12px;
+        font-size: 14px;
+    }
+
+    /* Carousel button modifications */
     .carousel-control-prev-icon,
     .carousel-control-next-icon {
-        background-color: rgba(0, 0, 0, 0.5); /* Menambahkan latar belakang semi transparan */
-        filter: brightness(1000%); /* Meningkatkan kecerahan ikon panah */
-        border-radius: 50%; /* Membuat latar belakang berbentuk bulat */
-        padding: 10px; /* Memberikan jarak antara ikon dan tepi */
+        background-color: rgba(0, 0, 0, 0.5);
+        filter: brightness(1000%);
+        border-radius: 50%;
+        padding: 10px;
     }
 
     .carousel-control-prev-icon:hover,
     .carousel-control-next-icon:hover {
-        background-color: rgba(0, 0, 0, 0.7); /* Warna lebih gelap saat hover */
+        background-color: rgba(0, 0, 0, 0.7);
     }
 
     .carousel-control-prev,
     .carousel-control-next {
-        filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.5)); /* Tambahkan bayangan untuk meningkatkan visibilitas */
+        filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.5));
     }
 
     /* Optional: Untuk memperbesar teks pada caption carousel */
     .carousel-caption h5 {
         color: white;
-        background-color: rgba(0, 0, 0, 0.6); /* Latar belakang semi transparan pada teks */
+        background-color: rgba(0, 0, 0, 0.6);
         padding: 5px;
         border-radius: 5px;
+    }
+
+    /* Tambahkan border pada gambar di dalam carousel */
+    .carousel-item img {
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        padding: 5px;
     }
 </style>
 @endsection
@@ -35,11 +59,17 @@
         <div class="card-body">
             {{-- Topbar --}}
             @include('components.topbar.topbar-slot')
+
+            {{-- Badge Slot --}}
+            
             {{-- End Topbar --}}
-            <div class="tab-content mt-3 mb-3" id="line-tabContent">
+            <div class="tab-content mt-3 mb-3" >
                 <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="line-home-tab">
                     <div class="card-body">
                         <div class="row g-4">
+                            <div class="">
+                                <span class="badge-slot badeg badge-secondary fw-bold">Slot Terisi: {{$animal->investmentSlot->where("status", "success")->count()}}/{{$animal->total_slots}}</span>
+                            </div>
                             <div class="col-md-6">
                                 <div class="form-body">
                                     {{-- Menampilkan Mitra --}}
@@ -69,11 +99,10 @@
                             </div>
 
                             <div class="col-md-6">
-                                <div class="form-body">
+                                <div class="form-body mt-3">
                                     {{-- Carousel Gambar --}}
                                     <div id="carouselGambar" class="carousel slide mb-4" data-bs-ride="carousel">
                                         <div class="carousel-inner">
-                                            {{-- Menampilkan gambar-gambar dari relasi animalImage --}}
                                             @foreach($animal->animalImage as $key => $image)
                                                 <div class="carousel-item {{ $key == 0 ? 'active' : '' }}">
                                                     <img src="{{ url('uploads/' . $image->image) }}" class="d-block w-100 rounded" alt="Gambar Utama" style="height: 250px; object-fit: cover;">
@@ -92,7 +121,6 @@
                                             <span class="visually-hidden">Next</span>
                                         </button>
                                     </div>
-                                    {{-- Akhir Carousel Gambar --}}
                                     
                                     {{-- Menampilkan Tanggal Beli --}}
                                     <div class="form-group mb-3">
