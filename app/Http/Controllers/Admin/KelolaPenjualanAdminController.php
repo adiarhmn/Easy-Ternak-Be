@@ -43,12 +43,13 @@ class KelolaPenjualanAdminController extends Controller
 
         return view('pages.admin.kelola-penjualan.detail.detail', $data);
     }
-    public function profit(){
+    public function profit($idAnimal){
 
         $data = [
             'title' => 'EasyTernak | Keuangan',
             'page' => 'Penjualan',
             'topbar' => 'Keuangan',
+            'idAnimal' => $idAnimal,
         ];
 
         return view('pages.admin.kelola-penjualan.detail.profit', $data);
