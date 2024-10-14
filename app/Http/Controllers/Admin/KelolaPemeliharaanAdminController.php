@@ -61,12 +61,22 @@ public function confirmSale(Request $request)
 
 
 
-    public function detail(){
+    public function detail($idAnimal){
 
-        $data = [
-            'title' => 'EasyTernak | Pemeliharaan',
-            'page' => 'Pemeliharaan',
-            'topbar' => 'Detail',
+        // Mengambil data animal beserta relasinya menggunakan eager loading
+        $animal = AnimalModel::with(['subAnimalType', 'investmentType', 'mitra', 'animalImage', 'investmentSlot'])
+            ->find($idAnimal);
+    
+            if (!$animal) {
+                return redirect('admin/penjualan')->with('error', 'Data tidak ditemukan.');
+            }
+            
+            $data = [
+                'title' => 'EasyTernak | Pemeliharaan',
+                'page' => 'Pemeliharaan',
+                'topbar' => 'Detail',
+                'animal' => $animal, // Mengirim data animal ke view
+            'idAnimal' => $idAnimal, // Menambahkan animal jika perlu
         ];
 
         return view('pages.admin.kelola-pemeliharaan.detail.detail', $data);

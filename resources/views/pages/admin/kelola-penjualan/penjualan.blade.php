@@ -17,7 +17,8 @@
         @if($animals->isEmpty())
             <div class="col-12">
                 <div class="alert alert-warning" role="alert">
-                    Tidak ada hewan dalam tahap penjualan.
+                    {{-- Tidak ada hewan dalam tahap penjualan. --}}
+                    Belum ada hewan yang terjual.
                 </div>
             </div>
         @else
