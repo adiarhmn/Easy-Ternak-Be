@@ -13,6 +13,7 @@ class KelolaSlotAdminController extends Controller
     public function index()
     {
         $slots = AnimalModel::with(['subAnimalType', 'mitra', 'investmentSlot', 'animalImage'])
+            ->where("animal.status", "open")
             ->get();
     
         // Initialize the slots as collections
