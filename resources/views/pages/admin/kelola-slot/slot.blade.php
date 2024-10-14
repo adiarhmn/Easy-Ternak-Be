@@ -104,16 +104,56 @@
                                             <a href="{{ url('admin/slot/detail/'.$slot->id_animal) }}" class="btn btn-secondary btn-sm">Detail</a>
                                         </div>
                                         <div>
-                                            <a href="{{ url('admin/slot/jual/'.$slot->id_animal) }}" class="btn btn-danger btn-sm">Confirm Slot</a>
+                                            <div>
+                                                <a href="#" class="btn btn-danger btn-sm confirm-slot" data-slot-id="{{ $slot->id_animal }}" data-bs-toggle="modal" data-bs-target="#confirmModal">Confirm Slot</a>
+                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <!-- Modal Konfirmasi -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Konfirmasi Slot</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Apakah Anda yakin ingin mengubah status slot ini ke tahap "Pemeliharaan"?
+            </div>
+            <div class="modal-footer">
+                <form id="confirmForm" action="{{ url('admin/slot/confirm') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="slot_id" id="slotId">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-danger">Konfirmasi</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
                 @endforeach
             @endif
         </div>
     </div>
 </div>
+@endsection
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const confirmButtons = document.querySelectorAll('.confirm-slot');
+
+        confirmButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const slotId = this.getAttribute('data-slot-id');
+                document.getElementById('slotId').value = slotId;
+            });
+        });
+    });
+</script>
 @endsection
