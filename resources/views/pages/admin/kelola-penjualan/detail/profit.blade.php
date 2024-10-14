@@ -9,6 +9,18 @@
             <div class="tab-content mt-3 mb-3" id="line-tabContent">
                 <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="line-home-tab">
                     <div class="card-body">
+                        @if(session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                        @endif
+    
+                        @if(session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
+                            </div>
+                        @endif
+    
                         <div class="row">
                             <div class="col">
                                 <div class="form-body">

@@ -17,14 +17,18 @@ Route::prefix('admin')->group(function(){
 
     Route::get('/slot',[KelolaSlotAdminController::class,'index'])->name('admin.slot');
     Route::get('/slot/tambah',[KelolaSlotAdminController::class,'tambah'])->name('admin.tambah');
+    Route::get('/slot/setujui/{id}', [KelolaSlotAdminController::class, 'approve'])->name('admin.slot.approve');
+    Route::get('/slot/tolak/{id}', [KelolaSlotAdminController::class, 'reject'])->name('admin.slot.reject');
     Route::get('/slot/detail/{id}',[KelolaSlotAdminController::class,'detail'])->name('admin.slot.detail');
     Route::get('/slot/detail/investor/{id}',[KelolaSlotAdminController::class,'investor'])->name('admin.slot.investor');
+    Route::post('/slot/confirm', [KelolaSlotAdminController::class, 'confirmSlot'])->name('admin.slot.confirm');
 
     Route::get('/pemeliharaan',[KelolaPemeliharaanAdminController::class,'index'])->name('admin.pemeliharaan');
     Route::get('/pemeliharaan/detail/{id}',[KelolaPemeliharaanAdminController::class,'detail'])->name('admin.pemeliharaan.detail');
     Route::get('/pemeliharaan/progres/{id}',[KelolaPemeliharaanAdminController::class,'progres'])->name('admin.pemeliharaan.progres');
     Route::get('/pemeliharaan/pengeluaran/{id}',[KelolaPemeliharaanAdminController::class,'pengeluaran'])->name('admin.pemeliharaan.pengeluaran');
     Route::get('/pemeliharaan/investor/{id}',[KelolaPemeliharaanAdminController::class,'investor'])->name('admin.pemeliharaan.investor');
+    Route::post('/pemeliharaan/jual', [KelolaPemeliharaanAdminController::class, 'confirmSale'])->name('admin.pemeliharaan.confirmSale');
 
     Route::get('/penjualan',[KelolaPenjualanAdminController::class,'index'])->name('admin.penjualan');
     Route::get('/penjualan/detail/{id}',[KelolaPenjualanAdminController::class,'detail'])->name('admin.penjualan.detail');
