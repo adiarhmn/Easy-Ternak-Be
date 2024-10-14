@@ -18,7 +18,7 @@
             aria-controls="pills-profile" aria-selected="false">Histori Progres</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link {{ $topbar == 'Progres' ? 'active' : '' }}" href="{{ url('admin/penjualan/detail/pengeluaran/' . $idAnimal) }}" role="tab"
+        <a class="nav-link {{ $topbar == 'Pengeluaran' ? 'active' : '' }}" href="{{ url('admin/penjualan/detail/pengeluaran/' . $idAnimal) }}" role="tab"
             aria-controls="pills-profile" aria-selected="false">Histori Pengeluaran</a>
     </li>
 </ul>
