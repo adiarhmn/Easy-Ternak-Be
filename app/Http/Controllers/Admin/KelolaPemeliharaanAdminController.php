@@ -44,6 +44,20 @@ class KelolaPemeliharaanAdminController extends Controller
     ];
     return view('pages.admin.kelola-pemeliharaan.pemeliharaan', $data);
 }
+public function confirmSale(Request $request)
+    {
+        $request->validate([
+            'animal_id' => 'required|exists:animal,id_animal',
+        ]);
+
+        // Find the animal and update the status
+        $animal = AnimalModel::findOrFail($request->animal_id);
+        $animal->status = 'distribution'; // Update status to distribution
+        $animal->save();
+
+        // Redirect to the sales menu after updating the status with a custom message
+        return redirect()->route('admin.penjualan')->with('success', 'Status hewan telah diubah menjadi tahap penjualan.');
+    }
 
 
 

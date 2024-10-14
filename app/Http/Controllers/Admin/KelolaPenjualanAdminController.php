@@ -15,6 +15,7 @@ class KelolaPenjualanAdminController extends Controller
         ];
         return view('pages.admin.kelola-penjualan.penjualan', $data);
     }
+    
 
     public function detail(){
 
