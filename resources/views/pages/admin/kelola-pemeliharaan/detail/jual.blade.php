@@ -18,7 +18,6 @@
                     @endif
 
                     {{-- Formulir Penjualan --}}
-                    <form action="{{ url('admin/penjualan') }}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="form-group">
@@ -82,14 +81,13 @@
 
                         {{-- Tombol Jual Sekarang --}}
                         <div class="form-actions d-flex justify-content-center mt-4">
-                            <button type="submit" class="btn btn-secondary">Jual Sekarang !</button>
+                            <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#confirmModal" data-id="{{ $animal->id_animal }}">Jual Sekarang !</button>
                         </div>
 
                         {{-- Tombol Kembali --}}
                         <div class="form-actions d-flex justify-content-end grid gap-1 mt-2">
                             <a href="{{ url('admin/penjualan') }}" class="btn btn-secondary">Kembali</a>
                         </div>
-                    </form>
                 </div>
             </div>
         </div>
@@ -109,6 +107,29 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Konfirmasi Penjualan</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Apakah Anda yakin ingin menjual hewan ini?
+            </div>
+            <div class="modal-footer">
+                <form id="confirmSaleForm" method="POST" action="{{ url('admin/pemeliharaan/jual') }}">
+                    @csrf
+                    <input type="hidden" name="animal_id" id="animal_id">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-danger">Jual</button>
+                </form>
             </div>
         </div>
     </div>
@@ -162,5 +183,16 @@
     });
 
     document.getElementById('harga_jual').addEventListener('input', updateProfit);
+</script>
+
+<script>
+    // Set the animal ID to the hidden input in the form when the modal is shown
+    var confirmModal = document.getElementById('confirmModal');
+    confirmModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget; // Button that triggered the modal
+        var animalId = button.getAttribute('data-id'); // Extract info from data-* attributes
+        var modalBodyInput = confirmModal.querySelector('#animal_id');
+        modalBodyInput.value = animalId; // Update the modal's content
+    });
 </script>
 @endsection
