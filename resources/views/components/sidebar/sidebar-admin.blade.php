@@ -48,7 +48,7 @@
                 <li class="nav-item {{ $page == 'Penjualan' ? 'active' : '' }}">
                     <a href="{{ url('admin/penjualan') }}">
                         <i class="fas fa-shopping-cart"></i>
-                        <p>Penjualan <div class="badge " style="background-color: #b1a1e6">Tahap 3</div></p>
+                        <p>Terjual <div class="badge " style="background-color: #b1a1e6">Tahap 3</div></p>
 
                     </a>
                 </li>

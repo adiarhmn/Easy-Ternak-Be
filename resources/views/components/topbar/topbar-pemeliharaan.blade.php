@@ -31,7 +31,7 @@
         <a class="nav-link {{ $topbar == 'Jual' ? 'active' : '' }}"
            href="{{ url('admin/pemeliharaan/formjual/' . $idAnimal) }}"
            role="tab">
-           Jual
+           Jual Sekarang
         </a>
     </li>
 </ul>

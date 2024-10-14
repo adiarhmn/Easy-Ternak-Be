@@ -59,7 +59,7 @@
                                     {{-- Profit --}}
                                     <h6 class="fw-bold">Keuntungan</h6>
                                     <div class="form-group">
-                                        <label for="hasil_bersih">Hasil Bersih Setelah Modal</label>
+                                        <label for="hasil_bersih">Total Profit / Keuntungan</label>
                                         <input type="text" id="hasil_bersih" class="form-control" name="hasil_bersih" readonly>
                                     </div>
                                     <div class="form-group">
@@ -69,12 +69,12 @@
                                     <div class="form-group">
                                         <label for="profit_investor">Profit Investor (50%)</label>
                                         <input type="text" id="profit_investor" class="form-control" name="profit_investor" readonly>
-                                        <span class="badge bg-success mt-1">50% dari Hasil Bersih</span>
+                                        <span class="badge bg-success mt-1">50% dari Total Profit</span>
                                     </div>
                                     <div class="form-group">
                                         <label for="profit_mitra">Profit Mitra (45%)</label>
                                         <input type="text" id="profit_mitra" class="form-control" name="profit_mitra" readonly>
-                                        <span class="badge bg-warning mt-1">45% dari Hasil Bersih</span>
+                                        <span class="badge bg-warning mt-1">45% dari Total Profit</span>
                                     </div>
                                 </div>
                             </div>
@@ -82,7 +82,7 @@
 
                         {{-- Tombol Jual Sekarang --}}
                         <div class="form-actions d-flex justify-content-center mt-4">
-                            <button type="submit" class="btn btn-danger">Jual Sekarang!</button>
+                            <button type="submit" class="btn btn-secondary">Jual Sekarang !</button>
                         </div>
 
                         {{-- Tombol Kembali --}}
