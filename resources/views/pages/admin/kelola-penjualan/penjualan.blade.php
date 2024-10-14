@@ -1,5 +1,17 @@
 @extends('fragments.container-admin')
+@section('css')
+<style>
+.card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
 
+.card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    background-color: #f8f9fa; /* Ganti dengan warna yang diinginkan */
+}
+</style>
+@endsection
 @section('content')
     <div class="row">
         @if($animals->isEmpty())
