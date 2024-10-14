@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AnimalModel;
+use App\Models\AnimalProgressModel;
 use App\Models\InvestmentSlotModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -86,11 +87,27 @@ public function confirmSale(Request $request)
         return view('pages.admin.kelola-pemeliharaan.detail.detail', $data);
     }
 
-    public function progres(){
+    public function progres($animal_id, Request $request){
+        // Set default date range (10 days range)
+    $today = Carbon::now()->toDateString();
+    $tenDaysAgo = Carbon::now()->subDays(10)->toDateString();
+
+    // Get filtered data based on request date range
+    $startDate = request('start_date', $tenDaysAgo);  // Use default if not provided
+    $endDate = request('end_date', $today);          // Use default if not provided
+
+    // Fetch progress data based on the date range
+    $progress = AnimalProgressModel::where('id_animal', $animal_id)
+        ->whereBetween('date', [$startDate, $endDate])
+        ->get();
         $data = [
             'title' => 'EasyTernak | Pemeliharaan',
             'page' => 'Pemeliharaan',
             'topbar' => 'Progres',
+            'progress' => $progress,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            "idAnimal" => $animal_id
         ];
 
         return view('pages.admin.kelola-pemeliharaan.detail.progres', $data);
