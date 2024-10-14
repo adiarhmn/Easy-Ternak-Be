@@ -143,12 +143,33 @@ public function confirmSale(Request $request)
     }
     
     public function formjual($idAnimal){
+        // Mengambil data hewan beserta relasinya menggunakan eager loading
+        $animal = AnimalModel::with(['animalExpenses'])->find($idAnimal);
+
+        if (!$animal) {
+            return redirect('admin/penjualan')->with('error', 'Data tidak ditemukan.');
+        }
+
+        // Harga beli
+        $hargaBeli = $animal->purchase_price;
+
+        // Total pengeluaran dari tabel expenses
+        $totalPengeluaran = $animal->animalExpenses->sum('price');
+
+        // Menghitung total modal
+        $totalModal = $hargaBeli + $totalPengeluaran;
+
         $data = [
             'title' => 'EasyTernak | Jual',
             'page' => 'Pemeliharaan',
             'topbar' => 'Jual',
+            'animal' => $animal,
+            'hargaBeli' => $hargaBeli,
+            'totalPengeluaran' => $totalPengeluaran,
+            'totalModal' => $totalModal,
             'idAnimal' => $idAnimal,
         ];
+
 
         return view('pages.admin.kelola-pemeliharaan.detail.jual', $data);
     }

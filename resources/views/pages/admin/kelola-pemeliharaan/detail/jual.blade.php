@@ -23,9 +23,9 @@
                         <div class="row">
                             <div class="form-group">
                                 <label for="harga_jual">Harga Jual <span class="text-danger">*</span></label>
-                                <input type="number" id="harga_jual" class="form-control" name="harga_jual" min="0" value="1200000" required placeholder="Masukkan Harga Jual" onchange="updateProfit()">
+                                <input type="number" id="harga_jual" class="form-control" value="12000000" name="harga_jual" min="0" required placeholder="Masukkan Harga Jual" onchange="updateProfit()">
                                 <span class="badge bg-primary mt-1">Masukkan Harga Jual untuk Hitung Profit</span>
-                                <small id="hargaJualHelp" class="form-text text-muted">Contoh: 1200000</small>
+                                <small id="hargaJualHelp" class="form-text text-muted">Contoh: 12000000</small>
                             </div>
 
                             <div class="col">
@@ -34,13 +34,13 @@
                                     <h6 class="fw-bold">Modal</h6>
                                     <div class="form-group">
                                         <label for="harga_beli">Harga Beli (Modal)</label>
-                                        <input type="text" id="harga_beli" class="form-control" value="Rp 1.000.000" name="harga_beli" readonly>
+                                        <input type="text" id="harga_beli" class="form-control" value="Rp {{ number_format($animal->purchase_price, 0, ',', '.') }}" name="harga_beli" readonly>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="pengeluaran">Pengeluaran (Pemeliharaan)</label>
                                         <div class="input-group">
-                                            <input type="text" id="pengeluaran" class="form-control" value="Rp 150.000" name="pengeluaran" readonly>
+                                            <input type="text" id="pengeluaran" class="form-control" value="Rp {{ number_format($totalPengeluaran, 0, ',', '.') }}" name="pengeluaran" readonly>
                                             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalDetailPengeluaran">
                                                 <i class="fas fa-info-circle"></i>
                                             </button>
@@ -49,7 +49,7 @@
 
                                     <div class="form-group">
                                         <label for="total_modal">Total Modal</label>
-                                        <input type="text" id="total_modal" class="form-control" value="Rp 1.150.000" name="total_modal" readonly>
+                                        <input type="text" id="total_modal" class="form-control" value="Rp {{ number_format($animal->purchase_price + $totalPengeluaran, 0, ',', '.') }}" name="total_modal" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -119,30 +119,43 @@
 @section('scripts')
 <script>
     function updateProfit() {
-        const hargaJual = parseFloat(document.getElementById('harga_jual').value);
-        const modalBeli = 1000000;
-        const pengeluaran = 150000;
+    const hargaJual = parseFloat(document.getElementById('harga_jual').value);
+    const modalBeli = {{ $animal->purchase_price }};
+    const pengeluaran = {{ $totalPengeluaran }};
 
-        // Total Modal
-        const totalModal = modalBeli + pengeluaran;
-        document.getElementById('total_modal').value = `Rp ${totalModal.toLocaleString()}`;
+    // Total Modal
+    const totalModal = modalBeli + pengeluaran;
+    document.getElementById('total_modal').value = `Rp ${totalModal.toLocaleString()}`;
 
-        // Hasil Bersih Setelah Modal
-        const hasilBersih = hargaJual - totalModal;
-        document.getElementById('hasil_bersih').value = `Rp ${hasilBersih.toLocaleString()}`;
-
-        // Profit Platform 5%
-        const profitPlatform = hasilBersih * 0.05;
-        document.getElementById('profit_platform').value = `Rp ${profitPlatform.toLocaleString()}`;
-
-        // Profit Investor (50%)
-        const profitInvestor = (hasilBersih - profitPlatform) * 0.50;
-        document.getElementById('profit_investor').value = `Rp ${profitInvestor.toLocaleString()}`;
-
-        // Profit Mitra (45%)
-        const profitMitra = (hasilBersih - profitPlatform) * 0.45;
-        document.getElementById('profit_mitra').value = `Rp ${profitMitra.toLocaleString()}`;
+    // Hasil Bersih Setelah Modal (Profit)
+    let hasilBersih = hargaJual - totalModal;
+    if (hasilBersih < 0) {
+        hasilBersih = 0;  // Set hasil bersih menjadi 0 jika negatif
     }
+    document.getElementById('hasil_bersih').value = `Rp ${hasilBersih.toLocaleString()}`;
+
+    // Profit Platform 5%
+    let profitPlatform = hasilBersih * 0.05;
+    if (profitPlatform < 0) {
+        profitPlatform = 0;  // Set profit platform menjadi 0 jika negatif
+    }
+    document.getElementById('profit_platform').value = `Rp ${profitPlatform.toLocaleString()}`;
+
+    // Profit Investor (50%)
+    let profitInvestor = (hasilBersih - profitPlatform) * 0.50;
+    if (profitInvestor < 0) {
+        profitInvestor = 0;  // Set profit investor menjadi 0 jika negatif
+    }
+    document.getElementById('profit_investor').value = `Rp ${profitInvestor.toLocaleString()}`;
+
+    // Profit Mitra (45%)
+    let profitMitra = (hasilBersih - profitPlatform) * 0.45;
+    if (profitMitra < 0) {
+        profitMitra = 0;  // Set profit mitra menjadi 0 jika negatif
+    }
+    document.getElementById('profit_mitra').value = `Rp ${profitMitra.toLocaleString()}`;
+}
+
 
     document.addEventListener('DOMContentLoaded', function () {
         updateProfit();
