@@ -27,19 +27,19 @@
 
 <div class="tab-content mt-3 mb-3" id="line-tabContent">
     <div class="tab-pane fade show active" id="line-home" role="tabpanel" aria-labelledby="line-home-tab">
-    <div class="row mt-0">
+    <div class="row mt-0 gap-0">
         @if($availableSlots->isEmpty())
             <p class="text-center mt-1">Tidak ada data slot tersedia!</p>
         @else
             @foreach($availableSlots as $slot)
             
             @if($slot->hasPendingInvestor)
-                <a href="/admin/slot/detail/investor/{{$slot->id_animal}}">
+                <a class="col-md-3 col-sm-6 mb-4 m-0 p-2" href="/admin/slot/detail/investor/{{$slot->id_animal}}">
                 @else
-                <a href="/admin/slot/detail/{{$slot->id_animal}}">
+                <a class="col-md-3 col-sm-6 mb-4 m-0 p-2" href="/admin/slot/detail/{{$slot->id_animal}}">
             @endif
-                <div class="col-md-3 col-sm-6 mb-4">
-                    <div class="card m-0 cursor">
+                <div >
+                    <div class="card m-0 cursor m-1">
                         <div class="card-content">
                             <div class="card-body p-3">
                                 <div class="position-relative">
@@ -54,7 +54,7 @@
 
                                     <!-- Marker for pending investors -->
                                     @if($slot->hasPendingInvestor)
-                                        <span class="badge bg-warning position-absolute" style="top: 10px; right: 10px; font-size: 0.7em;">ada pendaftar!</span>
+                                        <span class="badge bg-warning position-absolute fw-bold" style="top: 10px; right: 10px; font-size: 0.7em;">Ada pendaftar!</span>
                                     @endif
                                 </div>
                                 <div>
