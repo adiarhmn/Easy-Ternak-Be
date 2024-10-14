@@ -39,7 +39,7 @@ class KelolaPemeliharaanAdminController extends Controller
     $data = [
         'title' => 'EasyTernak | Pemeliharaan',
         'page' => 'Pemeliharaan',
-        'topbar' => 'Pemeliharaan',
+        'topbar' => 'Pemeliharaan', 
         'animals' => $animalData, // Pass data hewan ke view
     ];
     return view('pages.admin.kelola-pemeliharaan.pemeliharaan', $data);
@@ -56,7 +56,9 @@ public function confirmSale(Request $request)
         $animal->save();
 
         // Redirect to the sales menu after updating the status with a custom message
-        return redirect()->route('admin.penjualan')->with('success', 'Status hewan telah diubah menjadi tahap penjualan.');
+        // return redirect()->route('admin.penjualan')->with('success', 'Status hewan telah diubah menjadi tahap penjualan.');
+        return redirect()->route('admin.penjualan.detail.profit', ['id' => $animal->id_animal])
+        ->with('success', 'Hewan Berhasil Dijual.');
     }
 
 

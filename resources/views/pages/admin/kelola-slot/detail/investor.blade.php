@@ -10,16 +10,16 @@
             <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="line-home-tab">
                 <div class="card-body">
                     @if(session('success'))
-    <div class="alert alert-success">
-        {{ session('success') }}
-    </div>
-    @endif
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                    @endif
 
-    @if(session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif
+                    @if(session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
 
                     <div class="table-responsive">
                         <table class="table table-bordered">
