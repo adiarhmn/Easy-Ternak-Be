@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\AnimalExpensesModel;
 use App\Models\AnimalModel;
 use App\Models\AnimalProgressModel;
 use App\Models\InvestmentSlotModel;
@@ -113,15 +114,36 @@ public function confirmSale(Request $request)
         return view('pages.admin.kelola-pemeliharaan.detail.progres', $data);
     }
 
-    public function pengeluaran(){
+    public function pengeluaran($idAnimal, Request $request)
+    {
+        // Set default date range (10 days range)
+        $today = Carbon::now()->toDateString();
+        $tenDaysAgo = Carbon::now()->subDays(10)->toDateString();
+    
+        // Get filtered data based on request date range
+        $startDate = $request->input('tanggal_awal', $tenDaysAgo); // Use default if not provided
+        $endDate = $request->input('tanggal_akhir', $today);       // Use default if not provided
+    
+        // Fetch expense data based on the date range
+        $expenses = AnimalExpensesModel::where('id_animal', $idAnimal)
+            ->whereBetween('date', [$startDate, $endDate])
+            ->get();
+    
         $data = [
             'title' => 'EasyTernak | Pemeliharaan',
             'page' => 'Pemeliharaan',
             'topbar' => 'Pengeluaran',
+            'idAnimal' => $idAnimal,
+            'expenses' => $expenses,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
         ];
-
+    
         return view('pages.admin.kelola-pemeliharaan.detail.pengeluaran', $data);
     }
+    
+
+    
 
     public function investor($idAnimal)
     {
