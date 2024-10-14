@@ -47,7 +47,7 @@
                                     </small>
                                     <div class="d-flex justify-content-end mt-2">
                                         <div>
-                                            <a href="{{url('admin/penjualan/detail/keuangan/' . $animal->id)}}" class="btn btn-outline btn-secondary btn-sm">Lihat Profit</a>
+                                            <a href="{{url('admin/penjualan/detail/keuangan/' . $animal->id_animal)}}" class="btn btn-outline btn-secondary btn-sm">Lihat Profit</a>
                                         </div>
                                     </div>
                                 </div>
