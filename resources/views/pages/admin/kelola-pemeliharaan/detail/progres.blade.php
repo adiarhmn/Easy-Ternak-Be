@@ -1,3 +1,4 @@
+
 @extends('fragments.container-admin')
 
 @section('content')
@@ -19,7 +20,7 @@
                         <input type="date" id="end-date" name="end_date" class="form-control" value="{{ $endDate }}">
                     </div>
                     <div class="col-md-12 mt-3 d-flex justify-content-center">
-                        <button type="submit" class="btn btn-secondary">Filter</button>
+                        <button type="submit" class="btn btn-secondary py-2">Filter</button>
                     </div>
                 </div>
             </form>
