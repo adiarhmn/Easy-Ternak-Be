@@ -35,6 +35,7 @@ Route::prefix('admin')->group(function(){
     Route::get('/penjualan/detail/keuangan/{id}',[KelolaPenjualanAdminController::class,'profit'])->name('admin.penjualan.detail.profit');
     Route::get('/penjualan/detail/transfer/{id}',[KelolaPenjualanAdminController::class,'transfer'])->name('admin.penjualan.detail.transfer');
     Route::get('/penjualan/detail/progres/{id}',[KelolaPenjualanAdminController::class,'progres'])->name('admin.penjualan.progres.transfer');
+    Route::get('/penjualan/detail/pengeluaran/{id}',[KelolaPenjualanAdminController::class,'progres'])->name('admin.penjualan.pengeluaran.transfer');
     Route::get('/penjualan/detail/investor/{id}',[KelolaPenjualanAdminController::class,'investor'])->name('admin.penjualan.investor.transfer');
 
     Route::get('/pengguna',[KelolaPenggunaAdminController::class,'index'])->name('admin.pengguna');
