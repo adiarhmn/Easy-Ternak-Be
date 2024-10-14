@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\AnimalModel;
+use App\Models\InvestmentSlotModel;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class KelolaPemeliharaanAdminController extends Controller
@@ -104,13 +106,30 @@ public function confirmSale(Request $request)
         return view('pages.admin.kelola-pemeliharaan.detail.pengeluaran', $data);
     }
 
-    public function investor(){
+    public function investor($idAnimal)
+    {
+        // Mengambil data investasi berdasarkan id_animal beserta bukti pembayaran
+        $investmentSlots = InvestmentSlotModel::with(['investor', 'transferProof']) // Mengambil bukti pembayaran dari relasi transfer proofs
+        ->where('id_animal', $idAnimal)
+            ->whereNotNull('id_investor')
+            ->get();
+    
+        // Menambahkan expired_at dengan tambahan satu hari
+        foreach ($investmentSlots as $investment) {
+            if (!empty($investment->expired_at)) {
+                $investment->expired_at = Carbon::parse($investment->expired_at)->addDay();
+            }
+        }
+    
         $data = [
-            'title' => 'EasyTernak | Pemeliharaan',
+            'title' => 'EasyTernak | Slot',
             'page' => 'Pemeliharaan',
             'topbar' => 'Investor',
+            'investmentSlots' => $investmentSlots,
+            'animal' => AnimalModel::find($idAnimal), // Menambahkan animal jika perlu
+            'idAnimal' => $idAnimal, // Menambahkan animal jika perlu
         ];
-
+    
         return view('pages.admin.kelola-pemeliharaan.detail.investor', $data);
     }
 
