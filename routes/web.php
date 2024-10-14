@@ -28,6 +28,7 @@ Route::prefix('admin')->group(function(){
     Route::get('/pemeliharaan/progres/{id}',[KelolaPemeliharaanAdminController::class,'progres'])->name('admin.pemeliharaan.progres');
     Route::get('/pemeliharaan/pengeluaran/{id}',[KelolaPemeliharaanAdminController::class,'pengeluaran'])->name('admin.pemeliharaan.pengeluaran');
     Route::get('/pemeliharaan/investor/{id}',[KelolaPemeliharaanAdminController::class,'investor'])->name('admin.pemeliharaan.investor');
+    Route::get('/pemeliharaan/formjual/{id}',[KelolaPemeliharaanAdminController::class,'formjual'])->name('admin.pemeliharaan.formjual');
     Route::post('/pemeliharaan/jual', [KelolaPemeliharaanAdminController::class, 'confirmSale'])->name('admin.pemeliharaan.confirmSale');
 
     Route::get('/penjualan',[KelolaPenjualanAdminController::class,'index'])->name('admin.penjualan');

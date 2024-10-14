@@ -142,6 +142,16 @@ public function confirmSale(Request $request)
         return view('pages.admin.kelola-pemeliharaan.detail.pengeluaran', $data);
     }
     
+    public function formjual($idAnimal){
+        $data = [
+            'title' => 'EasyTernak | Jual',
+            'page' => 'Pemeliharaan',
+            'topbar' => 'Jual',
+            'idAnimal' => $idAnimal,
+        ];
+
+        return view('pages.admin.kelola-pemeliharaan.detail.jual', $data);
+    }
 
     
 

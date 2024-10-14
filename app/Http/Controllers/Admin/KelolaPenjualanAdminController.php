@@ -64,15 +64,6 @@ class KelolaPenjualanAdminController extends Controller
         return view('pages.admin.kelola-penjualan.detail.transfer', $data);
     }
 
-    public function jual(){
-        $data = [
-            'title' => 'EasyTernak | Jual',
-            'page' => 'Penjualan',
-            'topbar' => 'Jual',
-        ];
-
-        return view('pages.admin.kelola-penjualan.detail.jual', $data);
-    }
 
     public function progres($animal_id, Request $request){
         // Set default date range (10 days range)
