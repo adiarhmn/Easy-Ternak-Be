@@ -96,13 +96,13 @@
                     <div class="row align-items-center">
                         <div class="col-icon">
                             <div class="icon-big text-center icon-success bubble-shadow-small">
-                                <i class="fas fa-dollar-sign"></i>
+                                <i class="fas fa-dollar-sign"></i> <!-- Icon dapat diubah ke rupiah -->
                             </div>
                         </div>
                         <div class="col col-stats ms-3 ms-sm-0">
                             <div class="numbers">
                                 <p class="card-category">Total Profit</p>
-                                <h4 class="card-title">$ 50,000</h4> <!-- Ini jumlah total profit -->
+                                <h4 class="card-title">Rp 750,000,000</h4> <!-- Ini jumlah total profit dalam Rupiah -->
                                 <span class="badge bg-success">Profit</span>
                             </div>
                         </div>
@@ -124,7 +124,7 @@
                         <div class="col col-stats ms-3 ms-sm-0">
                             <div class="numbers">
                                 <p class="card-category">Profit Aplikasi (5%)</p>
-                                <h4 class="card-title">$ 2,500</h4> <!-- Ini jumlah total profit aplikasi -->
+                                <h4 class="card-title">Rp 37,500,000</h4> <!-- Ini jumlah total profit aplikasi dalam Rupiah -->
                                 <span class="badge bg-secondary">Aplikasi 5%</span>
                             </div>
                         </div>
