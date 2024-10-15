@@ -17,21 +17,26 @@
                         <div class="alert alert-danger">{{ session('error') }}</div>
                     @endif
 
-                    {{-- Formulir Penjualan --}}
+                    {{-- Form Penjualan --}}
+                    <form method="POST" action="{{ url('admin/pemeliharaan/jual') }}" id="saleForm">
                         @csrf
+                        <input type="hidden" name="animal_id" value="{{ $animal->id_animal }}">
                         <div class="row">
-                            <div class="form-group">
+                            {{-- Input Harga Jual --}}
+                            <div class="form-group col-md-6">
                                 <label for="harga_jual">Harga Jual <span class="text-danger">*</span></label>
-                                <input type="number" id="harga_jual" class="form-control" value="12000000" name="harga_jual" min="0" required placeholder="Masukkan Harga Jual" onchange="updateProfit()">
+                                <input type="number" id="harga_jual" class="form-control" name="harga_jual" min="0" required placeholder="Masukkan Harga Jual">
                                 <span class="badge bg-primary mt-1">Masukkan Harga Jual untuk Hitung Profit</span>
-                                <small id="hargaJualHelp" class="form-text text-muted">Contoh: 12000000</small>
+                                <small id="hargaJualHelp" class="form-text text-muted">Contoh: Rp {{ number_format($animal->purchase_price + $animal->purchase_price, 0, ',', '.') }}</small>
                             </div>
 
-                            <div class="col">
+                            <div class="col-md-6">
                                 <div class="form-body">
                                     {{-- Bagian Modal --}}
-                                    <h6 class="fw-bold">Modal</h6>
-                                    <div class="form-group">
+                                    <div class="form-group mb-0 pb-0">
+                                        <h6 class="fw-bold">Modal</h6>
+                                    </div>
+                                    <div class="form-group mt-0 pt-0">
                                         <label for="harga_beli">Harga Beli (Modal)</label>
                                         <input type="text" id="harga_beli" class="form-control" value="Rp {{ number_format($animal->purchase_price, 0, ',', '.') }}" name="harga_beli" readonly>
                                     </div>
@@ -40,79 +45,70 @@
                                         <label for="pengeluaran">Pengeluaran (Pemeliharaan)</label>
                                         <div class="input-group">
                                             <input type="text" id="pengeluaran" class="form-control" value="Rp {{ number_format($totalPengeluaran, 0, ',', '.') }}" name="pengeluaran" readonly>
-                                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modalDetailPengeluaran">
+                                            <a class="btn btn-secondary" href="/admin/pemeliharaan/pengeluaran/{{$animal->id_animal}}">
                                                 <i class="fas fa-info-circle"></i>
-                                            </button>
+                                            </a>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="total_modal">Total Modal</label>
-                                        <input type="text" id="total_modal" class="form-control" value="Rp {{ number_format($animal->purchase_price + $totalPengeluaran, 0, ',', '.') }}" name="total_modal" readonly>
+                                        <input type="text" id="total_modal_display" class="form-control" value="Rp {{ number_format($animal->purchase_price + $totalPengeluaran, 0, ',', '.') }}" name="total_modal" readonly>
+                                        <input type="hidden" id="total_modal" class="form-control" value="{{$animal->purchase_price + $totalPengeluaran   }}" name="total_modal" readonly>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col">
+                            <div class="col-md-6">
                                 <div class="form-body">
                                     {{-- Profit --}}
-                                    <h6 class="fw-bold">Keuntungan</h6>
-                                    <div class="form-group">
+                                    <div class="form-group mb-0 pb-0">
+                                        <h6 class="fw-bold">Keuntungan</h6>
+                                    </div>
+                                    <div class="form-group mt-0 pt-0">
                                         <label for="hasil_bersih">Total Profit / Keuntungan</label>
-                                        <input type="text" id="hasil_bersih" class="form-control" name="hasil_bersih" readonly>
+                                        <input type="text" id="hasil_bersih_display" class="form-control" readonly>
+                                        <input type="hidden" id="hasil_bersih" name="hasil_bersih" readonly>
                                     </div>
                                     <div class="form-group">
                                         <label for="profit_platform">Profit Platform (5%)</label>
-                                        <input type="text" id="profit_platform" class="form-control" name="profit_platform" readonly>
+                                        <input type="text" id="profit_platform_display" class="form-control" readonly>
+                                        <input type="hidden" id="profit_platform" name="profit_platform" readonly>
                                     </div>
                                     <div class="form-group">
                                         <label for="profit_investor">Profit Investor (50%)</label>
-                                        <input type="text" id="profit_investor" class="form-control" name="profit_investor" readonly>
+                                        <input type="text" id="profit_investor_display" class="form-control" readonly>
+                                        <input type="hidden" id="profit_investor" name="profit_investor" readonly>
                                         <span class="badge bg-success mt-1">50% dari Total Profit</span>
                                     </div>
                                     <div class="form-group">
                                         <label for="profit_mitra">Profit Mitra (45%)</label>
-                                        <input type="text" id="profit_mitra" class="form-control" name="profit_mitra" readonly>
+                                        <input type="text" id="profit_mitra_display" class="form-control" readonly>
+                                        <input type="hidden" id="profit_mitra" name="profit_mitra" readonly>
                                         <span class="badge bg-warning mt-1">45% dari Total Profit</span>
                                     </div>
+                                    
                                 </div>
                             </div>
                         </div>
 
                         {{-- Tombol Jual Sekarang --}}
                         <div class="form-actions d-flex justify-content-center mt-4">
-                            <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#confirmModal" data-id="{{ $animal->id_animal }}">Jual Sekarang !</button>
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#confirmModal">Jual Sekarang!</button>
                         </div>
 
                         {{-- Tombol Kembali --}}
                         <div class="form-actions d-flex justify-content-end grid gap-1 mt-2">
                             <a href="{{ url('admin/penjualan') }}" class="btn btn-secondary">Kembali</a>
                         </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-{{-- Modal Detail Pengeluaran --}}
-<div class="modal fade" id="modalDetailPengeluaran" tabindex="-1" aria-labelledby="modalDetailPengeluaranLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalDetailPengeluaranLabel">Detail Pengeluaran</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Rincian pengeluaran akan ditampilkan di sini.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal -->
+{{-- Modal Konfirmasi Penjualan --}}
 <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -124,75 +120,44 @@
                 Apakah Anda yakin ingin menjual hewan ini?
             </div>
             <div class="modal-footer">
-                <form id="confirmSaleForm" method="POST" action="{{ url('admin/pemeliharaan/jual') }}">
-                    @csrf
-                    <input type="hidden" name="animal_id" id="animal_id">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-danger">Jual</button>
-                </form>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="submit" form="saleForm" class="btn btn-primary">Konfirmasi</button>
             </div>
         </div>
     </div>
 </div>
 
-@endsection
-
-@section('scripts')
+{{-- Script untuk Mengupdate Profit dengan jQuery --}}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    function updateProfit() {
-    const hargaJual = parseFloat(document.getElementById('harga_jual').value);
-    const modalBeli = {{ $animal->purchase_price }};
-    const pengeluaran = {{ $totalPengeluaran }};
+$(document).ready(function() {
+    $('#harga_jual').on('input', function() {
+        const hargaJual = parseFloat($(this).val()) || 0;
+        const hargaBeli = parseFloat("{{ $animal->purchase_price }}");
+        const pengeluaran = parseFloat("{{ $totalPengeluaran }}") || 0;
 
-    // Total Modal
-    const totalModal = modalBeli + pengeluaran;
-    document.getElementById('total_modal').value = `Rp ${totalModal.toLocaleString()}`;
+        const totalModal = hargaBeli + pengeluaran;
+        const profit = hargaJual - totalModal;
 
-    // Hasil Bersih Setelah Modal (Profit)
-    let hasilBersih = hargaJual - totalModal;
-    if (hasilBersih < 0) {
-        hasilBersih = 0;  // Set hasil bersih menjadi 0 jika negatif
-    }
-    document.getElementById('hasil_bersih').value = `Rp ${hasilBersih.toLocaleString()}`;
+        $('#total_modal_display').val(`Rp ${totalModal.toFixed(0).replace(/\d(?=(\d{3})+(?!\d))/g, '$&,')}`);
+        $('#total_modal').val(totalModal >= 0 ? totalModal : 0);
+        $('#hasil_bersih_display').val(`Rp ${profit >= 0 ? profit.toFixed(0).replace(/\d(?=(\d{3})+(?!\d))/g, '$&,') : 0}`);
+        $('#hasil_bersih').val(profit >= 0 ? profit : 0); // Set nilai numerik ke input hidden
 
-    // Profit Platform 5%
-    let profitPlatform = hasilBersih * 0.05;
-    if (profitPlatform < 0) {
-        profitPlatform = 0;  // Set profit platform menjadi 0 jika negatif
-    }
-    document.getElementById('profit_platform').value = `Rp ${profitPlatform.toLocaleString()}`;
+        const profitPlatform = Math.max((profit * 0.05), 0);
+        $('#profit_platform_display').val(`Rp ${profitPlatform.toFixed(0).replace(/\d(?=(\d{3})+(?!\d))/g, '$&,')}`);
+        $('#profit_platform').val(profitPlatform); // Set nilai numerik ke input hidden
 
-    // Profit Investor (50%)
-    let profitInvestor = (hasilBersih - profitPlatform) * 0.50;
-    if (profitInvestor < 0) {
-        profitInvestor = 0;  // Set profit investor menjadi 0 jika negatif
-    }
-    document.getElementById('profit_investor').value = `Rp ${profitInvestor.toLocaleString()}`;
+        const profitInvestor = Math.max((profit * 0.50), 0);
+        $('#profit_investor_display').val(`Rp ${profitInvestor.toFixed(0).replace(/\d(?=(\d{3})+(?!\d))/g, '$&,')}`);
+        $('#profit_investor').val(profitInvestor); // Set nilai numerik ke input hidden
 
-    // Profit Mitra (45%)
-    let profitMitra = (hasilBersih - profitPlatform) * 0.45;
-    if (profitMitra < 0) {
-        profitMitra = 0;  // Set profit mitra menjadi 0 jika negatif
-    }
-    document.getElementById('profit_mitra').value = `Rp ${profitMitra.toLocaleString()}`;
-}
-
-
-    document.addEventListener('DOMContentLoaded', function () {
-        updateProfit();
+        const profitMitra = Math.max((profit * 0.45), 0);
+        $('#profit_mitra_display').val(`Rp ${profitMitra.toFixed(0).replace(/\d(?=(\d{3})+(?!\d))/g, '$&,')}`);
+        $('#profit_mitra').val(profitMitra); // Set nilai numerik ke input hidden
     });
+});
 
-    document.getElementById('harga_jual').addEventListener('input', updateProfit);
 </script>
 
-<script>
-    // Set the animal ID to the hidden input in the form when the modal is shown
-    var confirmModal = document.getElementById('confirmModal');
-    confirmModal.addEventListener('show.bs.modal', function (event) {
-        var button = event.relatedTarget; // Button that triggered the modal
-        var animalId = button.getAttribute('data-id'); // Extract info from data-* attributes
-        var modalBodyInput = confirmModal.querySelector('#animal_id');
-        modalBodyInput.value = animalId; // Update the modal's content
-    });
-</script>
 @endsection

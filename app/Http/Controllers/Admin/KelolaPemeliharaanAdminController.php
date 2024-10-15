@@ -9,6 +9,7 @@ use App\Models\AnimalProgressModel;
 use App\Models\InvestmentSlotModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class KelolaPemeliharaanAdminController extends Controller
 {
@@ -48,24 +49,56 @@ class KelolaPemeliharaanAdminController extends Controller
     ];
     return view('pages.admin.kelola-pemeliharaan.pemeliharaan', $data);
 }
+
 public function confirmSale(Request $request)
-    {
-        $request->validate([
-            'animal_id' => 'required|exists:animal,id_animal',
-        ]);
+{
+   // Validasi input
+   $validatedData = $request->validate([
+    'animal_id' => 'required|exists:animal,id_animal',
+    'harga_jual' => 'required|numeric|min:0',
+    'total_modal' => 'required|numeric',
+    'hasil_bersih' => 'nullable|numeric|min:0',
+    'profit_platform' => 'nullable|numeric|min:0',
+    'profit_investor' => 'nullable|numeric|min:0',
+    'profit_mitra' => 'nullable|numeric|min:0',
+]);
 
-        // Find the animal and update the status
-        $animal = AnimalModel::findOrFail($request->animal_id);
-        $animal->status = 'distribution'; // Update status to distribution
-        $animal->save();
+// Temukan hewan berdasarkan ID
+$animal = AnimalModel::findOrFail($validatedData['animal_id']);
 
-        // Redirect to the sales menu after updating the status with a custom message
-        // return redirect()->route('admin.penjualan')->with('success', 'Status hewan telah diubah menjadi tahap penjualan.');
-        return redirect()->route('admin.penjualan.detail.profit', ['id' => $animal->id_animal])
-        ->with('success', 'Hewan Berhasil Dijual.');
+// Update harga jual dan tanggal penjualan
+$animal->selling_price = $validatedData['harga_jual'];
+$animal->selling_date = Carbon::now('Asia/Makassar');
+$animal->status = 'distribution';
+$animal->save();
+
+// Hitung total modal
+$totalModal = $validatedData['total_modal'] ?? 0;
+// Hitung profit
+$profit = $validatedData['profit_investor'];
+$profit = max(0, $profit); // Atur profit menjadi 0 jika negatif
+
+    // Ambil semua slot investasi yang statusnya success untuk hewan ini
+    $investmentSlots = InvestmentSlotModel::where('id_animal', $animal->id_animal)
+                        ->where('status', 'success')
+                        ->get();
+
+    // Hitung profit per investor (dibagi rata sesuai jumlah investor)
+    $jumlahInvestor = $investmentSlots->count();
+    if ($jumlahInvestor > 0) {
+        $profitPerInvestor = $profit / $jumlahInvestor;
+
+        // Update profit di setiap slot investasi
+        foreach ($investmentSlots as $slot) {
+            $slot->profit = $profitPerInvestor;
+            $slot->save();
+        }
     }
 
-
+    // Redirect ke halaman detail profit setelah berhasil update
+    return redirect()->route('admin.penjualan.detail.profit', ['id' => $animal->id_animal])
+        ->with('success', 'Hewan berhasil dijual dan profit telah didistribusikan.');
+}
 
     public function detail($idAnimal){
 

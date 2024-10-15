@@ -40,4 +40,3 @@ class InvestmentSlotModel extends Model
         return $this->hasMany(TransferProofsModel::class, 'id_investment_slot', 'id_investment_slot');
     }
 }
-
