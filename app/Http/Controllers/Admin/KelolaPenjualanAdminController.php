@@ -44,10 +44,30 @@ class KelolaPenjualanAdminController extends Controller
         return view('pages.admin.kelola-penjualan.detail.detail', $data);
     }
     public function profit($idAnimal){
+        // Mengambil data hewan beserta relasinya menggunakan eager loading
+        $animal = AnimalModel::with(['animalExpenses'])->find($idAnimal);
+
+        if (!$animal) {
+            return redirect('admin/penjualan')->with('error', 'Data tidak ditemukan.');
+        }
+
+        // Harga beli
+        $hargaBeli = $animal->purchase_price;
+
+        // Total pengeluaran dari tabel expenses
+        $totalPengeluaran = $animal->animalExpenses->sum('price');
+
+        // Menghitung total modal
+        $totalModal = $hargaBeli + $totalPengeluaran;
+
         $data = [
             'title' => 'EasyTernak | Keuangan',
             'page' => 'Penjualan',
             'topbar' => 'Keuangan',
+            'animal' => $animal,
+            'hargaBeli' => $hargaBeli,
+            'totalPengeluaran' => $totalPengeluaran,
+            'totalModal' => $totalModal,
             'idAnimal' => $idAnimal,
         ];
 
