@@ -231,7 +231,14 @@
             <div class="container">
                 <div class="page-inner">
                     <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-0">
-                        <h4 class="fw-bold mb-3">{{ $page }}</h4>
+                        <div class="row">
+                            <h4 class="fw-bold mb-3">{{ $page }}</h4>
+                            @if (!empty($deskripsi))
+                                
+                            <h6 class="op-7 mb-3">{{ $deskripsi }}</h6>
+                        @endif
+
+                        </div>
                         @if($page!="Beranda")
                         <ul class="breadcrumbs mb-3">
 							<li class="nav-home">
@@ -253,11 +260,6 @@
                             @endif
 						</ul>
                         @endif
-                        <div>
-                            @if (!empty($deskripsi))
-                                <h6 class="op-7 mb-2">{{ $deskripsi }}</h6>
-                            @endif
-                        </div>
                         <div class="ms-md-auto py-2 py-md-0">
                             @if (!empty($btnAdd))
                                 <a href="{{ url($urlAdd) }}"
