@@ -15,14 +15,14 @@
                         <div class="col col-stats ms-3 ms-sm-0">
                             <div class="numbers">
                                 <p class="card-category">Total Slot</p>
-                                <h4 class="card-title">2,500</h4> <!-- Ini jumlah total slot -->
+                                <h4 class="card-title">{{ $totalSlot }}</h4> <!-- Data dari controller -->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <!-- Slot Tersedia -->
         <div class="col-sm-6 col-md-4">
             <div class="card card-stats card-round">
@@ -36,7 +36,7 @@
                         <div class="col col-stats ms-3 ms-sm-0">
                             <div class="numbers">
                                 <p class="card-category">Slot Tersedia</p>
-                                <h4 class="card-title">1,200</h4> <!-- Ini jumlah slot tersedia -->
+                                <h4 class="card-title">{{ $slotTersedia }}</h4> <!-- Data dari controller -->
                                 <span class="badge bg-success">Tersedia</span>
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                         <div class="col col-stats ms-3 ms-sm-0">
                             <div class="numbers">
                                 <p class="card-category">Slot Pemeliharaan</p>
-                                <h4 class="card-title">150</h4> <!-- Ini jumlah slot dalam pemeliharaan -->
+                                <h4 class="card-title">{{ $slotPemeliharaan }}</h4> <!-- Data dari controller -->
                                 <span class="badge bg-warning">Pemeliharaan</span>
                             </div>
                         </div>
@@ -80,7 +80,7 @@
                         <div class="col col-stats ms-3 ms-sm-0">
                             <div class="numbers">
                                 <p class="card-category">Slot Terjual</p>
-                                <h4 class="card-title">1,150</h4> <!-- Ini jumlah slot terjual -->
+                                <h4 class="card-title">{{ $slotTerjual }}</h4> <!-- Data dari controller -->
                                 <span class="badge bg-danger">Terjual</span>
                             </div>
                         </div>
@@ -96,13 +96,13 @@
                     <div class="row align-items-center">
                         <div class="col-icon">
                             <div class="icon-big text-center icon-success bubble-shadow-small">
-                                <i class="fas fa-dollar-sign"></i> <!-- Icon dapat diubah ke rupiah -->
+                                <i class="fas fa-dollar-sign"></i>
                             </div>
                         </div>
                         <div class="col col-stats ms-3 ms-sm-0">
                             <div class="numbers">
                                 <p class="card-category">Total Profit</p>
-                                <h4 class="card-title">Rp 750,000,000</h4> <!-- Ini jumlah total profit dalam Rupiah -->
+                                <h4 class="card-title">Rp {{ number_format($totalProfit, 0, ',', '.') }}</h4> <!-- Data dari controller -->
                                 <span class="badge bg-success">Profit</span>
                             </div>
                         </div>
@@ -111,8 +111,8 @@
             </div>
         </div>
 
-        <!-- Total Profit Aplikasi (5%) -->
-        <div class="col-sm-6 col-md-4">
+         <!-- Total Profit Aplikasi (5%) -->
+         <div class="col-sm-6 col-md-4">
             <div class="card card-stats card-round">
                 <div class="card-body">
                     <div class="row align-items-center">
@@ -124,7 +124,7 @@
                         <div class="col col-stats ms-3 ms-sm-0">
                             <div class="numbers">
                                 <p class="card-category">Profit Aplikasi (5%)</p>
-                                <h4 class="card-title">Rp 37,500,000</h4> <!-- Ini jumlah total profit aplikasi dalam Rupiah -->
+                                <h4 class="card-title">Rp {{ number_format($totalProfit * 0.05, 0, ',', '.') }}</h4> <!-- Ini jumlah total profit aplikasi dalam Rupiah -->
                                 <span class="badge bg-secondary">Aplikasi 5%</span>
                             </div>
                         </div>
