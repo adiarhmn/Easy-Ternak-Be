@@ -9,7 +9,10 @@ use App\Http\Controllers\Admin\KelolaPenjualanAdminController;
 use App\Http\Controllers\Admin\KelolaPenggunaAdminController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('login');
+});
+Route::get('/login', function () {
+    return view('pages/login');
 });
 
 Route::prefix('admin')->group(function(){
