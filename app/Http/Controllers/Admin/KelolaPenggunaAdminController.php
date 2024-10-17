@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Models\MitraModel;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class KelolaPenggunaAdminController extends Controller
@@ -17,6 +18,12 @@ class KelolaPenggunaAdminController extends Controller
     // MITRA
     public function index()
     {
+
+        if (!Auth::check() || Auth::user()->level !== 'admin') {
+            return redirect('/login')->withErrors(['login_error' => 'Anda harus login sebagai admin untuk mengakses halaman ini.']);
+        }
+    
+
         $dataMitra = DB::table('mitra')->get();
 
         $data = [

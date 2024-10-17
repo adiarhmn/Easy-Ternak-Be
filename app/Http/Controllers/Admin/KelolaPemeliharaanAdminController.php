@@ -9,12 +9,19 @@ use App\Models\AnimalProgressModel;
 use App\Models\InvestmentSlotModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class KelolaPemeliharaanAdminController extends Controller
 {
     public function index()
 {
+
+    if (!Auth::check() || Auth::user()->level !== 'admin') {
+        return redirect('/login')->withErrors(['login_error' => 'Anda harus login sebagai admin untuk mengakses halaman ini.']);
+    }
+
+
     // Ambil data hewan dari database
     $animals = AnimalModel::where("status", "process")->get();
 

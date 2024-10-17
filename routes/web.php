@@ -10,12 +10,14 @@ use App\Http\Controllers\Admin\KelolaPenjualanAdminController;
 use App\Http\Controllers\Admin\KelolaPenggunaAdminController;
 
 Route::get('/', function () {
-    return view('login');
+    return redirect('/login');
 });
+
 Route::get('/login', function () {
-    return view('pages/login');
+    return view('pages.login');
 });
 Route::post('/post-login', [MainAuthController::class, 'postLogin'])->name('postlogin');
+Route::get('/logout', [MainAuthController::class, 'logout'])->name('logout');
 
 Route::prefix('admin')->group(function(){
     Route::get('/beranda',[BerandaAdminController::class,'index'])->name('admin.beranda');

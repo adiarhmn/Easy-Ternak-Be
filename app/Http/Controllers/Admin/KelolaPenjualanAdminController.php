@@ -9,11 +9,17 @@ use App\Models\AnimalProgressModel;
 use App\Models\InvestmentSlotModel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class KelolaPenjualanAdminController extends Controller
 {
     public function index()
     {
+        if (!Auth::check() || Auth::user()->level !== 'admin') {
+            return redirect('/login')->withErrors(['login_error' => 'Anda harus login sebagai admin untuk mengakses halaman ini.']);
+        }
+    
+
         $animals = AnimalModel::where('status', 'distribution')->get();
         $data = [
             'title' => 'EasyTernak | Penjualan',

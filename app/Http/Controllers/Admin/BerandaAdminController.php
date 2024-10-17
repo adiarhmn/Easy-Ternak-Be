@@ -6,12 +6,19 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\AnimalModel;
 use App\Models\AnimalExpensesModel;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class BerandaAdminController extends Controller
 {
     public function index()
     {
+
+        if (!Auth::check() || Auth::user()->level !== 'admin') {
+            return redirect('/login')->withErrors(['login_error' => 'Anda harus login sebagai admin untuk mengakses halaman ini.']);
+        }
+    
+
         // Menghitung total slot
         $totalSlot = AnimalModel::count();
 

@@ -22,7 +22,7 @@ class MainAuthController extends Controller
         // Cek autentikasi pengguna dengan level admin
         if (Auth::attempt(['username' => $credentials['username'], 'password' => $credentials['password'], 'level' => 'admin'])) {
             // Jika berhasil, arahkan ke dashboard admin
-            return redirect()->intended('admin/dashboard');
+            return redirect()->intended('admin/beranda');
         }
 
         // Jika gagal, kembalikan dengan error
@@ -30,4 +30,15 @@ class MainAuthController extends Controller
             'login_error' => 'Username atau password salah!',
         ])->withInput($request->only('username'));
     }
+
+    public function logout(Request $request)
+{
+    Auth::logout(); // Mengeluarkan pengguna dari sesi
+
+    $request->session()->invalidate(); // Menghapus semua data sesi
+
+    $request->session()->regenerateToken(); // Menghasilkan ulang token CSRF
+
+    return redirect('/login')->with('message', 'Anda telah berhasil logout.'); // Mengarahkan pengguna kembali ke halaman login
+}
 }
