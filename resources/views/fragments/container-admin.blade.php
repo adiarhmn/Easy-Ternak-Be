@@ -189,7 +189,7 @@
                                     </div>
                                     <span class="profile-username">
                                         <span class="op-7">Hi,</span>
-                                        <span class="fw-bold">Hizrian</span>
+                                        <span class="fw-bold">Admin</span>
                                     </span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-user animated fadeIn">
@@ -201,22 +201,22 @@
                                                     class="avatar-img rounded" />
                                                 </div>
                                                 <div class="u-text">
-                                                    <h4>Hizrian</h4>
-                                                    <p class="text-muted">hello@example.com</p>
-                                                    <a href="profile.html"
-                                                    class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                                                    <h4>Admin</h4>
+                                                    {{-- <p class="text-muted">hello@example.com</p> --}}
+                                                    {{-- <a href="profile.html" --}}
+                                                    {{-- class="btn btn-xs btn-secondary btn-sm">View Profile</a> --}}
                                                 </div>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">My Profile</a>
+                                            {{-- <a class="dropdown-item" href="#">My Profile</a>
                                             <a class="dropdown-item" href="#">My Balance</a>
                                             <a class="dropdown-item" href="#">Inbox</a>
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" href="#">Account Setting</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Logout</a>
+                                            <div class="dropdown-divider"></div> --}}
+                                            <a class="dropdown-item" href="/logout">Logout</a>
                                         </li>
                                     </div>
                                 </ul>
@@ -231,7 +231,14 @@
             <div class="container">
                 <div class="page-inner">
                     <div class="d-flex align-items-left align-items-md-center flex-column flex-md-row pt-2 pb-0">
-                        <h4 class="fw-bold mb-3">{{ $page }}</h4>
+                        <div class="row">
+                            <h4 class="fw-bold mb-3">{{ $page }}</h4>
+                            @if (!empty($deskripsi))
+                                
+                            <h6 class="op-7 mb-3">{{ $deskripsi }}</h6>
+                        @endif
+
+                        </div>
                         @if($page!="Beranda")
                         <ul class="breadcrumbs mb-3">
 							<li class="nav-home">
@@ -253,11 +260,6 @@
                             @endif
 						</ul>
                         @endif
-                        <div>
-                            @if (!empty($deskripsi))
-                                <h6 class="op-7 mb-2">{{ $deskripsi }}</h6>
-                            @endif
-                        </div>
                         <div class="ms-md-auto py-2 py-md-0">
                             @if (!empty($btnAdd))
                                 <a href="{{ url($urlAdd) }}"

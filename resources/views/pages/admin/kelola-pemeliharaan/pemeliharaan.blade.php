@@ -10,7 +10,7 @@
 
         @if($animals->isEmpty())
             <div class="col-12">
-                <div class="alert alert-warning" role="alert">
+                <div class="alert alert-secondary" role="alert">
                     Tidak ada data hewan dalam proses pemeliharaan.
                 </div>
             </div>
@@ -40,7 +40,7 @@
                                             <a href="{{url('admin/pemeliharaan/progres/'.$animal->id_animal)}}" class="btn btn-secondary btn-sm">Lihat Progress</a>
                                         </div>
                                         <div class="ml-auto">
-                                            <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#confirmModal" data-id="{{ $animal->id_animal }}">Jual</button>
+                                            <a class="btn btn-danger btn-sm" href="{{ "/admin/pemeliharaan/formjual/" .$animal->id_animal }}">Jual</a>
                                         </div>
                                     </div>
                                 </div>
@@ -52,39 +52,6 @@
         @endif
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="confirmModalLabel">Konfirmasi Penjualan</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Apakah Anda yakin ingin menjual hewan ini?
-                </div>
-                <div class="modal-footer">
-                    <form id="confirmSaleForm" method="POST" action="{{ url('admin/pemeliharaan/jual') }}">
-                        @csrf
-                        <input type="hidden" name="animal_id" id="animal_id">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-danger">Jual</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
 
-@section('scripts')
-<script>
-    // Set the animal ID to the hidden input in the form when the modal is shown
-    var confirmModal = document.getElementById('confirmModal');
-    confirmModal.addEventListener('show.bs.modal', function (event) {
-        var button = event.relatedTarget; // Button that triggered the modal
-        var animalId = button.getAttribute('data-id'); // Extract info from data-* attributes
-        var modalBodyInput = confirmModal.querySelector('#animal_id');
-        modalBodyInput.value = animalId; // Update the modal's content
-    });
-</script>
-@endsection
+

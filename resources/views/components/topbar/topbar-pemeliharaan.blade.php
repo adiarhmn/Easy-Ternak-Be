@@ -27,4 +27,11 @@
            Investor
         </a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link {{ $topbar == 'Jual' ? 'active' : '' }}"
+           href="{{ url('admin/pemeliharaan/formjual/' . $idAnimal) }}"
+           role="tab">
+           Jual Sekarang
+        </a>
+    </li>
 </ul>

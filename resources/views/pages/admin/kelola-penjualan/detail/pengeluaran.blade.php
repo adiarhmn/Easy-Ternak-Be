@@ -4,10 +4,10 @@
     <div class="card">
         <div class="card-body">
             {{-- Topbar --}}
-            @include('components.topbar.topbar-pemeliharaan')
+            @include('components.topbar.topbar-penjualan')
             {{-- End Topbar --}}
 
-            <form action="{{ '/admin/pemeliharaan/pengeluaran/' . $idAnimal }}" method="GET" id="filterForm">
+            <form action="{{ '/admin/penjualan/detail/pengeluaran/' . $idAnimal }}" method="GET" id="filterForm">
                 <div class="row mb-3 mt-4">
                     <div class="col-md-6">
                         <label for="start-date" class="form-label">Dari Tanggal</label>

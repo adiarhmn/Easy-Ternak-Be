@@ -68,7 +68,7 @@
                     <div class="card-body">
                         <div class="row g-4">
                             <div class="">
-                                <span class="badge-slot badeg badge-secondary fw-bold">{{$animal->total_slots}} Total Slot</span>
+                                <span class="badge-slot badeg badge-secondary fw-bold">{{$animal->total_slots}} Slot</span>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-body">

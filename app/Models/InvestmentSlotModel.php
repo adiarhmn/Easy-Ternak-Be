@@ -45,4 +45,3 @@ class InvestmentSlotModel extends Model
         return $this->hasOne(InvestorProfitModel::class, 'id_investment_slot', 'id_investment_slot');
     }
 }
-
