@@ -22,7 +22,12 @@ class InvestorController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        $investor = InvestorModel::where('id_user', $user->id_user)->with('user')->first();
+        $investor = InvestorModel::where('id_user', $user->id_user)
+            ->with('investorProfit')
+            ->withSum('investorProfit as total_profit', 'profit')
+            ->with('investmentSlot')
+            ->with('user')
+            ->first();
         if ($investor == null) {
             return response()->json(['message' => 'Investor not found'], 404);
         }

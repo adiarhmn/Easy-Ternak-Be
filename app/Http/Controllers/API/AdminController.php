@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\AnimalModel;
+use App\Models\InvestmentSlotModel;
 use App\Models\InvestorProfitModel;
 use App\Models\MitraProfitModel;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class AdminController extends Controller
         if ($request->id_animal != null) {
             $data = AnimalModel::where('id_animal', $request->id_animal)
                 ->where('status', 'distribution')
-                ->with(['subAnimalType.animalType', 'investmentSlot.investor', 'mitra', 'animalExpenses', 'mitraProfit', 'investmentSlot.investor', 'investmentSlot.investor.investmentSlot', 'investmentSlot.investorProfit'])
+                ->with(['subAnimalType.animalType', 'investmentSlot.investorProfit', 'mitra', 'animalExpenses', 'mitraProfit', 'investmentSlot.investor'])
                 ->withSum('animalExpenses as total_expenses', 'price')
                 ->first();
             if ($data == null) {
@@ -89,6 +90,7 @@ class AdminController extends Controller
         $validator = Validator::make($request->all(), [
             'id_investment_slot' => 'required|integer',
             'id_investor' => 'required|integer',
+            'id_animal' => 'required|integer',
             'profit' => 'required|numeric',
             'proof_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
         ]);
@@ -106,9 +108,18 @@ class AdminController extends Controller
             $ImageManager->read($fileImage)->scaleDown(400)->save('uploads/' . $fileName, 90);
         }
 
+        $InvestmentSlots = InvestmentSlotModel::where('id_investment_slot', $request->id_investment_slot)->first();
+        if ($InvestmentSlots == null) {
+            return response()->json(['message' => 'Investment Slot not found'], 404);
+        }
+
+        $InvestmentSlots->profit += $request->profit;
+        $InvestmentSlots->save();
+
         $investorProfit = InvestorProfitModel::create([
             'id_investment_slot' => $request->id_investment_slot,
             'id_investor' => $request->id_investor,
+            'id_animal' => $request->id_animal,
             'profit' => $request->profit,
             'proof_image' => $fileName,
             'status' => 'pending'

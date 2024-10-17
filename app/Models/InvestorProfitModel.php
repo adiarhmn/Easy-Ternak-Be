@@ -16,6 +16,7 @@ class InvestorProfitModel extends Model
         'profit',
         'status',
         'proof_image',
+        'id_animal',
     ];
 
     public $timestamps = true;
@@ -28,5 +29,10 @@ class InvestorProfitModel extends Model
     public function investor()
     {
         return $this->belongsTo(InvestorModel::class, 'id_investor', 'id_investor');
+    }
+
+    public function animal()
+    {
+        return $this->belongsTo(AnimalModel::class, 'id_animal', 'id_animal');
     }
 }

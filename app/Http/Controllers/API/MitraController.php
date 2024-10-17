@@ -25,7 +25,12 @@ class MitraController extends Controller
         }
 
         // Get the mitra data
-        $mitra = MitraModel::where('id_user', $user->id_user)->with('user')->first();
+        $mitra = MitraModel::where('id_user', $user->id_user)
+        ->with('animal')
+        ->withSum('animal as total_slot', 'total_slots')
+        ->withSum('mitraProfit as total_profit', 'profit')
+        ->with('user')
+        ->first();
         if ($mitra == null) {
             return response()->json(['message' => 'Mitra not found'], 404);
         }

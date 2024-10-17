@@ -73,4 +73,9 @@ class AnimalModel extends Model
     {
         return $this->hasOne(MitraProfitModel::class, 'id_animal', 'id_animal');
     }
+
+    public function investorProfit()
+    {
+        return $this->hasMany(InvestorProfitModel::class, 'id_animal', 'id_animal');
+    }
 }

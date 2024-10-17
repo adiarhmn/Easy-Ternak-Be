@@ -8,6 +8,7 @@ use App\Models\AnimalModel;
 use App\Models\InvestmentSlotModel;
 use App\Models\MarketplaceAnimalModel;
 use App\Models\MitraModel;
+use App\Models\MitraProfitModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -73,10 +74,12 @@ class AnimalController extends Controller
         // Check the investment slot expired_at
         foreach ($animals as $animal) {
             foreach ($animal->investmentSlot as $slot) {
-                if ($slot->status == 'pending' && $slot->expired_at < now()) {
-                    $slot->status = 'ready';
-                    $slot->id_investor = null;
-                    $slot->save();
+                if ($slot->status == 'pending' && $slot->expired_at != null) {
+                    if ($slot->expired_at < now()) {
+                        $slot->status = 'ready';
+                        $slot->id_investor = null;
+                        $slot->save();
+                    }
                 }
             }
         }
@@ -99,9 +102,21 @@ class AnimalController extends Controller
             if (!$id_investor) return response()->json(['message' => 'Unauthorized'], 401);
 
             $animal = AnimalModel::where('id_animal', $id)
-                ->with(['mitra.user', 'subAnimalType.animalType', 'animalImage', 'investmentSlot' => function ($query) use ($id_investor) {
-                    $query->where('id_investor', $id_investor);
-                }, 'investmentSlot.transferProof', 'animalProgress.ProgressImage', 'animalExpenses', 'marketplaceAnimal'])
+                ->with([
+                    'mitra.user',
+                    'subAnimalType.animalType',
+                    'animalImage',
+                    'investmentSlot' => function ($query) use ($id_investor) {
+                        $query->where('id_investor', $id_investor);
+                    },
+                    'investmentSlot.transferProof',
+                    'animalProgress.ProgressImage',
+                    'animalExpenses',
+                    'marketplaceAnimal',
+                    'investmentSlot.investorProfit' => function ($query) use ($id_investor) {
+                        $query->where('id_investor', $id_investor);
+                    },
+                ])
                 ->withSum('animalExpenses as total_expenses', 'price')
                 ->first();
 
@@ -109,7 +124,17 @@ class AnimalController extends Controller
         }
 
         $animal = AnimalModel::where('id_animal', $id)
-            ->with(['mitra.user', 'subAnimalType.animalType', 'animalImage', 'investmentSlot.investor.investmentSlot', 'investmentSlot.transferProof', 'animalProgress.ProgressImage', 'animalExpenses', 'marketplaceAnimal.marketplaceDetails'])
+            ->with([
+                'mitra.user',
+                'subAnimalType.animalType',
+                'animalImage',
+                'investmentSlot.investor.investmentSlot',
+                'investmentSlot.transferProof',
+                'animalProgress.ProgressImage',
+                'animalExpenses',
+                'marketplaceAnimal.marketplaceDetails',
+                'mitraProfit',
+            ])
             ->withSum('animalExpenses as total_expenses', 'price')
             ->first();
 
@@ -307,5 +332,34 @@ class AnimalController extends Controller
 
         // Change Status Animal
         return response()->json(['message' => 'Hewan Berhasil Diperbarui', 'marketplace' => $marketplace]);
+    }
+
+    public function confirmProfit(Request $request)
+    {
+        // Validation Request
+        $validator = Validator::make($request->all(), [
+            'id_mitra_profit' => 'required|integer',
+            'status' => 'required|string|in:success,failed',
+        ]);
+
+        // Return back validation errors
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+
+        // Get Mitra Profit
+        $mitraProfit = MitraProfitModel::find($request->id_mitra_profit);
+        if (!$mitraProfit) {
+            return response()->json(['message' => 'Profit not found'], 404);
+        }
+
+        // Update Status
+        $mitraProfit->status = $request->status;
+        $mitraProfit->save();
+
+        return response()->json(['message' => 'Profit Updated', 'profit' => $mitraProfit]);
     }
 }

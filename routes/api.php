@@ -75,6 +75,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('animal', [AnimalController::class, 'saveData'])->name('animal.save');
     Route::post('animal/buy', [AnimalController::class, 'buyAnimal'])->name('animal.buy');
     Route::post('animal/sell', [AnimalController::class, 'sellAnimal'])->name('animal.sell');
+    Route::post('animal/confirm-profit', [AnimalController::class, 'confirmProfit'])->name('animal.confirm-profit');
 });
 
 // Slot Routes
@@ -86,6 +87,7 @@ Route::middleware(['jwt.auth'])->group(function () {
     Route::post('slot/checkout/proof', [InvestmentSlotController::class, 'proofCheckout'])->name('slot.checkout.proof');
     Route::post('slot/checkout/confirm', [InvestmentSlotController::class, 'confirmCheckout'])->name('slot.checkout.confirm');
     Route::post('slot/profit-distribution/make', [InvestmentSlotController::class, 'makeProfitDistribution'])->name('slot.profit-distribution.make');
+    Route::post('slot/confirm-profit', [InvestmentSlotController::class, 'confirmProfit'])->name('slot.confirm-profit');
 });
 
 // Investment Type Routes 
@@ -130,7 +132,7 @@ Route::middleware(['jwt.auth'])->group(function () {
 // Admin Routes
 Route::middleware(['jwt.auth'])->group(function () {
     Route::get('animal-distribution', [AdminController::class, 'animalDistribution'])->name('animal-distribution');
-    Route::post('share-mitra-profit', [AdminController::class, 'shareProshareProfitMitra'])->name('share-profit');
+    Route::post('share-mitra-profit', [AdminController::class, 'shareProfitMitra'])->name('share-profit');
     Route::post('share-investor-profit', [AdminController::class, 'shareProfitInvestor'])->name('share-investor-profit');
 });
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AnimalModel;
 use App\Models\InvestmentSlotModel;
 use App\Models\InvestorModel;
+use App\Models\InvestorProfitModel;
 use App\Models\TransferProofsModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -39,7 +40,7 @@ class InvestmentSlotController extends Controller
             ->with('animal.mitra')
             ->with('animal.investmentType')
             ->with('animal.animalImage')
-            ->orderBy('id_investment_slot', 'desc')
+            ->with('investorProfit')
             ->get()
             ->groupBy('animal.id_animal');
 
@@ -53,7 +54,7 @@ class InvestmentSlotController extends Controller
         })->values()->toArray(); // Mengonversi koleksi menjadi array
 
         // Return Investment Slot
-        return response()->json(['message' => 'Investment slot data', 'investmentSlots' => $groupedInvestmentSlots]);
+        return response()->json(['message' => 'Investment slot datas', 'investmentSlots' => $groupedInvestmentSlots]);
     }
 
     public function details(Request $request, $id)
@@ -265,7 +266,6 @@ class InvestmentSlotController extends Controller
         DB::beginTransaction();
 
         try {
-
             // Count Profit
             $Animal = AnimalModel::where('id_animal', $request->id_animal)
                 ->withSum('animalExpenses as total_expenses', 'price')
@@ -335,5 +335,32 @@ class InvestmentSlotController extends Controller
         }
     }
 
-    public function confirmProfitDistribution(Request $request) {}
+    public function confirmProfit(Request $request)
+    {
+        // Validate The Request
+        $validator = Validator::make($request->all(), [
+            'id_investor_profit' => 'required|numeric',
+            'status' => 'required|in:success,failed',
+        ]);
+
+        // Return Validation Error
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        // Get the Investor Profit
+        $investorProfit = InvestorProfitModel::where('id_investor_profit', $request->id_investor_profit)->first();
+        if ($investorProfit == null) {
+            return response()->json(['message' => 'Investor profit not found'], 404);
+        }
+
+        // Update the Investor Profit
+        $investorProfit->status = $request->status;
+        $investorProfit->save();
+
+        return response()->json(['message' => 'Profit status updated', 'investorProfit' => $investorProfit]);
+    }
 }
