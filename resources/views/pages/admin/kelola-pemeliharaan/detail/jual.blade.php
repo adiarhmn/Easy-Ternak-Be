@@ -41,54 +41,65 @@
                                         <input type="text" id="harga_beli" class="form-control" value="Rp {{ number_format($animal->purchase_price, 0, ',', '.') }}" name="harga_beli" readonly>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label for="pengeluaran">Pengeluaran (Pemeliharaan)</label>
-                                        <div class="input-group">
-                                            <input type="text" id="pengeluaran" class="form-control" value="Rp {{ number_format($totalPengeluaran, 0, ',', '.') }}" name="pengeluaran" readonly>
-                                            <a class="btn btn-secondary" href="/admin/pemeliharaan/pengeluaran/{{$animal->id_animal}}">
-                                                <i class="fas fa-info-circle"></i>
-                                            </a>
-                                        </div>
-                                    </div>
+                                    
 
                                     <div class="form-group">
-                                        <label for="total_modal">Total Modal</label>
-                                        <input type="text" id="total_modal_display" class="form-control" value="Rp {{ number_format($animal->purchase_price + $totalPengeluaran, 0, ',', '.') }}" name="total_modal" readonly>
+                                        <label for="keuntungan_kotor">Keuntungan Kotor</label>
+                                        <input type="text" id="keuntungan_kotor" class="form-control" name="keuntungan_kotor" readonly>
                                         <input type="hidden" id="total_modal" class="form-control" value="{{$animal->purchase_price + $totalPengeluaran   }}" name="total_modal" readonly>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-body">
-                                    {{-- Profit --}}
-                                    <div class="form-group mb-0 pb-0">
-                                        <h6 class="fw-bold">Keuntungan</h6>
-                                    </div>
-                                    <div class="form-group mt-0 pt-0">
-                                        <label for="hasil_bersih">Total Profit / Keuntungan</label>
-                                        <input type="text" id="hasil_bersih_display" class="form-control" readonly>
-                                        <input type="hidden" id="hasil_bersih" name="hasil_bersih" readonly>
                                     </div>
                                     <div class="form-group">
                                         <label for="profit_platform">Profit Platform (5%)</label>
                                         <input type="text" id="profit_platform_display" class="form-control" readonly>
                                         <input type="hidden" id="profit_platform" name="profit_platform" readonly>
                                     </div>
-                                    <div class="form-group">
-                                        <label for="profit_investor">Profit Investor (50%)</label>
-                                        <input type="text" id="profit_investor_display" class="form-control" readonly>
-                                        <input type="hidden" id="profit_investor" name="profit_investor" readonly>
-                                        <span class="badge bg-success mt-1">50% dari Total Profit</span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="profit_mitra">Profit Mitra (45%)</label>
-                                        <input type="text" id="profit_mitra_display" class="form-control" readonly>
-                                        <input type="hidden" id="profit_mitra" name="profit_mitra" readonly>
-                                        <span class="badge bg-warning mt-1">45% dari Total Profit</span>
-                                    </div>
-                                    
                                 </div>
+                            </div>
+
+                                <div class="form-body">
+                                    {{-- Profit --}}
+                                    <div class="form-group mb-0 pb-0">
+                                        <h6 class="fw-bold">Pembagian Mitra dan Investor</h6>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="pengeluaran">Pengeluaran (Pemeliharaan)</label>
+                                                <div class="input-group">
+                                                    <input type="text" id="pengeluaran" class="form-control" value="Rp {{ number_format($totalPengeluaran, 0, ',', '.') }}" name="pengeluaran" readonly>
+                                                    <a class="btn btn-secondary" href="/admin/pemeliharaan/pengeluaran/{{$animal->id_animal}}">
+                                                        <i class="fas fa-info-circle"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group ">
+                                                <label for="hasil_bersih">Keuntungan Bersih</label>
+                                                <input type="text" id="hasil_bersih_display" class="form-control" readonly>
+                                                <input type="hidden" id="hasil_bersih" name="hasil_bersih" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="profit_investor">Profit Investor (50%)</label>
+                                                <input type="text" id="profit_investor_display" class="form-control" readonly>
+                                                <input type="hidden" id="profit_investor" name="profit_investor" readonly>
+                                                <span class="badge bg-success mt-1">50% dari Total Profit</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="profit_mitra">Profit Mitra (50%)</label>
+                                                <input type="text" id="profit_mitra_display" class="form-control" readonly>
+                                                <input type="hidden" id="profit_mitra" name="profit_mitra" readonly>
+                                                <span class="badge bg-warning mt-1">50% dari Total Profit</span>
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                   
+                                    
                             </div>
                         </div>
 
@@ -139,12 +150,19 @@ $(document).ready(function() {
         const totalModal = hargaBeli + pengeluaran;
         const profit = hargaJual - totalModal;
 
+        const keuntungan_kotor = hargaJual - hargaBeli;
+        if(keuntungan_kotor >= 0){
+            $('#keuntungan_kotor').val(`Rp ${keuntungan_kotor.toFixed(0).replace(/\d(?=(\d{3})+(?!\d))/g, '$&,')}`);
+        } else{
+            $('#keuntungan_kotor').val('Rp 0'); // Set nilai numerik ke input hidden
+        }
+
         $('#total_modal_display').val(`Rp ${totalModal.toFixed(0).replace(/\d(?=(\d{3})+(?!\d))/g, '$&,')}`);
         $('#total_modal').val(totalModal >= 0 ? totalModal : 0);
         $('#hasil_bersih_display').val(`Rp ${profit >= 0 ? profit.toFixed(0).replace(/\d(?=(\d{3})+(?!\d))/g, '$&,') : 0}`);
         $('#hasil_bersih').val(profit >= 0 ? profit : 0); // Set nilai numerik ke input hidden
 
-        const profitPlatform = Math.max((profit * 0.05), 0);
+        const profitPlatform = Math.max((hargaJual - hargaBeli) * 0.05, 0);
         $('#profit_platform_display').val(`Rp ${profitPlatform.toFixed(0).replace(/\d(?=(\d{3})+(?!\d))/g, '$&,')}`);
         $('#profit_platform').val(profitPlatform); // Set nilai numerik ke input hidden
 
@@ -152,7 +170,7 @@ $(document).ready(function() {
         $('#profit_investor_display').val(`Rp ${profitInvestor.toFixed(0).replace(/\d(?=(\d{3})+(?!\d))/g, '$&,')}`);
         $('#profit_investor').val(profitInvestor); // Set nilai numerik ke input hidden
 
-        const profitMitra = Math.max((profit * 0.45), 0);
+        const profitMitra = Math.max((profit * 0.50), 0);
         $('#profit_mitra_display').val(`Rp ${profitMitra.toFixed(0).replace(/\d(?=(\d{3})+(?!\d))/g, '$&,')}`);
         $('#profit_mitra').val(profitMitra); // Set nilai numerik ke input hidden
     });
