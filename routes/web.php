@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\MainAuthController;
 use App\Http\Controllers\API\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\BerandaAdminController;
@@ -14,6 +15,7 @@ Route::get('/', function () {
 Route::get('/login', function () {
     return view('pages/login');
 });
+Route::post('/post-login', [MainAuthController::class, 'postLogin'])->name('postlogin');
 
 Route::prefix('admin')->group(function(){
     Route::get('/beranda',[BerandaAdminController::class,'index'])->name('admin.beranda');

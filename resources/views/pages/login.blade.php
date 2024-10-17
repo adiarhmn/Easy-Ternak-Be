@@ -163,6 +163,25 @@
               font-size: 16px;
           }
       }
+
+      .custom-alert {
+    padding: 15px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    border: 1px solid #f5c6cb;
+    background-color: #eb6974;
+    color: white;
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.custom-alert:hover {
+    background-color: #f5c2c7;
+}
+
     </style>
 </head>
 <body>
@@ -173,15 +192,24 @@
     <div class="logo-container">
         <img src="/images/logo.jpg" alt="Logo">
     </div>
-    <form>
+    <form action="/post-login" method="POST">
+        @csrf
         <h3>Easy Ternak</h3>
 
+  <!-- Pesan error jika login gagal -->
+  <?php if (isset($errors) && $errors->has('login_error')): ?>
+  <div class="custom-alert">
+      <?= $errors->first('login_error'); ?>
+  </div>
+<?php endif; ?>
+
         <label for="username">Username</label>
-        <input type="text" placeholder="Email or Phone" id="username">
+        <input type="text" placeholder="Username or Email" name="username" id="username">
 
         <label for="password">Password</label>
-        <input type="password" placeholder="Password" id="password">
+        <input type="password" placeholder="Password" name="password" id="password">
 
+   
         <button>Log In</button>
     </form>
 </body>
