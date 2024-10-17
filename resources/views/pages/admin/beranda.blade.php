@@ -101,7 +101,7 @@
                         </div>
                         <div class="col col-stats ms-3 ms-sm-0">
                             <div class="numbers">
-                                <p class="card-category">Total Profit</p>
+                                <p class="card-category">Total Profit <sup>(kotor)</sup></p>
                                 <h4 class="card-title">Rp {{ number_format($totalProfit, 0, ',', '.') }}</h4> <!-- Data dari controller -->
                                 <span class="badge bg-success">Profit</span>
                             </div>

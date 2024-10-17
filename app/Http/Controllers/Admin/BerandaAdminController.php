@@ -35,7 +35,7 @@ class BerandaAdminController extends Controller
         $pengeluaran = AnimalExpensesModel::sum('price');
 
         // Mengurangi profit dengan total pengeluaran
-        $totalProfit = $profit - $pengeluaran;
+        $totalProfit = $profit;
 
         $data = [
             'title' => 'EasyTernak | Beranda',
